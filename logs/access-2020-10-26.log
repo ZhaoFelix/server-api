@@ -1,0 +1,2 @@
+2020-10-26 10:49:59 ::1  GET / 304 / {}  - 220.618 ms Mozilla/5.0 (Macintosh; Intel Mac OS X 11_0_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36
+2020-10-26 10:49:59 ::1  GET /stylesheets/style.css 304 /stylesheets/style.css {}  - 1.155 ms Mozilla/5.0 (Macintosh; Intel Mac OS X 11_0_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36
