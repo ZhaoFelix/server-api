@@ -6,3 +6,5 @@
 2020-10-26 10:55:00 ::1  GET /stylesheets/style.css 304 /stylesheets/style.css {}  - 1.268 ms Mozilla/5.0 (Macintosh; Intel Mac OS X 11_0_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36
 2020-10-26 10:57:55 ::1  GET / 304 / {}  - 132.674 ms Mozilla/5.0 (Macintosh; Intel Mac OS X 11_0_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36
 2020-10-26 10:57:55 ::1  GET /stylesheets/style.css 304 /stylesheets/style.css {}  - 1.362 ms Mozilla/5.0 (Macintosh; Intel Mac OS X 11_0_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36
+2020-10-26 11:03:35 ::1  GET / 304 / {}  - 218.125 ms Mozilla/5.0 (Macintosh; Intel Mac OS X 11_0_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36
+2020-10-26 11:03:35 ::1  GET /stylesheets/style.css 304 /stylesheets/style.css {}  - 1.085 ms Mozilla/5.0 (Macintosh; Intel Mac OS X 11_0_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36
