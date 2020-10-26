@@ -9,11 +9,7 @@ npm install
 #### 运行项目
 
 ```bash
-npm run start
+npm run dev
 ```
 
-##### 热加载运行项目
-
-```bash
-nodemon start
-```
+> 此脚本依赖 nodemon 运行。
