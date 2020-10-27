@@ -4,3 +4,6 @@
 2020-10-27 03:13:47 ::1  GET /admin/query/all 200 /admin/query/all {} 44 - 28.852 ms PostmanRuntime/7.26.5
 2020-10-27 03:15:44 ::1  GET /admin/query/all 200 /admin/query/all {} 44 - 32.439 ms PostmanRuntime/7.26.5
 2020-10-27 03:17:28 ::1  GET /admin/query/all 200 /admin/query/all {} 44 - 51.922 ms PostmanRuntime/7.26.5
+2020-10-27 03:33:01 ::1  POST /admin/type/update/add 200 /admin/type/update/add {"type_name":"管理员"} 344 - 55.519 ms PostmanRuntime/7.26.5
+2020-10-27 03:34:12 ::1  POST /admin/type/update/add 200 /admin/type/update/add {"type_name":"管理员"} 344 - 17.169 ms PostmanRuntime/7.26.5
+2020-10-27 03:34:13 ::1  POST /admin/type/update/add 200 /admin/type/update/add {"type_name":"管理员"} 344 - 18.174 ms PostmanRuntime/7.26.5

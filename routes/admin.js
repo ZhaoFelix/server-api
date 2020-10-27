@@ -39,11 +39,11 @@ router.get('/query/all', function (req, res, next) {
 
 //  新增管理员
 router.post('/update/add', function (req, res, next) {
+  // TODO:增加角色类型字段
   let admin_token = stringRandom(16) //生成包含数字和字母的16为字符串
-  let admin_login_name = req.body.editor_login_name
-  let admin_name = req.body.editor_name
-  let admin_pwd = req.body.editor_pwd
-
+  let admin_login_name = req.body.admin_login_name
+  let admin_name = req.body.admin_name
+  let admin_pwd = req.body.admin_pwd
   DB.queryDB(
     'INSERT INTO `t_admin_list` (`admin_login_name`,`admin_name`,`admin_pwd`,`admin_token`,`admin_created_time`) VALUES (?,?,?,?,NOW())',
     [admin_login_name, admin_name, admin_pwd, admin_token],
@@ -125,4 +125,51 @@ router.post('/update/edit', function (req, res, next) {
 // 新增角色
 
 // 查询所有角色
+router.get('/type/query/all', function (req, res, next) {
+  DB.queryDB(
+    'select * from `t_admin_type` where admin_type_is_deleted = 0 order by admin_type_created_time',
+    function (error, result, fields) {
+      if (error) {
+        let responseJson = {
+          code: 20002,
+          message: 'error',
+          data: error
+        }
+        res.send(responseJson)
+      } else {
+        let responseJson = {
+          code: 20000,
+          message: 'success',
+          data: result
+        }
+        res.send(responseJson)
+      }
+    }
+  )
+})
+
+router.post('/type/update/add', function (req, res, next) {
+  let type_name = req.body.type_name
+  DB.queryDB(
+    'insert into t_admin_type (admin_type_name, admin_type_created_time)  values (?,NOW())',
+    type_name,
+    function (error, result, fields) {
+      if (error) {
+        let responseJson = {
+          code: 20002,
+          message: 'error',
+          data: error
+        }
+        res.send(responseJson)
+      } else {
+        let responseJson = {
+          code: 20000,
+          message: 'success',
+          data: result
+        }
+        res.send(responseJson)
+      }
+    }
+  )
+})
 module.exports = router
