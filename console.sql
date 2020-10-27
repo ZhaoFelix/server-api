@@ -17,8 +17,6 @@ create  table  if not exists `t_admin_type`(
     `admin_type_is_deleted` int default 0 comment '是否有效'
 );
 
-
-
 select  * from t_admin_type where admin_type_is_deleted = 0 order by admin_type_created_time;
 
 insert into `t_admin_type` (`admin_type_name`, `admin_type_created_time`)  values ('管理员',NOW());
@@ -38,3 +36,15 @@ show create  table  t_admin_type;
 alter  table  t_admin_type character set utf8mb4;
 
 show status;
+
+# 查看字段信息
+SHOW FULL COLUMNS from t_admin_list;
+
+# 查看数据库状态
+SHOW STATUS;
+
+
+
+
+
+
