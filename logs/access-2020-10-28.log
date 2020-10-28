@@ -14,3 +14,12 @@
 2020-10-28 09:24:53 ::1  POST /admin/update/add 200 /admin/update/add {"admin_login_name":"Felix","admin_name":"赵庆飞","admin_pwd":"123456","admin_type":1} 169 - 63.080 ms PostmanRuntime/7.26.5
 2020-10-28 09:25:10 ::1  POST /admin/update/add 200 /admin/update/add {"admin_login_name":"Felix","admin_name":"赵庆飞","admin_pwd":"123456","admin_type":1} 169 - 51.425 ms PostmanRuntime/7.26.5
 2020-10-28 09:26:27 ::1  POST /admin/update/add 200 /admin/update/add {"admin_login_name":"Felix","admin_name":"赵庆飞","admin_pwd":"123456","admin_type":1} 51 - 50.305 ms PostmanRuntime/7.26.5
+2020-10-28 09:32:05 ::1  POST /admin/update/dalete 404 /admin/update/dalete {} 1492 - 235.330 ms PostmanRuntime/7.26.5
+2020-10-28 09:32:27 ::1  POST /admin/update/delete 200 /admin/update/delete {} 210 - 41.336 ms PostmanRuntime/7.26.5
+2020-10-28 09:32:48 ::1  POST /admin/update/delete 200 /admin/update/delete {"id":8} 210 - 39.576 ms PostmanRuntime/7.26.5
+2020-10-28 09:33:14 ::1  POST /admin/update/delete 200 /admin/update/delete {"id":12} 210 - 24.580 ms PostmanRuntime/7.26.5
+2020-10-28 09:34:07 ::1  POST /admin/update/delete 200 /admin/update/delete {"id":7} 210 - 63.321 ms PostmanRuntime/7.26.5
+2020-10-28 09:34:10 ::1  POST /admin/update/delete 200 /admin/update/delete {"id":7} 210 - 27.668 ms PostmanRuntime/7.26.5
+2020-10-28 09:34:31 ::1  POST /admin/update/delete 200 /admin/update/delete {"id":7} 210 - 27.417 ms PostmanRuntime/7.26.5
+2020-10-28 09:34:38 ::1  POST /admin/update/delete 200 /admin/update/delete {"id":8} 210 - 27.268 ms PostmanRuntime/7.26.5
+2020-10-28 09:35:00 ::1  GET /admin/query/all 200 /admin/query/all {} 500 - 22.239 ms PostmanRuntime/7.26.5

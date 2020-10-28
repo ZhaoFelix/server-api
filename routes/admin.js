@@ -75,7 +75,7 @@ router.post('/update/add', function (req, res, next) {
 router.post('/update/delete', function (req, res, next) {
   let id = req.body.id
   DB.queryDB(
-    'UPDATE `t_admin_list` SET admin_is_deleted = 0  WHERE admin_id = ?',
+    'UPDATE `t_admin_list` SET admin_is_deleted = 1  WHERE admin_id = ?',
     [id],
     function (error, result, fields) {
       if (error) {
@@ -99,8 +99,7 @@ router.post('/update/delete', function (req, res, next) {
 
 //  编辑管理员信息
 router.post('/update/edit', function (req, res, next) {
-  let id = req.body.id
-  let admin_passwd = req.body.pwd
+  let {id,admin_passwd} = req.body
   let admin_token = stringRandom(16) //生成包含数字和字母的16为字符串
   //更新密码和ID
   DB.queryDB(

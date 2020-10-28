@@ -48,6 +48,13 @@ SELECT * FROM t_admin_list;
 -- 添加用户登录名字段
 ALTER TABLE t_admin_list ADD admin_login_name VARCHAR(50) COMMENT "用户登录名";
 
+ALTER TABLE t_admin_list ADD admin_token VARCHAR(100) COMMENT "用户token";
+
+
+DELETE  from  t_admin_list;
+
+
+
 
 
 

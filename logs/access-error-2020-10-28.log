@@ -1,1 +1,2 @@
 2020-10-28 08:56:47 ::1  GET /type/query/all 404 /type/query/all {} 1492 - 308.113 ms PostmanRuntime/7.26.5
+2020-10-28 09:32:05 ::1  POST /admin/update/dalete 404 /admin/update/dalete {} 1492 - 235.330 ms PostmanRuntime/7.26.5
