@@ -110,7 +110,7 @@ router.get("/info",function(req,res,next){
 router.post('/logout', function (req, res, next) {
   //根据ID重新生成token
   let new_token = Math.random().toString(36).substr(2)
-  let admin_id = 2
+  let admin_id = req.body.id 
   DB.queryDB(
     'update `t_admin_list` set admin_token = ?  where admin_id = ?',
     [new_token, admin_id],

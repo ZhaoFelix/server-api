@@ -83,3 +83,6 @@
 2020-10-28 10:43:12 ::1  GET /login/info?token=9CCwaHgyAqB7aT4M 200 /login/info?token=9CCwaHgyAqB7aT4M {} 83 - 17.241 ms PostmanRuntime/7.26.5
 2020-10-28 10:43:37 ::1  GET /login/info?token=9CCwaHgyAqB7aT4M 200 /login/info?token=9CCwaHgyAqB7aT4M {} 83 - 19.923 ms PostmanRuntime/7.26.5
 2020-10-28 10:43:58 ::1  GET /login/info?token=9CCwaHgyAqB7aT4M 200 /login/info?token=9CCwaHgyAqB7aT4M {} 98 - 51.009 ms PostmanRuntime/7.26.5
+2020-10-28 10:47:49 ::1  POST /login/logtou 404 /login/logtou {} 1492 - 234.070 ms PostmanRuntime/7.26.5
+2020-10-28 10:48:01 ::1  POST /login/logout 200 /login/logout {} 210 - 54.696 ms PostmanRuntime/7.26.5
+2020-10-28 10:48:34 ::1  POST /login/logout 200 /login/logout {"id":1} 210 - 43.267 ms PostmanRuntime/7.26.5
