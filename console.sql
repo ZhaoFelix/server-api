@@ -43,7 +43,10 @@ SHOW FULL COLUMNS from t_admin_list;
 # 查看数据库状态
 SHOW STATUS;
 
+SELECT * FROM t_admin_list;
 
+-- 添加用户登录名字段
+ALTER TABLE t_admin_list ADD admin_login_name VARCHAR(50) COMMENT "用户登录名";
 
 
 

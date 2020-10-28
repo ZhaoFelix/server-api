@@ -1,0 +1,16 @@
+2020-10-28 08:54:46 ::1  POST /admin/type/update/add 200 /admin/type/update/add {"type_name":"管理员"} 169 - 10053.410 ms PostmanRuntime/7.26.5
+2020-10-28 08:56:47 ::1  GET /type/query/all 404 /type/query/all {} 1492 - 308.113 ms PostmanRuntime/7.26.5
+2020-10-28 08:57:39 ::1  GET /admin/type/query/all 200 /admin/type/query/all {} 559 - 23.473 ms PostmanRuntime/7.26.5
+2020-10-28 09:11:00 ::1  POST /admin/update/add 200 /admin/update/add {} 341 - 50.235 ms PostmanRuntime/7.26.5
+2020-10-28 09:12:57 ::1  POST /admin/update/add 200 /admin/update/add {"admin_login_name":"Felix","admin_name":"赵庆飞","admin_pwd":"123456"} 355 - 30.517 ms PostmanRuntime/7.26.5
+2020-10-28 09:17:09 ::1  POST /admin/update/add 200 /admin/update/add {"admin_login_name":"Felix","admin_name":"赵庆飞","admin_pwd":"123456"} 350 - 61.149 ms PostmanRuntime/7.26.5
+2020-10-28 09:18:23 ::1  POST /admin/update/add 200 /admin/update/add {"admin_login_name":"Felix","admin_name":"赵庆飞","admin_pwd":"123456"} 169 - 21.816 ms PostmanRuntime/7.26.5
+2020-10-28 09:19:18 ::1  POST /admin/update/add 200 /admin/update/add {"admin_login_name":"Felix","admin_name":"赵庆飞","admin_pwd":"123456","admin_type":1} 169 - 28.213 ms PostmanRuntime/7.26.5
+2020-10-28 09:20:12 ::1  POST /admin/update/add 200 /admin/update/add {"admin_login_name":"Felix","admin_name":"赵庆飞","admin_pwd":"123456","admin_type":1} 169 - 55.596 ms PostmanRuntime/7.26.5
+2020-10-28 09:20:14 ::1  POST /admin/update/add 200 /admin/update/add {"admin_login_name":"Felix","admin_name":"赵庆飞","admin_pwd":"123456","admin_type":1} 169 - 19.651 ms PostmanRuntime/7.26.5
+2020-10-28 09:20:15 ::1  POST /admin/update/add 200 /admin/update/add {"admin_login_name":"Felix","admin_name":"赵庆飞","admin_pwd":"123456","admin_type":1} 169 - 25.898 ms PostmanRuntime/7.26.5
+2020-10-28 09:21:59 ::1  POST /admin/update/add 200 /admin/update/add {"admin_login_name":"Felix","admin_name":"赵庆飞","admin_pwd":"123456","admin_type":1} 169 - 60.355 ms PostmanRuntime/7.26.5
+2020-10-28 09:23:34 ::1  POST /admin/update/add 200 /admin/update/add {"admin_login_name":"Felix","admin_name":"赵庆飞","admin_pwd":"123456","admin_type":1} 169 - 29.184 ms PostmanRuntime/7.26.5
+2020-10-28 09:24:53 ::1  POST /admin/update/add 200 /admin/update/add {"admin_login_name":"Felix","admin_name":"赵庆飞","admin_pwd":"123456","admin_type":1} 169 - 63.080 ms PostmanRuntime/7.26.5
+2020-10-28 09:25:10 ::1  POST /admin/update/add 200 /admin/update/add {"admin_login_name":"Felix","admin_name":"赵庆飞","admin_pwd":"123456","admin_type":1} 169 - 51.425 ms PostmanRuntime/7.26.5
+2020-10-28 09:26:27 ::1  POST /admin/update/add 200 /admin/update/add {"admin_login_name":"Felix","admin_name":"赵庆飞","admin_pwd":"123456","admin_type":1} 51 - 50.305 ms PostmanRuntime/7.26.5

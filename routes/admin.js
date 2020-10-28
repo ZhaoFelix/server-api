@@ -1,7 +1,6 @@
 /*
     管理员用户相关的操作
 */
-
 var express = require('express')
 var router = express.Router()
 var DB = require('../config/db')
@@ -41,12 +40,14 @@ router.get('/query/all', function (req, res, next) {
 router.post('/update/add', function (req, res, next) {
   // TODO:增加角色类型字段
   let admin_token = stringRandom(16) //生成包含数字和字母的16为字符串
-  let admin_login_name = req.body.admin_login_name
-  let admin_name = req.body.admin_name
-  let admin_pwd = req.body.admin_pwd
+  // let admin_login_name = req.body.admin_login_name
+  // let admin_name = req.body.admin_name
+  // let admin_pwd = req.body.admin_pwd
+  // let admin_type = req.body.admin_type
+  let {admin_login_name,admin_name,admin_pwd,admin_type} = req.body
   DB.queryDB(
-    'INSERT INTO `t_admin_list` (`admin_login_name`,`admin_name`,`admin_pwd`,`admin_token`,`admin_created_time`) VALUES (?,?,?,?,NOW())',
-    [admin_login_name, admin_name, admin_pwd, admin_token],
+    'INSERT INTO `t_admin_list` (`admin_login_name`,`admin_name`,`admin_pwd`,`admin_token`,`admin_type`,`admin_created_time`) VALUES (?,?,?,?,?,NOW())',
+    [admin_login_name, admin_name, admin_pwd, admin_token,admin_type],
     function (error, result, fields) {
       if (error) {
         let responseJson = {
@@ -59,7 +60,10 @@ router.post('/update/add', function (req, res, next) {
         let responseJson = {
           code: 20000,
           message: 'success',
-          data: result
+          // 返回插入的ID
+          data: {
+            id:result.insertId
+          }
         }
         res.send(responseJson)
       }
@@ -165,7 +169,9 @@ router.post('/type/update/add', function (req, res, next) {
         let responseJson = {
           code: 20000,
           message: 'success',
-          data: result
+          data: {
+            id:result.insertId
+          }
         }
         res.send(responseJson)
       }
