@@ -8,8 +8,8 @@ var queryString = require('querystring')
 // 登录
 router.post('/login', function (req, res, next) {
   let admin_name = req.body.username
-  let passwd = md5(req.body.password.toUpperCase())
-
+  // let passwd = md5(req.body.password.toUpperCase())
+  let passwd = req.body.password
   DB.queryDB(
     'select admin_token from `t_admin_list` where admin_login_name = ? and  admin_is_deleted = 0 limit 0,1',
     [admin_name],
@@ -76,16 +76,15 @@ router.post('/login', function (req, res, next) {
       }
     }
   )
-})
+}) 
 
 // 根据token获取用户信息
-router.get('/info', function (req, res, next) {
+router.get("/info",function(req,res,next){
   let arg = url.parse(req.url).query
   let params = queryString.parse(arg)
   let token = params.token
-  console.log(token)
   DB.queryDB(
-    'select admin_name,admin_id from `t_admin_list` where admin_token = ? and admin_is_deleted = 0 limit 0,1',
+    'select admin_name,admin_id,admin_type from `t_admin_list` where admin_token = ? and admin_is_deleted = 0 limit 0,1',
     [token],
     function (error, result, fields) {
       if (error) {
