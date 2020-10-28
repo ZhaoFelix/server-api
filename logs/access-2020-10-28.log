@@ -23,3 +23,5 @@
 2020-10-28 09:34:31 ::1  POST /admin/update/delete 200 /admin/update/delete {"id":7} 210 - 27.417 ms PostmanRuntime/7.26.5
 2020-10-28 09:34:38 ::1  POST /admin/update/delete 200 /admin/update/delete {"id":8} 210 - 27.268 ms PostmanRuntime/7.26.5
 2020-10-28 09:35:00 ::1  GET /admin/query/all 200 /admin/query/all {} 500 - 22.239 ms PostmanRuntime/7.26.5
+2020-10-28 09:42:29 ::1  POST /admin/type/update/delete 200 /admin/type/update/delete {} 210 - 43.883 ms PostmanRuntime/7.26.5
+2020-10-28 09:43:16 ::1  POST /admin/type/update/delete 200 /admin/type/update/delete {"id":1} 210 - 31.516 ms PostmanRuntime/7.26.5
