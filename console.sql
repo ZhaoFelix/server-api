@@ -69,8 +69,8 @@ create table if not exists `t_user_list` (
 )
 
 -- 创建用户信息登记表
-CREATE table if NOT EXISTS `t_user_info_list` (
-	`ifno_id` int UNIQUE auto_increment,
+CREATE table if not EXISTS `t_user_info_list` (
+	`info_id` int UNIQUE auto_increment,
 	`wechat_if` int COMMENT '微信ID',
 	`info_address` VARCHAR(100) COMMENT '地址',
 	`created_time` datetime COMMENT '登记时间',
@@ -79,7 +79,7 @@ CREATE table if NOT EXISTS `t_user_info_list` (
 
 -- 创建车辆信息表
 CREATE TABLE if not EXISTS `t_driver_list` (
-		`driver_id` INT UNIQUE auto_increment,
+		`driver_id` INT unique auto_increment,
 		`driver_name` VARCHAR(30) COMMENT '司机姓名',
 		`driver_phone` VARCHAR(20) COMMENT '司机手机号',
 		`car_num` VARCHAR(20) COMMENT '车牌号',
@@ -104,7 +104,7 @@ create table if not exists `t_order_list` (
     `driver_id` int comment '司机ID',
     `user_id` int comment '用户ID',
     `order_price` int comment '订单金额',
-		`order_final_price` INT COMMENT '订单实付金额',
+    `order_final_price` INT COMMENT '订单实付金额',
     `order_status` int default 0 comment '订单状态',
     `order_pay_time` datetime comment '订单支付时间',
     `order_created_time` datetime comment '订单创建时间',
