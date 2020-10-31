@@ -39,7 +39,10 @@ router.get('/query/all', function (req, res, next) {
 //  新增管理员
 router.post('/update/add', function (req, res, next) {
   let admin_token = stringRandom(16) //生成包含数字和字母的16为字符串
-  let {admin_login_name,admin_name,admin_pwd,admin_type} = req.body
+  let {admin_login_name,admin_name,admin_pwd,admin_type} = req.query
+  console.log(req.query)
+  console.log(req.body)
+  console.log(admin_login_name,admin_name,admin_pwd,admin_type)
   DB.queryDB(
     'INSERT INTO `t_admin_list` (`admin_login_name`,`admin_name`,`admin_pwd`,`admin_token`,`admin_type`,`admin_created_time`) VALUES (?,?,?,?,?,NOW())',
     [admin_login_name, admin_name, admin_pwd, admin_token,admin_type],
@@ -175,8 +178,9 @@ router.post('/type/update/add', function (req, res, next) {
 
 // 删除管理员角色类型
 router.post('/type/update/delete', function (req, res, next) {
-  let id = req.body.id
+  var id = req.query.admin_type_id
   // TODO:判断同名的管理员名称是否已存在，若存在则不添加
+  console.log("已删除id: "+id)
   DB.queryDB(
     'UPDATE `t_admin_type` SET admin_type_is_deleted = 1  WHERE admin_type_id = ?',
     id,
