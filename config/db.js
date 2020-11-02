@@ -1,6 +1,6 @@
 var mysql = require('mysql')
 let config = require('./env')
-创建一个连接池
+// 创建一个连接池
 let pool = mysql.createPool(
   process.env.NODE_ENV == config.prd.env ? config.prd.dbInfo : config.dev.dbInfo
 )
