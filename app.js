@@ -42,20 +42,22 @@ app.use(cors())
 
 // 路由设置
 app.use('/', indexRouter);
-!(function () {
-  var routes = require('./utils/get-routers')
-  var keys = Object.keys(routes) // 获取数组对象中方的key
-  //   循环编列key
-  keys.forEach(function (k) {
-    let cPath = ''
-    if (!!routes[k].cPath) {
-      cPath = routes[k].cPath
-    } else {
-      cPath = k
-    }
-    app.use('/' + cPath, routes[k])
-  })
-})()
+
+// !(function () {
+//   var routes = require('./utils/get-routers')
+//   var keys = Object.keys(routes) // 获取数组对象中方的key
+//   //   循环编列key
+//   keys.forEach(function (k) {
+//     let cPath = ''
+//     if (!!routes[k].cPath) {
+//       cPath = routes[k].cPath
+//     } else {
+//       cPath = k
+//     }
+    
+//     app.use('/' + cPath, routes[k])
+//   })
+// })()
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

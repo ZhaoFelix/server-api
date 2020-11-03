@@ -1,7 +1,7 @@
 var express = require('express')
 var router = express.Router()
 
-router.get('/',function(req,res,next){
+router.get('/admin',function(req,res,next){
    res.send({
        "code":400
    })

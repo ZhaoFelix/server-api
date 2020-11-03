@@ -9,6 +9,7 @@ files.forEach(function (val) {
   // TODO: 当存在多层文件夹
   if (matchs == null) {
     let files = fs.readdirSync(__dirname + '/../routes/' + val)
+    console.log(files)
     files.forEach(function (va) {
       let matchs = reg.exec(va)
       if (matchs && matchs.index >= 0) {

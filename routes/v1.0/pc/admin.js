@@ -3,7 +3,7 @@
 */
 var express = require('express')
 var router = express.Router()
-var DB = require('../config/db')
+var DB = require('../../../config/db')
 var stringRandom = require('string-random')
 var url = require('url')
 
