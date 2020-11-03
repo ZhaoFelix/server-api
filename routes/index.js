@@ -2,15 +2,14 @@ var express = require('express');
 var router = express.Router();
 var DB = require('../config/db')
 var helper = require('../utils/helper')
+//  扫描路由路径
 const scanResult = helper.scanDirModules(__dirname,__filename)
-console.log("路由",scanResult)
 for (const prefix in scanResult) {
-  console.log("路由")
   if (scanResult.hasOwnProperty(prefix)) {
     router.use(prefix,scanResult[prefix])
   }
 } 
-/* GET home page. */
+/* 仅用于服务器连接和数据库连接测试，不涉及相关功能 */
 router.get('/', function(req, res, next) {
   DB.queryDB("select * from  t_user_list",function(error,results,fields){
     if (error){

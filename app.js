@@ -10,7 +10,7 @@ var indexRouter = require('./routes/index')
 
 var app = express();
 
-// view engine setup
+// 前端模板引擎设置
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
@@ -40,24 +40,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 // 解决跨域问题
 app.use(cors())
 
-// 路由设置
+// 路由设置，导入路由入口文件index.js
 app.use('/', indexRouter);
-
-// !(function () {
-//   var routes = require('./utils/get-routers')
-//   var keys = Object.keys(routes) // 获取数组对象中方的key
-//   //   循环编列key
-//   keys.forEach(function (k) {
-//     let cPath = ''
-//     if (!!routes[k].cPath) {
-//       cPath = routes[k].cPath
-//     } else {
-//       cPath = k
-//     }
-    
-//     app.use('/' + cPath, routes[k])
-//   })
-// })()
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

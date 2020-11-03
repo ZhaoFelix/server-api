@@ -1,9 +1,9 @@
 var express = require('express')
 var router = express.Router()
 
-router.get('/admin',function(req,res,next){
+router.get('/',function(req,res,next){
    res.send({
-       "code":400
+       "message":"路由测试"
    })
 });
 module.exports = router
