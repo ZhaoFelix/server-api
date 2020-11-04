@@ -25,8 +25,8 @@ router.post('/login', function (req, res, next) {
         if (result.length == 0) {
           let responseJson = {
             code: 20002,
-            message: result,
-            data: '该用户不存在'
+            message: "该用户不存在",
+            data: admin_name
           }
           res.send(responseJson)
         } else {
