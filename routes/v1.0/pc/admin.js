@@ -150,11 +150,10 @@ router.get('/type/query/all', function (req, res, next) {
 })
 
 router.post('/type/update/add', function (req, res, next) {
-  let type_name = req.body.type_name
-  console.log("新增管理员类型为:"+type_name)
+  let {type_name,type} = req.body
   DB.queryDB(
-    'insert into t_admin_type (admin_type_name, admin_type_created_time)  values (?,NOW())',
-    type_name,
+    'insert into t_admin_type (admin_type_name,admin_type, admin_type_created_time)  values (?,?,NOW())',
+    [type_name,type],
     function (error, result, fields) {
       if (error) {
         let responseJson = {
