@@ -60,10 +60,11 @@ router.get('/order/query/all', function(req, res, next) {
 
 // 用户下单
 router.post('/order/update/add', function(req, res, next) {
+    let insertId;
     let {wechat_id, user_name, phone, area, time, remark, flag, image, price} = req.body
     let adress = req.body.adress + " " + req.body.detail_adress
     DB.queryDB(
-        'select user_id from `t_user_list` where wechat_open_id = (select wechat_id from `t_user_info_list` where user_name = ?)', user_name,
+        'select * from `t_user_list` where wechat_open_id = (select wechat_id from `t_user_info_list` where user_name = ?)', user_name,
         function(error, result, fields) {
             if(error) {
                 let responseJson = {
@@ -73,7 +74,8 @@ router.post('/order/update/add', function(req, res, next) {
                 }
                 res.send(error)
             } else {
-                id = result.user_id
+                console.log(result)
+                id = result.RowDataPacket.user_id
                 DB.queryDB(
                     'insert into `t_order_list` (user_id, order_price, order_created_time) values (? ,? , NOW())', [id, price],
                     function(error, result, fields) {
@@ -85,8 +87,9 @@ router.post('/order/update/add', function(req, res, next) {
                             }
                             res.send(responseJson)
                         } else {
+                            insertId = result.insertId
                             DB.queryDB(
-                                'insert into `t_order_img` (order_id, user_place_order_img) values (?, ?)',[result.insertId ,image],
+                                'insert into `t_order_img` (order_id, user_place_order_img) values (?, ?)',[insertId ,image],
                                 function(error, result, fields) {
                                     if(error) {
                                         let responseJson = {
