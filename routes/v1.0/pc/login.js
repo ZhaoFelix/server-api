@@ -8,8 +8,8 @@ var queryString = require('querystring')
 // 登录
 router.post('/login', function (req, res, next) {
   let admin_name = req.body.username
-  // let passwd = md5(req.body.password.toUpperCase())
-  let passwd = req.body.password
+  let passwd = md5(req.body.password.toUpperCase())
+  // let passwd = req.body.password
   DB.queryDB(
     'select admin_token from `t_admin_list` where admin_login_name = ? and  admin_is_deleted = 0 limit 0,1',
     [admin_name],
@@ -45,7 +45,7 @@ router.post('/login', function (req, res, next) {
                 if (result.length == 0) {
                   let responseJson = {
                     code: 20002,
-                    message: 'error',
+                    message: '密码不正确',
                     data: '密码不正确'
                   }
                   res.send(responseJson)
