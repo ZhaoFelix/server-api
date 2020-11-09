@@ -161,11 +161,12 @@ router.post('/order/update/add', function(req, res, next) {
     )
 });
 
+// 两次下单
 router.post('/order/update/add/2', function(req, res, next) {
     let time = req.body.time
     let user_id = req.body.user_id
     DB.queryDB(
-        'select * from `t_order_list` where user_id = ? and order_is_deleted = 0', [user_id],
+        'select * from `t_order_list` where user_id = ? and order_is_deleted = 0 limit 1', [user_id],
         function(error, result, fields) {
             if(error) {
                 let responseJson = {
@@ -181,7 +182,18 @@ router.post('/order/update/add/2', function(req, res, next) {
                 DB.queryDB(
                     'insert into `t_order_list` (order_price, user_reserve_time) values (?, ?)', [order_price, time],
                     function(error, result, fields) {
-                        
+                        if(error) {
+                            let responseJson = {
+                                code: 20002,
+                                message: '下单失败',
+                                data: error
+                            }
+                            res.send(responseJson)
+                        } else {
+                            DB.queryDB(
+                                ''
+                            )
+                        }
                     }
                 )
             }
