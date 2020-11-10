@@ -68,11 +68,100 @@ router.post('/info/add', function(req, res, next) {
                             }
                         }
                     )
+                } else {
+                    DB.queryDB(
+                        'update `t_user_list` set wechat_nickname = ?, wechat_avatar = ?, wechat_age = ?, wechat_region = ?, wechat_phone = ? ,wechat_last_time = NOW() where wechat_open_id = ? and wechat_is_deleted  = 0',
+                        [wechat_nickname, wechat_avatar, wechat_age, wechat_region, wechat_phone, wechat_id],
+                        function(error, result, fields) {
+                            if(error) {
+                                let responseJson = {
+                                    code: 20002,
+                                    message: '更新信息失败',
+                                    data: error
+                                }
+                                res.send(responseJson)
+                            } else {
+                                let responseJson = {
+                                    code: 20000,
+                                    message: '更新信息成功',
+                                    data: result
+                                }
+                                res.send(responseJson)
+                            }
+                        }
+                    )
                 }
             }
         }
     )
-})
+});
+
+// 判断身份
+router.get('/search/identity', function(req, res, next) {
+    let identity = req.body.identity
+    let {wechat_id} = req.body.wechat_id
+    if(identity == 'user') {
+        DB.queryDB(
+            'select * from `t_user_list` where wechat_open_id = ?', [wechat_id],
+            function(error, result, fields) {
+                if(error) {
+                    let responseJson = {
+                        code: 20002,
+                        message: '查询身份失败',
+                        data: error
+                    } 
+                    res.send(responseJson)
+                } else {
+                    if(result.length == 0) {
+                        let responseJson = {
+                            code: 20000,
+                            message: '该用户不存在',
+                            data: result
+                        }
+                        res.send(responseJson)
+                    } else {
+                        let responseJson = {
+                            code: 20000,
+                            message: '核对身份成功',
+                            data: result
+                        }
+                        res.send(responseJson)
+                    }
+                }
+            }
+        )
+    } else {
+        DB.queryDB(
+            'select * from `t_estate_info` where estate_wechat_id = ?', [wechat_id],
+            function(error, result, fields) {
+                if(error) {
+                    let responseJson = {
+                        code: 20002,
+                        message: '查询身份失败',
+                        data: error
+                    } 
+                    res.send(responseJson)
+                } else {
+                    if(result.length == 0) {
+                        let responseJson = {
+                            code: 20000,
+                            message: '该物业不存在',
+                            data: result
+                        }
+                        res.send(responseJson)
+                    } else {
+                        let responseJson = {
+                            code: 20000,
+                            message: '核对身份成功',
+                            data: result
+                        }
+                        res.send(responseJson)
+                    }
+                }
+            }
+        )
+    }
+});
 
 // 添加用户详细信息
 router.post('/info/update/add', function(req, res, next) {
