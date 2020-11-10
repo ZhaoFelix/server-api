@@ -32,6 +32,48 @@ router.get('/search', function(req, res, next) {
     )
 });
 
+// 插入微信信息
+router.post('/info/add', function(req, res, next) {
+    let {wechat_id, wechat_nickname, wechat_avatar, wechat_age, wechat_region, wechat_phone, wechat_last_time} = req.body
+    DB.queryDB(
+        'select * from `t_user_list` where wechat_open_id = ? and wechat_is_deleted = 0', [wechat_id],
+        function(error, result, fields) {
+            if(error) {
+                let responseJson = {
+                    code: 20002,
+                    message: '查询失败',
+                    data: error
+                }
+                res.send(responseJson)
+            } else {
+                if(result.length == 0) {
+                    DB.queryDB(
+                        'insert into `t_user_list` (wechat_open_id, wechat_nickname, wechat_avatar, wechat_age, wechat_region, wechat_phone, wechat_created_time, wechat_last_time) values (?, ?, ?, ?, ?, ?, NOW(), NOW())',
+                        [wechat_id, wechat_nickname, wechat_avatar, wechat_age, wechat_region, wechat_phone],
+                        function(error, result, fields) {
+                            if(error) {
+                                let responseJson = {
+                                    code: 20002,
+                                    message: '插入新用户信息失败',
+                                    data: error
+                                }
+                                res.send(responseJson)
+                            } else {
+                                let responseJson = {
+                                    code: 20000,
+                                    message: '插入新用户信息成功',
+                                    data: result
+                                }
+                                res.send(responseJson)
+                            }
+                        }
+                    )
+                }
+            }
+        }
+    )
+})
+
 // 添加用户详细信息
 router.post('/info/update/add', function(req, res, next) {
     let {wechat_id, user_name} = req.body
