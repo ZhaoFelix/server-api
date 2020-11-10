@@ -21,6 +21,7 @@ router.get('/search', function(req, res, next) {
                 }
                 res.send(responseJson)
             } else {
+                console.log(result)
                 let responseJson = {
                     code: 20000,
                     message: 'success',
@@ -99,10 +100,10 @@ router.post('/info/add', function(req, res, next) {
 // 判断身份
 router.get('/search/identity', function(req, res, next) {
     let identity = req.body.identity
-    let {wechat_id} = req.body.wechat_id
+    let {wechat_id} = req.body
     if(identity == 'user') {
         DB.queryDB(
-            'select * from `t_user_list` where wechat_open_id = ?', [wechat_id],
+            'select * from `t_user_list` where wechat_open_id = ? and wechat_is_deleted = 0', [wechat_id],
             function(error, result, fields) {
                 if(error) {
                     let responseJson = {
@@ -112,6 +113,8 @@ router.get('/search/identity', function(req, res, next) {
                     } 
                     res.send(responseJson)
                 } else {
+                    // console.log("user")
+                    // console.log(result)
                     if(result.length == 0) {
                         let responseJson = {
                             code: 20000,
@@ -130,7 +133,7 @@ router.get('/search/identity', function(req, res, next) {
                 }
             }
         )
-    } else {
+    } else if(identity == 'estate'){
         DB.queryDB(
             'select * from `t_estate_info` where estate_wechat_id = ?', [wechat_id],
             function(error, result, fields) {
@@ -142,6 +145,7 @@ router.get('/search/identity', function(req, res, next) {
                     } 
                     res.send(responseJson)
                 } else {
+                    console.log("estate")
                     if(result.length == 0) {
                         let responseJson = {
                             code: 20000,
@@ -160,6 +164,11 @@ router.get('/search/identity', function(req, res, next) {
                 }
             }
         )
+    } else {
+        let responseJson = {
+            message: '此类角色不存在'
+        }
+        res.send(responseJson)
     }
 });
 
@@ -188,6 +197,8 @@ router.post('/info/update/add', function(req, res, next) {
         }
     )
 });
+
+// 
 
 // 用户查询自己的订单
 router.get('/order/query/all', function(req, res, next) {
