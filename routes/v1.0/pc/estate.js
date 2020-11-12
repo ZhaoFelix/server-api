@@ -8,7 +8,15 @@ var queryString = require('querystring')
 
 // 查询所有物业经理人的信息
 router.get("/query/all",function(req,res,next){
-    DB.queryDB("select  * from t_estate_list", function (error, result, fields) {
+    // 前端传值
+    let parseObj = url.parse(req.url,true)
+    let query = parseObj.query
+    let limit = parseInt(query.limit)
+    let offset = parseInt(query.offset)
+    DB.queryDB("select  * from t_estate_list limit ? offset ?",[
+        limit,
+        offset
+    ], function (error, result, fields) {
         if (error) {
           let responseJson = {
             code: 20002,
