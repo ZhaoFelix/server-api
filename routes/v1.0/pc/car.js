@@ -11,7 +11,7 @@ router.get("/query/all",function(req,res,next){
     console.log(parseObj)
     let limit = parseInt(query.limit)
     let offset = parseInt(query.offset)
-    DB.queryDB("select  * from t_driver_list  limit ? offset ?",[
+    DB.queryDB("select  * from  t_car_list  limit ? offset ?",[
         limit,
         offset
     ], function (error, result, fields) {
