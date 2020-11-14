@@ -295,7 +295,7 @@ router.post('/order/update/add/2', function(req, res, next) {
             if(error) {
                 let responseJson = {
                     code: 20002,
-                    message: '该用户之前没有创建订单',
+                    message: '查询失败',
                     data: error
                 }
                 res.send(responseJson)
