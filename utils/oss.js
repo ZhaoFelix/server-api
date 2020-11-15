@@ -1,37 +1,14 @@
-var oss = require('ali-oss')
+var config = require('../config/env')
+var OSS = require('ali-oss')
 
-var client = oss({
-    accessKeyId: 'LTAIhIVj0cdX1Fxh',
-    accessKeySecret: 'm8l0EIM1ij4R60YtIiLGmwp6b28lx1',
-    region: 'oss-cn-hangzhou'
+let client = new OSS({
+  bucket: config.oss_config.bucket,
+  region: config.oss_config.region,
+  // 阿里云主账号AccessKey拥有所有API的访问权限，风险很高。强烈建议您创建并使用RAM账号进行API访问或日常运维，请登录RAM控制台创建RAM账号。
+  accessKeyId: config.oss_config.accessKeyId,
+  accessKeySecret: config.oss_config.accessKeySecret
 });
 
-var ali_oss = {
-    bucket: 'supers1',  //阿里云您的bucket
-    endPoint: 'oss-cn-hangzhou.aliyuncs.com', //填写你开通的oss地址
-}
-
-
-async function listBuckets () {
-    try {
-        let result = await client.listBuckets();
-        console.log(result)
-    } catch(err) {
-        console.log(err)
-    }
-}
-// 上传本地文件
-async function put () {
-    try {
-        //object-name可以自定义为文件名（例如file.txt）或目录（例如abc/test/file.txt）的形式，实现将文件上传至当前Bucket或Bucket下的指定目录。
-        let result = await client.put('object-name', '1.png');
-        console.log(result);
-    } catch (e) {
-        console.log(e);
-    }
-}
-
 module.exports = {
-    listBuckets: listBuckets,
-    put: put
+    client
 }
