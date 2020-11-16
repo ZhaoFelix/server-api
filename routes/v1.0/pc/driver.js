@@ -8,7 +8,6 @@ router.get("/query/all",function(req,res,next){
     // 前端传值
     let parseObj = url.parse(req.url,true)
     let query = parseObj.query
-    console.log(parseObj)
     let limit = parseInt(query.limit)
     let offset = parseInt(query.offset)
     DB.queryDB("select  * from t_driver_list  limit ? offset ?",[
@@ -35,8 +34,13 @@ router.get("/query/all",function(req,res,next){
 
 // 查询司机当月排班情况
 router.get('/query/schedule',function(req,res,next){
-  let current_month = 11
-  DB.queryDB('select  * from t_driver_schedule where schedule_month = ?',[current_month],function(error,result,fields){
+  let parseObj = url.parse(req.url,true)
+  let query = parseObj.query
+  let limit = parseInt(query.limit)
+  let offset = parseInt(query.offset)
+  let date = new Date()
+  let current_month = date.getMonth() + 1
+  DB.queryDB('select  * from t_driver_schedule where schedule_month = ? limit ? offset ?',[current_month,limit,offset],function(error,result,fields){
     if (error) {
       let responseJson = {
         code: 20002,
