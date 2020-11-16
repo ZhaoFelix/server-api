@@ -32,4 +32,26 @@ router.get("/query/all",function(req,res,next){
         }
       })
 })
+
+// 查询司机当月排班情况
+router.get('/query/schedule',function(req,res,next){
+  let current_month = 11
+  DB.queryDB('select  * from t_driver_schedule where schedule_month = ?',[current_month],function(error,result,fields){
+    if (error) {
+      let responseJson = {
+        code: 20002,
+        message: 'error',
+        data: error
+      }
+      res.send(responseJson)
+    } else {
+      let responseJson = {
+        code: 20000,
+        message: 'success',
+        data: result
+      }
+      res.send(responseJson)
+    }
+  })
+})
 module.exports = router
