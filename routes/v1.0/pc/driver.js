@@ -2,7 +2,7 @@ var express = require('express')
 var router = express.Router()
 var DB = require('../../../config/db')
 var url = require('url')
-const { resolve } = require('path')
+
 
 // 查询所有司机的信息
 router.get("/query/all",function(req,res,next){
