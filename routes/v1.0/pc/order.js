@@ -2,7 +2,6 @@ var express = require('express')
 var router = express.Router()
 var DB = require('../../../config/db')
 var url = require('url')
-const { off } = require('process')
 
 // 查询所有的订单
 router.get('/query/all',function(req,res,next){
@@ -30,5 +29,13 @@ router.get('/query/all',function(req,res,next){
         } 
     })
 })
+
+// TODO:删除订单
+
+// TODO:订单允许二次预约下单
+
+// TODO:查询所有进行中的订单，已支付但未派车，已支付且已派车
+
+// TODO:根据订单号查询订单
 
 module.exports = router
