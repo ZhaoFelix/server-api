@@ -2,8 +2,9 @@ var express = require('express')
 var router = express.Router()
 var DB = require('../../../config/db')
 var wxpay = require('../../../utils/wxpay') 
-var xmlparse = require('express-xml-bodyparser')
+var xmlparser = require('express-xml-bodyparser')
 var config = require('../../../config/env')
+const { order } = require('../../../utils/wxpay')
 const mch = config.mch
 // 微信支付
 router.post('/wxpay',function(req,res,next){
@@ -17,9 +18,7 @@ router.post('/wxpay',function(req,res,next){
     let money = 1000
     wxpay.order(appId,attach,openId,money,notify_url,ip)
     .then((result) => {
-        DB.queryDB(```INSERT INTO t_order_list (user_id,order_price,user_reserve_time,order_size,order_user_type,order_number,
-            user_phone,user_address,user_is_first,user_note,order_created_time)
-             VALUES (?,?,?,?,?,?,?,?,?,?,NOW())```,
+        DB.queryDB('INSERT INTO t_order_list (user_id,order_price,user_reserve_time,order_size,order_user_type,order_number, user_phone,user_address,user_is_first,user_note,order_created_time) VALUES (?,?,?,?,?,?,?,?,?,?,NOW())',
              [userId,money,userReserveTime,orderSize,orderUserType,result.tradeNo,userPhone,userAddress,userIsFirst,userNote],function(error,result,fields){
             if (error) {
                 let responseJson = {
@@ -51,4 +50,36 @@ router.post('/wxpay',function(req,res,next){
 
 })
 
+// TODO:微信支付回调，更新订单的状态、更新最终金额、更新订单的支付时间
+router.post(
+    '/callback',
+    xmlparser({ trim: false, explicitArray: false }),
+    function (req, res) {
+      var jsonData = req.body.xml
+      if (jsonData.result_code == 'SUCCESS') {
+        //支付成功，更新订单状态
+        let tradeNo = jsonData.out_trade_no
+        let order_final_price = jsonData.price
+        DB.queryDB(
+          'UPDATE `t_order_list` SET order_is_status=1,order_pay_time=NOW(),order_final_price = ? WHERE order_num = ? AND order_is_status=0',
+          [tradeNo,order_final_price],
+          function (error, result, fields) {
+            if (!error) {
+              console.log(tradeNo + '订单更新成功')
+            } else {
+              console.log(tradeNo + '订单更新失败,错误原因：' + error)
+            }
+          }
+        )
+      } else {
+        //失败
+        console.log(
+          '当前订单的支付状态，result_code:' +
+            jsonData.result_code +
+            'return_code:' +
+            jsonData.return_code
+        )
+      }
+    }
+  )
 module.exports = router
