@@ -160,6 +160,7 @@ router.get('/search/identity', function(req, res, next) {
                             data: result
                         }
                         res.send(responseJson)
+                        // TODO:更新t_estate_list表中的用户ID，物业认证状态，认证时间。
                     }
                 }
             }
