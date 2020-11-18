@@ -60,7 +60,7 @@ router.post('/wechat', function (req, res, next) {
   return new Promise((resolve, reject) => {
     //是否已登录过，更新登录时间
     DB.queryDB(
-      'SELECT COUNT(wechat_id) AS count FROM `t_wechat_list` WHERE wechat_open_id=?',
+      'SELECT COUNT(user_id) AS count FROM `t_user_list` WHERE wechat_open_id=?',
       openId,
       function (error, result, fields) {
         if (error) {
@@ -76,7 +76,7 @@ router.post('/wechat', function (req, res, next) {
         //已登录，更新登录时间
         return new Promise((resolve, reject) => {
           DB.queryDB(
-            'UPDATE `t_wechat_list` SET wechat_last_time= NOW() WHERE wechat_open_id = ?',
+            'UPDATE `t_user_list` SET wechat_last_time= NOW() WHERE wechat_open_id = ?',
             openId,
             function (error, result, fields) {
               if (error) {
@@ -91,7 +91,7 @@ router.post('/wechat', function (req, res, next) {
         //未登录，添加记录
         return new Promise((resolve, reject) => {
           DB.queryDB(
-            'INSERT INTO `t_wechat_list` (wechat_open_id,wechat_avatar,wechat_nick_name,wechat_gender,wechat_region,wechat_create_time) VALUES(?,?,?,?,?,NOW())',
+            'INSERT INTO `t_user_list` (wechat_open_id,wechat_avatar,wechat_nickname,wechat_gender,wechat_region,wechat_created_time) VALUES(?,?,?,?,?,NOW())',
             [openId, avatarUrl, nickName, gender, country],
             function (error, result, fields) {
               if (error) {
@@ -107,7 +107,7 @@ router.post('/wechat', function (req, res, next) {
     .then((data) => {
       return new Promise((resolve, reject) => {
         DB.queryDB(
-          'SELECT wechat_id FROM t_wechat_list WHERE wechat_open_id=? LIMIT 0,1',
+          'SELECT wechat_id FROM t_user_list WHERE wechat_open_id=? LIMIT 0,1',
           openId,
           function (error, result, fields) {
             if (error) {
