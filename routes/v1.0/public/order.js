@@ -61,7 +61,7 @@ router.post(
         let tradeNo = jsonData.out_trade_no
         let order_final_price = jsonData.price
         DB.queryDB(
-          'UPDATE `t_order_list` SET order_is_status=1,order_pay_time=NOW(),order_final_price = ? WHERE order_num = ? AND order_is_status=0',
+          'UPDATE `t_order_list` SET order_status=1,order_pay_time=NOW(),order_final_price = ? WHERE order_number = ? AND order_status=0',
           [tradeNo,order_final_price],
           function (error, result, fields) {
             if (!error) {
