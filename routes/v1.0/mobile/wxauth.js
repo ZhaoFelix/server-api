@@ -34,6 +34,7 @@ router.post('/wxauth', function (req, res, next) {
       }
       res.send(responseJson)
     } else {
+      console.log("body为-------")
       console.log(body)
       let data = JSON.parse(body)
       let session = data.session_key
@@ -46,6 +47,8 @@ router.post('/wxauth', function (req, res, next) {
           openid: openId
         }
       }
+      console.log("responseJson为-----------")
+      console.log(responseJson)
       res.send(responseJson)
     }
   })
