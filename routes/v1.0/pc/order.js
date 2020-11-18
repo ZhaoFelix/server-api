@@ -5,7 +5,6 @@ var url = require('url')
 
 // 查询所有的订单
 router.get('/query/all',function(req,res,next){
-    console.log('测试')
     let parseObj = url.parse(req.url,true)
     let query = parseObj.query
     let limit = parseInt(query.limit)
@@ -15,7 +14,7 @@ router.get('/query/all',function(req,res,next){
             let responseJson = {
               code: 20002,
               message: error,
-              data: '查询用户名失败'
+              data: '查询订单失败'
             }
             res.send(responseJson)
           } else {
