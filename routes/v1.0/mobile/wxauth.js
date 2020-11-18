@@ -1,9 +1,9 @@
 var express = require('express')
-var router = express.Router()
 var DB = require('../../../config/db')
 var request = require('request')
 var config = require('../../../config/env')
 config = config.mch
+var router = express.Router()
 /* GET users listing. */
 router.get('/', function (req, res, next) {
   res.send('respond with a resource')
@@ -11,6 +11,7 @@ router.get('/', function (req, res, next) {
 
 //微信授权
 router.post('/wxauth', function (req, res, next) {
+  console.log(req.body)
   let code = req.body.code
   // 组合url
   let options = {
@@ -23,6 +24,7 @@ router.post('/wxauth', function (req, res, next) {
       grant_type: 'authorization_code'
     }
   }
+  console.log(options);
   request(options, (error, response, body) => {
     if (error) {
       let responseJson = {
