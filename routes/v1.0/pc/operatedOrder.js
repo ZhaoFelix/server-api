@@ -87,7 +87,7 @@ router.get('/order/query/',function(req,res,next){
     let limit = parseInt(query.limit)
     let offset = parseInt(query.offset)
     // 查询所有未支付和未派发的订单
-    DB.queryDB('SELECT order_id,order_number,order_price,order_final_price,user_reserve_time,order_size,order_user_type,user_phone,user_adress,wechat_nickname,driver_name,driver_phone,user_place_order_img,order_created_time,order_status from v_order_list where order_status=0 or order_status=1 order by order_created_time LIMIT ? OFFSET ?',[limit,offset],function(error,result,fields){
+    DB.queryDB('select  * from v_no_assign_order',[limit,offset],function(error,result,fields){
         if (error) {
             let responseJson = {
               code: 20002,
@@ -109,7 +109,6 @@ router.get('/order/query/',function(req,res,next){
 
 // 根据路线类型查询车辆
 router.get('/car/query',function(req,res,next){
-    console.log("测试")
     let parseObj = url.parse(req.url,true)
     let query = parseObj.query
     let router_type = parseInt(query.type);
@@ -140,5 +139,56 @@ router.get('/car/query',function(req,res,next){
 
 })
 
+// 调度员取消未支付的订单
+router.get('/order/cancel',function(req,res,next){
+    let parseObj = url.parse(req.url,true)
+    let query = parseObj.query
+    let order_id = parseInt(query.order_id);
+    // 将订单的状态更新为2
+    DB.queryDB('update  t_order_list set order_status = 2 where order_id = ? and  order_is_deleted = 0 and order_status = 0',[order_id],function(error,result,fields){
+        if(error){
+            let responseJson = {
+                code: 20002,
+                message: '取消订单失败，请重试！',
+                data: error
+              }
+              res.send(responseJson)
+        } else {
+            let responseJson = {
+                code: 20000,
+                message: 'success',
+                data: result
+              }
+              res.send(responseJson)
+            }
+    })
+})
 
+// 针对订单指派司机和车辆
+router.get('/order/assign',function(req,res,next){
+    let parseObj = url.parse(req.url,true)
+    let query = parseObj.query
+    let order_id = parseInt(query.order_id);
+    let car_id = parseInt(query.order_id);
+    let driver_id = parseInt(query.order_id);
+    // 将订单的状态更新为3
+    console.log("测试")
+    DB.queryDB('update  t_order_list set order_status = 3, car_id = ? , driver_id = ? where order_id = ? and  order_is_deleted = 0 and order_status = 1',[car_id,driver_id,order_id],function(error,result,fields){
+        if(error){
+            let responseJson = {
+                code: 20002,
+                message: '指派订单失败，请重试！',
+                data: error
+              }
+              res.send(responseJson)
+        } else {
+            let responseJson = {
+                code: 20000,
+                message: 'success',
+                data: result
+              }
+              res.send(responseJson)
+            }
+    })
+})
 module.exports = router
