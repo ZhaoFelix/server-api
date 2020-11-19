@@ -55,7 +55,7 @@ router.post('/wxauth', function (req, res, next) {
 })
 //微信登录
 router.post('/wechat', function (req, res, next) {
-  let { openId, avatarUrl, gender, nickName, province, country } = req.body
+  let { openId, avatarUrl, gender, nickName, province, country, user_type } = req.body
   console.log(openId, avatarUrl)
   return new Promise((resolve, reject) => {
     //是否已登录过，更新登录时间
@@ -91,8 +91,8 @@ router.post('/wechat', function (req, res, next) {
         //未登录，添加记录
         return new Promise((resolve, reject) => {
           DB.queryDB(
-            'INSERT INTO `t_user_list` (wechat_open_id,wechat_avatar,wechat_nickname,wechat_gender,wechat_region,wechat_created_time) VALUES(?,?,?,?,?,NOW())',
-            [openId, avatarUrl, nickName, gender, country],
+            'INSERT INTO `t_user_list` (wechat_open_id,wechat_avatar,wechat_nickname,wechat_gender,wechat_region,wechat_created_time, user_type) VALUES(?,?,?,?,?,NOW(),?)',
+            [openId, avatarUrl, nickName, gender, country, user_type],
             function (error, result, fields) {
               if (error) {
                 reject(error)
@@ -107,7 +107,7 @@ router.post('/wechat', function (req, res, next) {
     .then((data) => {
       return new Promise((resolve, reject) => {
         DB.queryDB(
-          'SELECT wechat_id FROM t_user_list WHERE wechat_open_id=? LIMIT 0,1',
+          'SELECT user_id, user_type FROM t_user_list WHERE wechat_open_id=? LIMIT 0,1',
           openId,
           function (error, result, fields) {
             if (error) {
