@@ -28,10 +28,20 @@ router.get('/osstoken', (req, res) => {
 
     const signature = crypto.createHmac('sha1', config.accessKeySecret).update(policy).digest("base64")
 
+    // 返回回调
+    let callbackString = {
+        callbackUrl: "http://229p895l44.iask.in/detail",  //外网网址
+        callbackBody:   "filename=${object}&size=${size}&mimeType=${mimeType}&height=${imageInfo.height}&width=${imageInfo.width}",
+        callbackBodyType: "application/x-www-form-urlencoded"
+      };
+    callbackString = JSON.stringify(callbackString);
+    let callbackbody = Buffer.from(callbackString).toString("base64");
+
     res.json({
         signature,
         policy,
         host,
+        callbackbody,
         'OSSAccessKeyId': config.accessKeyId,
         'key': expireTime,
         'success_action_status': 201,
