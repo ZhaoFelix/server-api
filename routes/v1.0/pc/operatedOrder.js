@@ -169,8 +169,8 @@ router.get('/order/assign',function(req,res,next){
     let parseObj = url.parse(req.url,true)
     let query = parseObj.query
     let order_id = parseInt(query.order_id);
-    let car_id = parseInt(query.order_id);
-    let driver_id = parseInt(query.order_id);
+    let car_id = parseInt(query.car_id);
+    let driver_id = parseInt(query.driver_id);
     // 将订单的状态更新为3
     console.log("测试")
     DB.queryDB('update  t_order_list set order_status = 3, car_id = ? , driver_id = ? where order_id = ? and  order_is_deleted = 0 and order_status = 1',[car_id,driver_id,order_id],function(error,result,fields){
