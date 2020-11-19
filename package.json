@@ -7,6 +7,7 @@
     "prd": "cross-env NODE_ENV=production pm2 start pm2.conf.json"
   },
   "dependencies": {
+    "@alicloud/sms-sdk": "^1.1.6",
     "ali-oss": "^6.11.2",
     "boom": "^7.3.0",
     "cookie-parser": "~1.4.4",

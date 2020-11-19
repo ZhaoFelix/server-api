@@ -14,7 +14,7 @@ router.get("/query/all",function(req,res,next){
     console.log(parseObj)
     let limit = parseInt(query.limit)
     let offset = parseInt(query.offset)
-    DB.queryDB("select  * from t_estate_list limit ? offset ?",[
+    DB.queryDB("select  * from t_estate_list  where estate_is_deleted = 0 limit ? offset ? ",[
         limit,
         offset
     ], function (error, result, fields) {
@@ -26,13 +26,51 @@ router.get("/query/all",function(req,res,next){
           }
           res.send(responseJson)
         } else {
-          let responseJson = {
-            code: 20000,
-            message: 'success',
-            data: result
-          }
-          res.send(responseJson)
+          DB.queryDB("select count(estate_id) as total from t_estate_list where estate_is_deleted = 0",function(error,resu,fields){
+            if (error) {
+              let responseJson = {
+                code: 20002,
+                message: '查询记录条数失败',
+                data: error
+              }
+              res.send(responseJson)
+            } else {
+              let responseJson = {
+                code: 20000,
+                message: 'success',
+                total:resu[0].total,
+                data: result
+              }
+              res.send(responseJson)
+            }
+          })
         }
       })
+})
+// 根据手机号查询经理人信息
+router.get("/query/queryByKeyword",function(req,res,next){
+  // 前端传值
+  let parseObj = url.parse(req.url,true)
+  let query = parseObj.query
+  let keyword = query.keyword 
+  DB.queryDB("select  * from t_estate_list  where estate_is_deleted = 0 and estate_phone = ? ",[
+      keyword
+  ], function (error, result, fields) {
+      if (error) {
+        let responseJson = {
+          code: 20002,
+          message: 'error',
+          data: error
+        }
+        res.send(responseJson)
+      } else {
+            let responseJson = {
+              code: 20000,
+              message: 'success',
+              data: result
+            }
+            res.send(responseJson)
+      }
+    })
 })
 module.exports = router
