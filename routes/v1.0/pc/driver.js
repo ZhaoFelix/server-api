@@ -23,12 +23,24 @@ router.get("/query/all",function(req,res,next){
           }
           res.send(responseJson)
         } else {
-          let responseJson = {
-            code: 20000,
-            message: 'success',
-            data: result
-          }
-          res.send(responseJson)
+          DB.queryDB('select count(driver_id) as total from t_driver_list where driver_is_deleted = 0',function(error,resu,fields){
+            if (error) {
+              let responseJson = {
+                code: 20002,
+                message: '查询记录总条数失败',
+                data: error
+              }
+              res.send(responseJson)
+            } else {
+              let responseJson = {
+                code: 20000,
+                message: 'success',
+                total:resu[0].total,
+                data: result
+              }
+              res.send(responseJson)
+            }
+          })
         }
       })
 })
@@ -98,6 +110,31 @@ router.get('/query/current',function(req,res,next){
     }
     res.send(responseJson)
   })
-  
+})
+
+router.get("/query/queryByKeyword",function(req,res,next){
+  // 前端传值
+  let parseObj = url.parse(req.url,true)
+  let query = parseObj.query
+  let keyword = query.keyword
+  DB.queryDB("select  * from t_driver_list  where driver_phone = ? and driver_is_deleted = 0",[
+      keyword
+  ], function (error, result, fields) {
+      if (error) {
+        let responseJson = {
+          code: 20002,
+          message: 'error',
+          data: error
+        }
+        res.send(responseJson)
+      } else {
+            let responseJson = {
+              code: 20000,
+              message: 'success',
+              data: result
+            }
+            res.send(responseJson)
+      }
+    })
 })
 module.exports = router
