@@ -1,15 +1,14 @@
-const OSS = require('ali-oss')
+const config1 = require('../../../config/env')
 const express = require('express');
 const router = express();
 const crypto = require("crypto")
 
-const router = express()
 const config = {
     dirPath: 'xxx/', // 存放到哪个目录下
-    bucket: '你的 Bucket 的名称',
-    region: 'oss-cn-hangzhou',// 我的是 hangzhou
-    accessKeyId: '你的 key',
-    accessKeySecret: '你的密码',
+    bucket: config1.oss_config.bucket,
+    region: config1.oss_config.region,// 我的是 hangzhou
+    accessKeyId: config1.oss_config.accessKeyId,
+    accessKeySecret: config1.oss_config.accessKeySecret,
     expAfter: 300000, // 签名失效时间，毫秒
     maxSize: 1048576000 // 文件最大的 size
 }

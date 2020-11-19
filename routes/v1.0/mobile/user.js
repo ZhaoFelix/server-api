@@ -2,8 +2,6 @@ var express = require("express");
 var DB = require("../../../config/db")
 var router = express.Router();
 
-var client = require('../public/oss')
-
 
 router.get('/', function(req, res, next) {
     res.send('mobile user router respond with a resource')
