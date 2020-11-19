@@ -1,5 +1,4 @@
 var express = require('express');
-var oss = require('../../../utils/oss');
 var router = express.Router()
 
 // 只用于移动端路由连接验证测试，不添加相关功能
