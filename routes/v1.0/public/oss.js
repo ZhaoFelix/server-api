@@ -1,54 +1,20 @@
-var config = require('../../../config/env')
-// var OSS = require('ali-oss')
-
-// let client = new OSS({
-//   bucket: config.oss_config.bucket,
-//   region: config.oss_config.region,
-//   // 阿里云主账号AccessKey拥有所有API的访问权限，风险很高。强烈建议您创建并使用RAM账号进行API访问或日常运维，请登录RAM控制台创建RAM账号。
-//   accessKeyId: config.oss_config.accessKeyId,
-//   accessKeySecret: config.oss_config.accessKeySecret
-// });
-const OSS = require('ali-oss')
-const STS = OSS.STS
 const express = require('express');
 const router = express();
+const MpUploadOssHelper = require("../../../utils/uploadOssHelper");
 
 
-const stsClient = new STS({
-  accessKeyId: config.oss_config.accessKeyId,
-  accessKeySecret: config.oss_config.accessKeySecret,
-  bucket: config.oss_config.bucket
-});
+router.get('/getPostObjectParams', (req, res) => {
+  const mpHelper = new MpUploadOssHelper({
+    accessKeyId: 'LTAIhIVj0cdX1Fxh',
+    accessKeySecret: 'm8l0EIM1ij4R60YtIiLGmwp6b28lx1',
+    timeout: 1, // 限制参数的生效时间(单位：小时)。
+    maxSize: 10, // 限制上传文件大小(单位：MB)。
+  });
 
-async function getToken() {
-    const STS_ROLE = '<STS_ROLE>'  // 指定角色的ARN。格式：acs:ram::$accountID:role/$roleName。
-    const STSpolicy = {
-      Statement: [
-        {
-          Action: ['oss:*'],
-          Effect: 'Allow',
-          Resource: ['acs:oss:*:*:*']
-        }
-      ],
-      Version: '1'
-    };
-    const result = await stsClient.assumeRole(
-      STS_ROLE,
-      STSpolicy,
-      3600 // STS过期时间，单位：秒。
-    );
-    const { credentials } = result;
+  // 生成参数。
+  const params = mpHelper.createUploadParams();
 
-    return credentials;
-}
-
-router.get('/getToken', async (req, res) => {
-  // 获取STS。
-  const credentials = await getToken()
-  console.log(credentials.AccessKeyId)
-  console.log(credentials.AccessKeySecret)
-  console.log(credentials.SecurityToken)
-  res.json(credentials);
+  res.json(params);
 })
 
 module.exports = router
