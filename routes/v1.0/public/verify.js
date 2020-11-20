@@ -36,4 +36,40 @@ router.get('/verify', function (req, res, next) {
     res.send(responseJson);
     })
 })
+
+router.post('/check', function(req, res, next) {
+    let {checkCode, phone} = req.body
+    DB.queryDB(
+        'select * from `t_phone_code` where phone_number = ? and phone_is_deleted = 0 order by phone_created_time desc limit 1', [phone],
+        function(error, result, fields) {
+            if(error) {
+                let responseJson = {
+                    code: 20002,
+                    message: '查找验证码失败',
+                    data: error
+                }
+                res.send(responseJson)
+            } else {
+                console.log(result)
+                var dataString = JSON.stringify(result);
+                var data = JSON.parse(dataString);
+                // if(checkCode == code) {
+                //     let responseJson = {
+                //         code: 20000,
+                //         message: '验证成功'
+                //     }
+                //     res.send(responseJson)
+                // } else {
+                    
+                //     console.log(data)
+                //     let responseJson = {
+                //         code: 20000,
+                //         message: '请输入正确的验证码'
+                //     }
+                //     res.send(responseJson)
+                // }
+            }
+        }
+    )
+})
 module.exports = router;
