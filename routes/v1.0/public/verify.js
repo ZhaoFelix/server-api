@@ -6,6 +6,7 @@ const ENV = require('../../../config/env')
 const SMSClient = require('@alicloud/sms-sdk')
 let smsClient = new SMSClient({accessKeyId:ENV.ali.accessKeyId, secretAccessKey:ENV.ali.secretAccessKey})
 
+// 手机验证码
 router.get('/verify', function (req, res, next) {
     let code = Math.random().toString().slice(-6); //随机生成6位验证码
     let parseObj = url.parse(req.url, true) // 将URL解析为一个对象
@@ -22,6 +23,7 @@ router.get('/verify', function (req, res, next) {
         DB.queryDB("INSERT  INTO `t_phone_code` (`phone_number`,`phone_code`,`phone_created_time`,`phone_deadline`)  VALUES(?,?,NOW(),DATE_ADD(NOW(),INTERVAL 10 MINUTE))",[phone,code],function(error,result,fields){
             if(error) {
                 console.log("验证码入库失败")
+                
             }
         })
     },function(err){
