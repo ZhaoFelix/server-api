@@ -53,21 +53,20 @@ router.post('/check', function(req, res, next) {
                 console.log(result)
                 var dataString = JSON.stringify(result);
                 var data = JSON.parse(dataString);
-                // if(checkCode == code) {
-                //     let responseJson = {
-                //         code: 20000,
-                //         message: '验证成功'
-                //     }
-                //     res.send(responseJson)
-                // } else {
-                    
-                //     console.log(data)
-                //     let responseJson = {
-                //         code: 20000,
-                //         message: '请输入正确的验证码'
-                //     }
-                //     res.send(responseJson)
-                // }
+                let {phone_code} = data[0]
+                if(checkCode == phone_code) {
+                    let responseJson = {
+                        code: 20000,
+                        message: '验证成功'
+                    }
+                    res.send(responseJson)
+                } else {
+                    let responseJson = {
+                        code: 20000,
+                        message: '请输入正确的验证码'
+                    }
+                    res.send(responseJson)
+                }
             }
         }
     )
