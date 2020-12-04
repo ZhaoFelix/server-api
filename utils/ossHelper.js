@@ -4,8 +4,8 @@ class OssHelper {
     constructor(options){
      this.accessKeyId = options.accessKeyId
      this.accessKeySecret = options.accessKeySecret
-     this.timeOut = options.timeOut
-     this.maxSize = options.maxSize   
+     this.timeOut = options.timeOut || 1
+     this.maxSize = options.maxSize || 10
     }
 
     createUploadParams() {
@@ -30,8 +30,8 @@ class OssHelper {
                 ["content-length-range",0,this.maxSize*1024*1024]
             ]
         }
-        const policy = Buffer.from(JSON.stringify(policyText)).toString('base64')
-        return policy
+        const policy = Buffer.from(JSON.stringify(policyText))
+        return policy.toString('base64')
     }
 
     signature(policy){
