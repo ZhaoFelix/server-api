@@ -1,3 +1,11 @@
+/*
+ * @Author: Felix
+ * @Email: felix@qingmaoedu.com
+ * @Date: 2020-12-01 07:54:40
+ * @LastEditTime: 2020-12-07 15:11:10
+ * @FilePath: /server-api/routes/v1.0/public/verify.js
+ * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
+ */
 var express = require('express');
 var router = express.Router();
 var DB = require('../../../config/db');
@@ -23,7 +31,6 @@ router.get('/verify', function (req, res, next) {
         DB.queryDB("INSERT  INTO `t_phone_code` (`phone_number`,`phone_code`,`phone_created_time`,`phone_deadline`)  VALUES(?,?,NOW(),DATE_ADD(NOW(),INTERVAL 10 MINUTE))",[phone,code],function(error,result,fields){
             if(error) {
                 console.log("验证码入库失败")
-                
             }
         })
     },function(err){
@@ -36,7 +43,6 @@ router.get('/verify', function (req, res, next) {
     res.send(responseJson);
     })
 })
-
 router.post('/check', function(req, res, next) {
     let {checkCode, phone} = req.body
     DB.queryDB(
@@ -71,4 +77,6 @@ router.post('/check', function(req, res, next) {
         }
     )
 })
+
+// 
 module.exports = router;
