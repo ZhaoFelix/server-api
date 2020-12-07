@@ -149,6 +149,7 @@ module.exports = {
       sign +
       ']]></sign>' +
       '</xml>'
+     
     return data
   },
   getPayParams: function (appId, prepay_id, trade_no) {

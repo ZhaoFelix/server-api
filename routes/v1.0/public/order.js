@@ -1,25 +1,35 @@
+/*
+ * @Author: Felix
+ * @Email: felix@qingmaoedu.com
+ * @Date: 2020-11-17 08:57:51
+ * @LastEditTime: 2020-12-07 10:05:47
+ * @FilePath: /server-api/routes/v1.0/public/order.js
+ * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
+ */
 var express = require('express')
 var router = express.Router()
 var DB = require('../../../config/db')
 var wxpay = require('../../../utils/wxpay') 
 var xmlparser = require('express-xml-bodyparser')
 var config = require('../../../config/env')
-const { order } = require('../../../utils/wxpay')
+let common = require('../../../utils/common')
+
 const mch = config.mch
 // 微信支付
 router.post('/wxpay',function(req,res,next){
-    let {openId,userId,userName,userPhone,userIsFirst,userNote,userImage,userAddress,userReserveTime,orderUserType,orderSize} = req.body;
+    let {userId,userType,address,buildArea,imagesList,isFirst,name,openId,orderNote,orderPrice,phoneNumber,selectTime,subAddress} = req.body;
     let appId = mch.appId
-    let nofity_url = mch.notify_url
+    let notify_url = mch.notify_url
     let ip = mch.ip
     let attach = mch.attach
     let body = mch.body
     // TODO:价格待添加计算方式
-    let money = 1000
-    wxpay.order(appId,attach,openId,money,notify_url,ip)
+    let money = common.clocPrice(buildArea,isFirst,userType)
+    console.log(money)
+    wxpay.order(appId,attach,body,openId.openID,money,notify_url,ip)
     .then((result) => {
-        DB.queryDB('INSERT INTO t_order_list (user_id,order_price,user_reserve_time,order_size,order_user_type,order_number, user_phone,user_address,user_is_first,user_note,order_created_time) VALUES (?,?,?,?,?,?,?,?,?,?,NOW())',
-             [userId,money,userReserveTime,orderSize,orderUserType,result.tradeNo,userPhone,userAddress,userIsFirst,userNote],function(error,result,fields){
+        DB.queryDB('INSERT INTO t_order_list (user_id,order_price,user_reserve_time,order_size,order_user_type,order_number, user_phone,user_address,user_is_first,user_note,order_user_name,order_created_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,NOW())',
+             [userId,orderPrice,selectTime,buildArea,userType,result.tradeNo,phoneNumber,address+subAddress,isFirst,orderNote,name],function(error,result,fields){
             if (error) {
                 let responseJson = {
                     code: 20002,
