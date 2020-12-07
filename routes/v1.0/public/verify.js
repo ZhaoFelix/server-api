@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-12-01 07:54:40
- * @LastEditTime: 2020-12-07 15:56:50
+ * @LastEditTime: 2020-12-07 20:17:59
  * @FilePath: /server-api/routes/v1.0/public/verify.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -95,6 +95,11 @@ router.post('/checked', function(req, res, next) {
    }).then((data) => {
        if(data.length == 0){
             // 记录不存在,无法进行认证
+            let responseJson = {
+                code: 20001,
+                message: '手机号不存在'
+            }
+            res.send(responseJson)
        } else {
         // 存在记录更新角色类型为1
        return new Promise((resolve,reject) => {
@@ -123,18 +128,20 @@ router.post('/checked', function(req, res, next) {
    })
    .then((data) => {
         // 根据手机号查询信息
-        DB.queryDB("select estate_id,estate_name,estate_phone,estate_card_id,estate_gender,estate_company,estate_region,estate_plot from t_estate_list where  estate_phone = ?",phone,function(error,result,fields){
+       return new Promise((resolve,reject) => {
+        DB.queryDB("select estate_id,estate_name,estate_phone,estate_card_id,estate_gender,estate_company,estate_region,estate_plot from t_estate_list where  estate_phone = ?",[phone],function(error,result,fields){
             if (error) {
                 reject("手机号查询信息失败，error"+error)
             } else {
                 resolve(result)
             }
         })
+       })
    })
    .then((data) => {
     let responseJson = {
         code: 20000,
-        message: '认证成功，返回信息',
+        message: '认证成功',
         data:data
     }
     res.send(responseJson)
@@ -143,7 +150,7 @@ router.post('/checked', function(req, res, next) {
     let responseJson = {
         code: 20002,
         message: 'error',
-        data: err
+        data: error
     }
     res.send(responseJson);
    })
