@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-12-01 07:54:40
- * @LastEditTime: 2020-12-08 09:07:49
+ * @LastEditTime: 2020-12-08 09:58:39
  * @FilePath: /server-api/routes/v1.0/public/verify.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -128,7 +128,7 @@ router.post("/auth",function(req,res,next){
             if (error){
                 reject("更新用户角色失败，error"+error)
             } else {
-                resolve(data)
+                resolve(result)
             }
         })
     })
