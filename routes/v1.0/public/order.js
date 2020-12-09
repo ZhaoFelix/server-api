@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-11-17 08:57:51
- * @LastEditTime: 2020-12-09 13:51:09
+ * @LastEditTime: 2020-12-09 14:57:45
  * @FilePath: /server-api/routes/v1.0/public/order.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -44,7 +44,15 @@ router.post('/wxpay',function(req,res,next){
                     data: result
                   }
                   res.send(responseJson)
+                 let order_id = re.insertId
                 //  TODO:订单创建成功后将用户提交的图片链接存储到t_order_info_list表
+                DB.queryDB("insert  into t_order_info_list (user_place_order_img,user_place_order_time,order_id,created_time) values (?,Now(),?,NOW())",[JSON.stringify(imagesList),order_id],function(error,resu,fields){
+                  if (error) {
+                      console.log("新建订单信息记录失败，error:"+error)
+                  } else {
+                      console.log("新建订单信息记录成功，记录ID为："+resu.insertId)
+                  }
+                })
             }
         })
     })

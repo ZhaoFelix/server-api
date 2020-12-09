@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-12-01 07:54:40
- * @LastEditTime: 2020-12-08 09:58:39
+ * @LastEditTime: 2020-12-09 14:33:27
  * @FilePath: /server-api/routes/v1.0/public/verify.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -12,7 +12,6 @@ var DB = require('../../../config/db');
 var url = require('url');
 const ENV = require('../../../config/env')
 const SMSClient = require('@alicloud/sms-sdk');
-const { resolve } = require('path');
 let smsClient = new SMSClient({accessKeyId:ENV.ali.accessKeyId, secretAccessKey:ENV.ali.secretAccessKey})
 
 // 手机验证码

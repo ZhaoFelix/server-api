@@ -1,8 +1,5 @@
-const { request } = require("express");
-
 var express = require('express')
 var DB = require('../../../config/db');
-const { route } = require("./user");
 var router = express.Router()
 
 // 测试
