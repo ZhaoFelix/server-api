@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-11-17 08:57:51
- * @LastEditTime: 2020-12-09 09:47:46
+ * @LastEditTime: 2020-12-09 10:34:04
  * @FilePath: /server-api/routes/v1.0/public/order.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -27,9 +27,9 @@ router.post('/wxpay',function(req,res,next){
     let money = common.clocPrice(buildArea,isFirst,userType)
     console.log(money)
     wxpay.order(appId,attach,body,openId,money,notify_url,ip)
-    .then((resu) => {
+    .then((result) => {
         DB.queryDB('INSERT INTO t_order_list (user_id,order_price,user_reserve_time,order_size,order_user_type,order_number, user_phone,user_address,user_is_first,user_note,order_user_name,order_created_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,NOW())',
-             [userId,orderPrice,selectTime,buildArea,userType,result.tradeNo,phoneNumber,address+subAddress,isFirst,orderNote,name],function(error,result,fields){
+             [userId,orderPrice,selectTime,buildArea,userType,result.tradeNo,phoneNumber,address+subAddress,isFirst,orderNote,name],function(error,re,fields){
             if (error) {
                 let responseJson = {
                     code: 20002,
@@ -41,10 +41,9 @@ router.post('/wxpay',function(req,res,next){
                 let responseJson = {
                     code: 20000,
                     message: '支付配置成功',
-                    data: resu
+                    data: result
                   }
                   res.send(responseJson)
-
                 //  TODO:订单创建成功后将用户提交的图片链接存储到t_order_info_list表
             }
         })
@@ -52,7 +51,7 @@ router.post('/wxpay',function(req,res,next){
     .catch((error) => {
         let responseJson = {
             code: 20002,
-            message: '创建订单失败',
+            message: '支付配置失败',
             data: error
           }
           res.send(responseJson)

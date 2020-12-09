@@ -64,7 +64,7 @@ module.exports = {
               }
             })
           } else {
-            resolve(util.handleFail(err))
+            reject(util.handleFail(err))
           }
         }
       )
