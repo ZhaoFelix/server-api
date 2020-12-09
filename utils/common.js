@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-12-07 09:40:25
- * @LastEditTime: 2020-12-07 10:01:10
+ * @LastEditTime: 2020-12-09 09:19:20
  * @FilePath: /server-api/utils/common.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -27,9 +27,10 @@ let env = require('../config/env')
             finalPrice = 360
         }
     }
-    return userType == "1" ? finalPrice * env.discount * 100 : finalPrice * 100
- }
+    console.log(finalPrice)
+    return userType == 1 ? finalPrice * env.estate.discount * 100 : finalPrice * 100
+}
 
- module.exports = {
-     clocPrice
- }
+module.exports = {
+    clocPrice
+}

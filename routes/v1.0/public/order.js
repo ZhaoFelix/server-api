@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-11-17 08:57:51
- * @LastEditTime: 2020-12-07 10:05:47
+ * @LastEditTime: 2020-12-09 09:11:12
  * @FilePath: /server-api/routes/v1.0/public/order.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -26,7 +26,7 @@ router.post('/wxpay',function(req,res,next){
     // TODO:价格待添加计算方式
     let money = common.clocPrice(buildArea,isFirst,userType)
     console.log(money)
-    wxpay.order(appId,attach,body,openId.openID,money,notify_url,ip)
+    wxpay.order(appId,attach,body,openId,money,notify_url,ip)
     .then((result) => {
         DB.queryDB('INSERT INTO t_order_list (user_id,order_price,user_reserve_time,order_size,order_user_type,order_number, user_phone,user_address,user_is_first,user_note,order_user_name,order_created_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,NOW())',
              [userId,orderPrice,selectTime,buildArea,userType,result.tradeNo,phoneNumber,address+subAddress,isFirst,orderNote,name],function(error,result,fields){
