@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-11-17 08:57:51
- * @LastEditTime: 2020-12-09 13:44:50
+ * @LastEditTime: 2020-12-09 13:46:36
  * @FilePath: /server-api/routes/v1.0/public/order.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -74,11 +74,10 @@ router.post(
           "UPDATE t_order_list SET order_status=1,order_pay_time=NOW(),order_final_price = ? WHERE order_number = '?' AND order_status=0",
           [tradeNo,order_final_price],
           function (error, result, fields) {
-            console.log('UPDATE t_order_list SET order_status=1,order_pay_time=NOW(),order_final_price = '+order_final_price+' WHERE order_number = '+tradeNo+' AND order_status=0')
-            if (!error) {
-              console.log(tradeNo + '订单更新成功')
-            } else {
+            if (error) {
               console.log(tradeNo + '订单更新失败,错误原因：' + error)
+            } else {
+              console.log(tradeNo + '订单更新成功')
             }
           }
         )
