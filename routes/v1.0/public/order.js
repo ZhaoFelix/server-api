@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-11-17 08:57:51
- * @LastEditTime: 2020-12-09 10:39:39
+ * @LastEditTime: 2020-12-09 10:45:54
  * @FilePath: /server-api/routes/v1.0/public/order.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -24,7 +24,7 @@ router.post('/wxpay',function(req,res,next){
     let attach = mch.attach
     let body = mch.body
     // TODO:价格待添加计算方式
-    let money =  100 //common.clocPrice(buildArea,isFirst,userType)
+    let money =  1 //common.clocPrice(buildArea,isFirst,userType)
     console.log(money)
     wxpay.order(appId,attach,body,openId,money,notify_url,ip)
     .then((result) => {
