@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-11-17 08:57:51
- * @LastEditTime: 2020-12-09 17:23:54
+ * @LastEditTime: 2020-12-10 08:39:44
  * @FilePath: /server-api/routes/v1.0/public/order.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -25,7 +25,6 @@ router.post('/wxpay',function(req,res,next){
     let body = mch.body
     // TODO:价格待添加计算方式
     let money =  1 //common.clocPrice(buildArea,isFirst,userType)
-    console.log(money)
     wxpay.order(appId,attach,body,openId,money,notify_url,ip)
     .then((result) => {
         DB.queryDB('INSERT INTO t_order_list (user_id,order_price,user_reserve_time,order_size,order_user_type,order_number, user_phone,user_address,user_is_first,user_note,order_user_name,order_created_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,NOW())',
@@ -80,7 +79,7 @@ router.post(
         console.log(jsonData)
         DB.queryDB(
           "UPDATE t_order_list SET order_status=1,order_pay_time=NOW(),order_final_price = ? WHERE order_number = ? AND order_status=0",
-          [order_final_price,tradeNo],
+          [order_final_price/100,tradeNo],
           function (error, result, fields) {
             if (error) {
               console.log(tradeNo + '订单更新失败,错误原因：' + error)
