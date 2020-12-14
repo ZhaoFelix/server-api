@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-12-09 14:28:16
- * @LastEditTime: 2020-12-14 09:57:51
+ * @LastEditTime: 2020-12-14 13:55:22
  * @FilePath: /server-api/routes/v1.0/Dmobile/order.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -101,6 +101,28 @@ router.get("/update/reachDes",function(req,res,next){
     req.query = parseObj.query;
     let order_id = req.query.orderId
         DB.queryDB("update  t_order_info_list set driver_reach_des = now() where  order_id = ?",order_id,function(error,result,fields){
+            if (error) {
+                let responseJson = {
+                    code: 20002,
+                    message: '更新时间失败',
+                    data: error
+                }
+                res.send(responseJson)
+            } else {
+                let responseJson = {
+                    code: 20000,
+                    message: '更新成功',
+                    data: result
+                }
+                res.send(responseJson) 
+            }
+        })   
+})
+// 完成清算
+router.post("/update/getimage",function(req,res,next){
+    let {orderId,getImageList} = req.body 
+        DB.queryDB("update t_order_info_list set driver_get_img = ? , driver_get_time = now() where  order_id = ?",
+        [JSON.stringify(getImageList),orderId],function(error,result,fields){
             if (error) {
                 let responseJson = {
                     code: 20002,
