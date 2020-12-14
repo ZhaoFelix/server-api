@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-12-09 14:28:16
- * @LastEditTime: 2020-12-14 13:55:22
+ * @LastEditTime: 2020-12-14 14:29:45
  * @FilePath: /server-api/routes/v1.0/Dmobile/order.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -120,9 +120,9 @@ router.get("/update/reachDes",function(req,res,next){
 })
 // 完成清算
 router.post("/update/getimage",function(req,res,next){
-    let {orderId,getImageList} = req.body 
-        DB.queryDB("update t_order_info_list set driver_get_img = ? , driver_get_time = now() where  order_id = ?",
-        [JSON.stringify(getImageList),orderId],function(error,result,fields){
+    let {orderId,reachImageList} = req.body 
+        DB.queryDB("update t_order_info_list set driver_reach_img = ? , driver_reach_time = now() where  order_id = ?",
+        [JSON.stringify(reachImageList),orderId],function(error,result,fields){
             if (error) {
                 let responseJson = {
                     code: 20002,
