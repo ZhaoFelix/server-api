@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-12-09 14:28:16
- * @LastEditTime: 2020-12-14 08:14:09
+ * @LastEditTime: 2020-12-14 09:57:51
  * @FilePath: /server-api/routes/v1.0/Dmobile/order.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -58,5 +58,64 @@ router.get("/query/info",function(req,res,next){
               res.send(responseJson)
         }
     })
+})
+
+// 更新订单状态为4，司机前往目的地
+router.get("/update/status4",function(req,res,next){
+    let parseObj = url.parse(req.url, true) // 将URL解析为一个对象
+    req.query = parseObj.query;
+    let order_id = req.query.orderId
+    DB.queryDB("update t_order_list set order_status = 4 where order_id = ? and order_status = 3",order_id,function(error,result,fields){
+        if (error) {
+            let responseJson = {
+                code: 20002,
+                message: '更新状态失败',
+                data: error
+            }
+            res.send(responseJson)
+        } else {
+        DB.queryDB("update  t_order_info_list set driver_go_des = now() where  order_id = ?",order_id,function(error,result,fields){
+            if (error) {
+                let responseJson = {
+                    code: 20002,
+                    message: '更新时间失败',
+                    data: error
+                }
+                res.send(responseJson)
+            } else {
+                let responseJson = {
+                    code: 20000,
+                    message: '更新成功',
+                    data: result
+                }
+                res.send(responseJson) 
+            }
+        })
+        }
+    })    
+})
+
+// 到达目的地
+router.get("/update/reachDes",function(req,res,next){
+    let parseObj = url.parse(req.url, true) // 将URL解析为一个对象
+    req.query = parseObj.query;
+    let order_id = req.query.orderId
+        DB.queryDB("update  t_order_info_list set driver_reach_des = now() where  order_id = ?",order_id,function(error,result,fields){
+            if (error) {
+                let responseJson = {
+                    code: 20002,
+                    message: '更新时间失败',
+                    data: error
+                }
+                res.send(responseJson)
+            } else {
+                let responseJson = {
+                    code: 20000,
+                    message: '更新成功',
+                    data: result
+                }
+                res.send(responseJson) 
+            }
+        })   
 })
 module.exports = router
