@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-12-09 14:28:16
- * @LastEditTime: 2020-12-14 16:22:41
+ * @LastEditTime: 2020-12-15 09:23:48
  * @FilePath: /server-api/routes/v1.0/Dmobile/order.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -10,13 +10,37 @@ var express = require("express");
 var DB = require("../../../config/db")
 var router = express.Router();
 var url = require('url');
-// 根据用户ID查询订单
+// 根据用户ID查询未完成的订单
 router.get("/query",function(req,res,next){
+    let parseObj = url.parse(req.url, true) // 将URL解析为一个对象
+    req.query = parseObj.query;
+    let userId =  req.query.userId
+    console.log(userId)
+    DB.queryDB("select  * from v_assign_order where  driver_id = (select driver_id from t_driver_list where wechat_id = ? and driver_is_deleted = 0 limit 0,1)  limit 0,1 ",userId,function(error,result,next){
+        if (error) {
+            let responseJson = {
+                code: 20002,
+                message: '查询失败',
+                data: error
+              }
+              res.send(responseJson)
+        } else {
+            let responseJson = {
+                code: 20000,
+                message: '查询成功',
+                data: result
+              }
+              res.send(responseJson)
+        }
+    })
+})
+// 根据用户id查询所有的订单
+router.get("/queryall",function(req,res,next){
     let parseObj = url.parse(req.url, true) // 将URL解析为一个对象
     req.query = parseObj.query;
     let userId = req.query.userId === undefined ? 107 : req.query.userId
     console.log(userId)
-    DB.queryDB("select  * from v_assign_order where  driver_id = ?",userId,function(error,result,next){
+    DB.queryDB("select  order_number,user_address,order_size,user_reserve_time,driver_name,driver_phone,driver_reach_trash from v_assign_order where driver_id = (select driver_id from t_driver_list where wechat_id = 10 and driver_is_deleted = 0 limit 0,1)",userId,function(error,result,next){
         if (error) {
             let responseJson = {
                 code: 20002,
