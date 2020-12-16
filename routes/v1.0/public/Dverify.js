@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-12-01 07:54:40
- * @LastEditTime: 2020-12-13 20:14:05
+ * @LastEditTime: 2020-12-16 09:34:23
  * @FilePath: /server-api/routes/v1.0/public/Dverify.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -16,7 +16,7 @@ router.post('/checked', function(req, res, next) {
     let {phone,userId} = req.body
     return new Promise((resolve,reject) => {
     //根据手机号查询
-    DB.queryDB("select driver_id from t_driver_list where driver_phone = ? and driver_is_deleted = 0",phone,function(error,result,fields){
+    DB.queryDB("select driver_id from t_driver_list where driver_phone = ? and driver_is_deleted = 0 and driver_is_auth = 0",phone,function(error,result,fields){
         if (error) {
             reject("手机号查询失败，error"+error)
         } else {
@@ -28,7 +28,7 @@ router.post('/checked', function(req, res, next) {
             // 记录不存在,无法进行认证
             let responseJson = {
                 code: 20001,
-                message: '手机号不存在'
+                message: '手机号不存在或已被注册'
             }
             res.send(responseJson)
     } else {
