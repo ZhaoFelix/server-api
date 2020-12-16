@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-12-10 13:26:52
- * @LastEditTime: 2020-12-15 09:05:50
+ * @LastEditTime: 2020-12-16 08:41:02
  * @FilePath: /server-api/routes/v1.0/pc/ongoing.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -12,7 +12,8 @@ var router = express.Router()
 var DB = require('../../../config/db')
 
 router.get("/driver",function(req,res,next){
-    DB.queryDB("select  * from v_assign_order",function(error,result,fields){
+    // 仅显示当天订单
+    DB.queryDB("select  * from v_assign_order where date_format(user_reserve_time,'%Y-%m-%d') = date_format(NOW(),'%Y-%m-%d')",function(error,result,fields){
         if (error) {
             let responseJson = {
                 code: 20002,

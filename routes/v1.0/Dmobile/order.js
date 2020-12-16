@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-12-09 14:28:16
- * @LastEditTime: 2020-12-15 09:32:07
+ * @LastEditTime: 2020-12-16 08:47:29
  * @FilePath: /server-api/routes/v1.0/Dmobile/order.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -16,7 +16,7 @@ router.get("/query",function(req,res,next){
     req.query = parseObj.query;
     let userId =  req.query.userId
     console.log(userId)
-    DB.queryDB("select  * from v_assign_order where  driver_id = (select driver_id from t_driver_list where wechat_id = ? and driver_is_deleted = 0 limit 0,1)  limit 0,1 ",userId,function(error,result,next){
+    DB.queryDB("select  * from v_assign_order where  driver_id = (select driver_id from t_driver_list where wechat_id = ? and driver_is_deleted = 0 limit 0,1) and order_status != 6 limit 0,1 ",userId,function(error,result,next){
         if (error) {
             let responseJson = {
                 code: 20002,
