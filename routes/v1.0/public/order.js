@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-11-17 08:57:51
- * @LastEditTime: 2020-12-16 16:26:29
+ * @LastEditTime: 2020-12-16 16:39:45
  * @FilePath: /server-api/routes/v1.0/public/order.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -118,13 +118,13 @@ router.post('/wxpay2', function (req, res, next) {
   let ip = mch.ip
   let attach = mch.attach
   let body = mch.body
-  // 补差价
+  // 补差价order_gap_price * 100
   if (payType == 1) {
     wxpay
-      .order(appId, attach, body, openId, order_gap_price * 100, notify_url, ip)
+      .order(appId, attach, body, openId, order_gap_price, notify_url, ip)
       .then((result) => {
         DB.queryDB(
-          'update  t_order_list set new_order_number = ? where  order_number = ? and new_order_number = 0',
+          'update  t_order_list set new_order_number = ? where  order_number = ? and order_status = 7',
           [order_number, result.out_trade_no],
           function (error, resu, fields) {
             if (error) {
@@ -222,7 +222,7 @@ router.post(
 
 // 差价支付回调
 router.post(
-  '/callback2',
+  '/secallback',
   xmlparser({ trim: false, explicitArray: false }),
   function (req, res) {
     var jsonData = req.body.xml
