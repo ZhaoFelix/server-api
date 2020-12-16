@@ -6,7 +6,6 @@ var express = require('express')
 var router = express.Router()
 var DB = require('../../../config/db')
 var url = require('url')
-const { type } = require('os')
 
 // TODO:根据线路类型查询今日值班的司机
 router.get('/driver/query', function (req, res, next) {
