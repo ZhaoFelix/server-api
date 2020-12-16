@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-11-17 08:57:51
- * @LastEditTime: 2020-12-16 10:44:08
+ * @LastEditTime: 2020-12-16 16:09:53
  * @FilePath: /server-api/routes/v1.0/public/order.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -101,6 +101,74 @@ router.post('/wxpay', function (req, res, next) {
       }
       res.send(responseJson)
     })
+})
+
+router.post('/wxpay2', function (req, res, next) {
+  let {
+    userId,
+    openId,
+    orderType,
+    order_price,
+    order_number,
+    payType,
+    order_gap_price
+  } = req.body
+  let appId = mch.appId
+  let notify_url = mch.notify_url
+  let ip = mch.ip
+  let attach = mch.attach
+  let body = mch.body
+  // 补差价
+  if (payType == 1) {
+    wxpay
+      .order(appId, attach, body, openId, order_gap_price * 100, notify_url, ip)
+      .then((result) => {
+        let responseJson = {
+          code: 20000,
+          message: '支付配置成功',
+          data: result
+        }
+        res.send(responseJson)
+      })
+      .catch((error) => {
+        let responseJson = {
+          code: 20002,
+          message: '支付配置失败',
+          data: error
+        }
+        res.send(responseJson)
+      })
+  }
+  // 商业装修支付
+  else {
+    wxpay
+      .order(
+        appId,
+        attach,
+        body,
+        openId,
+        1, //order_price * 100,
+        notify_url,
+        ip,
+        order_number
+      )
+      .then((result) => {
+        let responseJson = {
+          code: 20000,
+          message: '支付配置成功',
+          data: result
+        }
+        res.send(responseJson)
+      })
+      .catch((error) => {
+        let responseJson = {
+          code: 20002,
+          message: '支付配置失败',
+          data: error
+        }
+        res.send(responseJson)
+      })
+  }
 })
 
 // 微信支付回调，更新订单的状态、更新最终金额、更新订单的支付时间

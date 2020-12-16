@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-11-17 13:15:32
- * @LastEditTime: 2020-12-16 13:45:11
+ * @LastEditTime: 2020-12-16 15:57:30
  * @FilePath: /server-api/routes/v1.0/pc/order.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -105,7 +105,7 @@ router.post('/assignprice', function (req, res, next) {
   // 普通
   else {
     DB.queryDB(
-      'update  t_order_list set order_gap_price = ? where  order_id = ? and order_gap_price is null and order_type = ?',
+      'update  t_order_list set order_gap_price = ?,order_status = 7 where  order_id = ? and order_gap_price = 0  and order_type = ? and order_status = 4 ',
       [assignPrice, orderId, orderType],
       function (error, result, fields) {
         if (error) {

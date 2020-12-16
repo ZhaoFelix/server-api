@@ -5,10 +5,21 @@ let createHash = require('create-hash')
 let xml = require('xml2js')
 config = env.mch
 module.exports = {
-  order: function (appid, attach, body, openid, total_fee, notify_url, ip) {
+  order: function (
+    appid,
+    attach,
+    body,
+    openid,
+    total_fee,
+    notify_url,
+    ip,
+    trade_no
+  ) {
     return new Promise((resolve, reject) => {
+      console.log(trade_no)
       let nonce_str = util.createNonceStr()
-      let out_trade_no = util.getTradeId('mp')
+      let out_trade_no =
+        trade_no == undefined ? util.getTradeId('mp') : trade_no
       // 支付前需要先获取支付签名
       let sign = this.getPrePaySign(
         appid,
@@ -149,7 +160,7 @@ module.exports = {
       sign +
       ']]></sign>' +
       '</xml>'
-     
+
     return data
   },
   getPayParams: function (appId, prepay_id, trade_no) {
