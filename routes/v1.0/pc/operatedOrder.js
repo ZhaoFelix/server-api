@@ -18,7 +18,7 @@ router.get('/driver/query', function (req, res, next) {
   return new Promise((resolve, reject) => {
     if (router_type == 4) {
       DB.queryDB(
-        'SELECT driver_name,car_router_type,router_note,driver_id,driver_is_substitutes from t_driver_list where car_router_type = ? and driver_id not in (SELECT driver_id from t_order_list WHERE order_status = 3 and order_status = 4)',
+        'SELECT driver_name,car_router_type,router_note,driver_id,driver_is_substitutes from t_driver_list where car_router_type = ? and driver_id not in (SELECT driver_id from t_order_list WHERE order_status = 3 or order_status = 4)',
         [router_type],
         function (error, result, fields) {
           if (error) {
@@ -30,7 +30,7 @@ router.get('/driver/query', function (req, res, next) {
       )
     } else {
       DB.queryDB(
-        'select  driver_name,router_type,driver_schedule,router_note,driver_id,driver_is_substitutes from t_driver_schedule where schedule_month = ? and router_type = ? and driver_id not in (SELECT driver_id from t_order_list WHERE order_status != 3 and order_status != 4  and driver_id is not null)',
+        'select  driver_name,router_type,driver_schedule,router_note,driver_id,driver_is_substitutes from t_driver_schedule where schedule_month = ? and router_type = ? and driver_id not in (SELECT driver_id from t_order_list WHERE ( order_status not between  3 and 7 )  and driver_id is not null)',
         [current_month, router_type],
         function (error, result, fields) {
           if (error) {
