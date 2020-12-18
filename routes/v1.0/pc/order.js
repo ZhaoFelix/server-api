@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-11-17 13:15:32
- * @LastEditTime: 2020-12-16 15:57:30
+ * @LastEditTime: 2020-12-18 14:08:21
  * @FilePath: /server-api/routes/v1.0/pc/order.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -18,7 +18,7 @@ router.get('/query/all', function (req, res, next) {
   let limit = parseInt(query.limit)
   let offset = parseInt(query.offset)
   DB.queryDB(
-    'SELECT order_id,order_number,order_price,order_final_price,user_reserve_time,order_size,order_user_type,user_phone,user_adress,wechat_nickname,driver_name,driver_phone,user_place_order_img,order_created_time,order_status from v_order_list order by order_created_time LIMIT ? OFFSET ?',
+    'SELECT order_id,order_number,order_price,order_type,order_user_name,order_final_price,second_pay_price,user_reserve_time,order_size,order_user_type,user_phone,user_address,wechat_nickname,driver_name,driver_phone,driver_complete_time,order_created_time,order_status from v_order_list order by order_created_time LIMIT ? OFFSET ?',
     [limit, offset],
     function (error, result, fields) {
       if (error) {
