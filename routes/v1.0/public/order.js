@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-11-17 08:57:51
- * @LastEditTime: 2020-12-16 16:46:06
+ * @LastEditTime: 2020-12-21 10:25:52
  * @FilePath: /server-api/routes/v1.0/public/order.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -163,7 +163,7 @@ router.post('/wxpay2', function (req, res, next) {
         body,
         openId,
         1, //order_price * 100,
-        notify_url,
+        mch.notify_url,
         ip,
         order_number
       )
