@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-12-09 14:28:16
- * @LastEditTime: 2020-12-17 15:12:28
+ * @LastEditTime: 2020-12-21 20:10:13
  * @FilePath: /server-api/routes/v1.0/mobile/order.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -16,7 +16,7 @@ router.get('/query', function (req, res, next) {
   req.query = parseObj.query
   let userId = req.query.userId
   DB.queryDB(
-    "select  order_id,order_price,order_final_price,second_pay_price,order_gap_price,order_number,order_type,user_address,car_id,driver_id, date_format(user_reserve_time,'%Y-%m-%d %H:%i:%s') as user_reserve_time,order_status from t_order_list where user_id = ?  and order_is_deleted = 0 order by order_created_time desc",
+    "select  order_id,order_price,order_final_price,second_pay_price,order_gap_price,order_number,order_type,user_address,car_id,driver_id, date_format(user_reserve_time,'%Y-%m-%d %H:%i:%s') as user_reserve_time,order_status from t_order_list where user_id = ?  and order_is_deleted = 0 and (order_type != 0 and order_status != 0 ) order by order_created_time desc",
     userId,
     function (error, result, next) {
       if (error) {

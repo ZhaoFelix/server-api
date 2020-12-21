@@ -23,7 +23,6 @@ router.post('/wxauth', function (req, res, next) {
       grant_type: 'authorization_code'
     }
   }
-  console.log(options);
   request(options, (error, response, body) => {
     if (error) {
       let responseJson = {
@@ -33,9 +32,8 @@ router.post('/wxauth', function (req, res, next) {
       }
       res.send(responseJson)
     } else {
-      console.log("body为-------")
-      console.log(body)
       let data = JSON.parse(body)
+      console.log(data)
       let session = data.session_key
       let openId = data.openid
       let responseJson = {
@@ -46,15 +44,21 @@ router.post('/wxauth', function (req, res, next) {
           openid: openId
         }
       }
-      console.log("responseJson为-----------")
-      console.log(responseJson)
       res.send(responseJson)
     }
   })
 })
 //微信登录
 router.post('/wechat', function (req, res, next) {
-  let { openId, avatarUrl, gender, nickName, province, country, user_type } = req.body
+  let {
+    openId,
+    avatarUrl,
+    gender,
+    nickName,
+    province,
+    country,
+    user_type
+  } = req.body
   console.log(openId, avatarUrl)
   return new Promise((resolve, reject) => {
     //是否已登录过，更新登录时间
@@ -138,24 +142,28 @@ router.post('/wechat', function (req, res, next) {
 })
 
 // 根据openID获取用户的基本信息
-router.post("/getUserInfo",function(req,res,next){
+router.post('/getUserInfo', function (req, res, next) {
   let openId = req.body.openId
-  DB.queryDB('select  user_id,wechat_nickname,wechat_avatar,wechat_gender,wechat_phone,user_type from t_user_list where wechat_open_id = ?',openId,function(error,result,fields){
-    if (error) {
-      let responseJson = {
-        code: 20002,
-        message: 'error',
-        data: error
+  DB.queryDB(
+    'select  user_id,wechat_nickname,wechat_avatar,wechat_gender,wechat_phone,user_type from t_user_list where wechat_open_id = ?',
+    openId,
+    function (error, result, fields) {
+      if (error) {
+        let responseJson = {
+          code: 20002,
+          message: 'error',
+          data: error
+        }
+        res.send(responseJson)
+      } else {
+        let responseJson = {
+          code: 20000,
+          message: '获取微信用户信息成功',
+          data: result
+        }
+        res.send(responseJson)
       }
-      res.send(responseJson)
-    } else {
-      let responseJson = {
-        code: 20000,
-        message: '获取微信用户信息成功',
-        data: result
-      }
-      res.send(responseJson)
     }
-  })
+  )
 })
 module.exports = router
