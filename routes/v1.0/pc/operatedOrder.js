@@ -9,12 +9,14 @@ var url = require('url')
 
 // TODO:根据线路类型查询今日值班的司机
 router.get('/driver/query', function (req, res, next) {
-  let date = new Date()
-  let current_month = date.getMonth() + 1
-  let current_date = date.getDate()
   let parseObj = url.parse(req.url, true)
   let query = parseObj.query
   let router_type = parseInt(query.type)
+  let time = query.time
+  let date = new Date(time)
+  let current_month = date.getMonth() + 1
+  let current_date = date.getDate()
+  console.log(current_month, current_date)
   return new Promise((resolve, reject) => {
     if (router_type == 4) {
       DB.queryDB(
