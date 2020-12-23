@@ -86,7 +86,7 @@ router.get('/query/today', function (req, res, next) {
   let current_date = date.getDate()
   return new Promise((resolve, reject) => {
     DB.queryDB(
-      'select  driver_id,driver_name,driver_schedule,router_note from t_driver_schedule where schedule_month = ? order by  router_type',
+      'select  driver_id,driver_name,driver_schedule,router_note from t_driver_schedule where schedule_month = ? group by driver_name order by  router_type',
       [current_month],
       function (error, result, fields) {
         if (error) {
