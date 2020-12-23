@@ -80,13 +80,13 @@ router.get('/query/schedule', function (req, res, next) {
 })
 
 // 查询当天的值班司机信息
-router.get('/query/current', function (req, res, next) {
+router.get('/query/today', function (req, res, next) {
   let date = new Date()
   let current_month = date.getMonth() + 1
   let current_date = date.getDate()
   return new Promise((resolve, reject) => {
     DB.queryDB(
-      'select  * from t_driver_schedule where schedule_month = ?',
+      'select  driver_id,driver_name,driver_schedule,router_note from t_driver_schedule where schedule_month = ? order by  router_type',
       [current_month],
       function (error, result, fields) {
         if (error) {
