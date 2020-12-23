@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-11-17 13:15:32
- * @LastEditTime: 2020-12-23 09:33:47
+ * @LastEditTime: 2020-12-23 10:30:11
  * @FilePath: /server-api/routes/v1.0/pc/order.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -40,13 +40,13 @@ router.get('/query/all', function (req, res, next) {
   )
 })
 // 查询订单详情
-router.get('/order/detail', function (req, res, next) {
+router.get('/query/detail', function (req, res, next) {
   let parseObj = url.parse(req.url, true)
   let query = parseObj.query
   let order_number = query.order_number
   // 仅显示当天订单
   DB.queryDB(
-    "select  * from v_assign_order where date_format(user_reserve_time,'%Y-%m-%d') = date_format(NOW(),'%Y-%m-%d') and order_number = ?",
+    'select  * from v_assign_order where  order_number = ?',
     [order_number],
     function (error, result, fields) {
       if (error) {
@@ -67,13 +67,6 @@ router.get('/order/detail', function (req, res, next) {
     }
   )
 })
-// TODO:删除订单
-
-// TODO:订单允许二次预约下单
-
-// TODO:查询所有进行中的订单，已支付但未派车，已支付且已派车
-
-// TODO:根据订单号查询订单
 
 router.get('/query/queryByOrderNumber', function (req, res, next) {
   let parseObj = url.parse(req.url, true)
