@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-11-17 13:15:32
- * @LastEditTime: 2020-12-18 14:08:21
+ * @LastEditTime: 2020-12-23 09:33:47
  * @FilePath: /server-api/routes/v1.0/pc/order.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -39,7 +39,34 @@ router.get('/query/all', function (req, res, next) {
     }
   )
 })
-
+// 查询订单详情
+router.get('/order/detail', function (req, res, next) {
+  let parseObj = url.parse(req.url, true)
+  let query = parseObj.query
+  let order_number = query.order_number
+  // 仅显示当天订单
+  DB.queryDB(
+    "select  * from v_assign_order where date_format(user_reserve_time,'%Y-%m-%d') = date_format(NOW(),'%Y-%m-%d') and order_number = ?",
+    [order_number],
+    function (error, result, fields) {
+      if (error) {
+        let responseJson = {
+          code: 20002,
+          message: '查询订单失败',
+          data: error
+        }
+        res.send(responseJson)
+      } else {
+        let responseJson = {
+          code: 20000,
+          message: '查询成功',
+          data: result
+        }
+        res.send(responseJson)
+      }
+    }
+  )
+})
 // TODO:删除订单
 
 // TODO:订单允许二次预约下单
