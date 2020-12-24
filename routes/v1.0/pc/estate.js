@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-11-12 10:04:39
- * @LastEditTime: 2020-12-22 13:25:50
+ * @LastEditTime: 2020-12-24 08:34:15
  * @FilePath: /server-api/routes/v1.0/pc/estate.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -10,9 +10,6 @@ var express = require('express')
 var router = express.Router()
 var DB = require('../../../config/db')
 var url = require('url')
-var md5 = require('md5')
-
-var queryString = require('querystring')
 
 // 查询所有物业经理人的信息
 router.get('/query/all', function (req, res, next) {
