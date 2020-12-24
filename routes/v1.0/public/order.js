@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-11-17 08:57:51
- * @LastEditTime: 2020-12-22 11:11:01
+ * @LastEditTime: 2020-12-24 10:32:49
  * @FilePath: /server-api/routes/v1.0/public/order.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -44,7 +44,7 @@ router.post('/wxpay', function (req, res, next) {
     .order(appId, attach, body, openId, money, notify_url, ip)
     .then((result) => {
       DB.queryDB(
-        'INSERT INTO t_order_list (user_id,order_price,user_reserve_time,order_size,order_user_type,order_number, user_phone,user_address,user_is_first,user_note,order_user_name,order_type,order_created_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,NOW())',
+        'INSERT INTO t_order_list (user_id,order_price,user_reserve_time,order_size,order_user_type,order_number, user_phone,user_address,user_is_first,user_note,order_user_name,order_type,order_created_time,deadline_pay_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,NOW(),date_add(now(),interval  30 minute))',
         [
           userId,
           orderPrice,
@@ -271,7 +271,7 @@ router.post('/business', function (req, res, next) {
   } = req.body
   let tradeNo = util.getTradeId('mp')
   DB.queryDB(
-    'INSERT INTO t_order_list (user_id,user_reserve_time,order_size,order_user_type,order_number, user_phone,user_address,user_is_first,user_note,order_user_name,order_type,order_created_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,NOW())',
+    'INSERT INTO t_order_list (user_id,user_reserve_time,order_size,order_user_type,order_number, user_phone,user_address,user_is_first,user_note,order_user_name,order_type,order_created_time,deadline_pay_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,NOW(),date_add(now(),interval  30 minute))',
     [
       userId,
       selectTime,
