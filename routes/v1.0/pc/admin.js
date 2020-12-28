@@ -52,7 +52,7 @@ router.get('/query/third', function (req, res, next) {
         let responseJson = {
           code: 20000,
           message: 'success',
-          data: data
+          data: result
         }
         res.send(responseJson)
       }
