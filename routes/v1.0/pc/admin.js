@@ -36,15 +36,49 @@ router.get('/query/all', function (req, res, next) {
   )
 })
 
+// 查询所有的第三方车队
+router.get('/query/third', function (req, res, next) {
+  DB.queryDB(
+    'select  * from t_third_car where  third_is_deleted = 0 order by  third_created_time desc',
+    function (error, result, fields) {
+      if (error) {
+        let responseJson = {
+          code: 20002,
+          message: 'error',
+          data: error
+        }
+        res.send(responseJson)
+      } else {
+        let responseJson = {
+          code: 20000,
+          message: 'success',
+          data: data
+        }
+        res.send(responseJson)
+      }
+    }
+  )
+})
+
 //  新增管理员
 router.post('/update/add', function (req, res, next) {
   let admin_token = stringRandom(16) //生成包含数字和字母的16为字符串
-  let {admin_login_name,admin_name,admin_pwd,admin_type} = req.body
+  let { admin_login_name, admin_name, admin_pwd, admin_type } = req.body
   // console.log(req.body)
-  console.log("新增管理员信息："+"昵称:"+admin_login_name+"管理员姓名:"+admin_name+"密码"+admin_pwd+"管理员类型"+admin_type)
+  console.log(
+    '新增管理员信息：' +
+      '昵称:' +
+      admin_login_name +
+      '管理员姓名:' +
+      admin_name +
+      '密码' +
+      admin_pwd +
+      '管理员类型' +
+      admin_type
+  )
   DB.queryDB(
     'INSERT INTO `t_admin_list` (`admin_login_name`,`admin_name`,`admin_pwd`,`admin_token`,`admin_type`,`admin_created_time`) VALUES (?,?,?,?,?,NOW())',
-    [admin_login_name, admin_name, admin_pwd, admin_token,admin_type],
+    [admin_login_name, admin_name, admin_pwd, admin_token, admin_type],
     function (error, result, fields) {
       if (error) {
         let responseJson = {
@@ -59,7 +93,7 @@ router.post('/update/add', function (req, res, next) {
           message: 'success',
           // 返回插入的ID
           data: {
-            id:result.insertId
+            id: result.insertId
           }
         }
         res.send(responseJson)
@@ -71,7 +105,7 @@ router.post('/update/add', function (req, res, next) {
 // 删除管理员
 router.post('/update/delete', function (req, res, next) {
   let id = req.body.id
-  console.log("删除管理员id为:"+id)
+  console.log('删除管理员id为:' + id)
   DB.queryDB(
     'UPDATE `t_admin_list` SET admin_is_deleted = 1  WHERE admin_id = ?',
     [id],
@@ -97,7 +131,7 @@ router.post('/update/delete', function (req, res, next) {
 
 //  编辑管理员信息
 router.post('/update/edit', function (req, res, next) {
-  let {id,admin_passwd} = req.body
+  let { id, admin_passwd } = req.body
   let admin_token = stringRandom(16) //生成包含数字和字母的16为字符串
   //更新密码和ID
   DB.queryDB(
@@ -150,10 +184,10 @@ router.get('/type/query/all', function (req, res, next) {
 })
 
 router.post('/type/update/add', function (req, res, next) {
-  let {type_name,type} = req.body
+  let { type_name, type } = req.body
   DB.queryDB(
     'insert into t_admin_type (admin_type_name,admin_type, admin_type_created_time)  values (?,?,NOW())',
-    [type_name,type],
+    [type_name, type],
     function (error, result, fields) {
       if (error) {
         let responseJson = {
@@ -167,7 +201,7 @@ router.post('/type/update/add', function (req, res, next) {
           code: 20000,
           message: 'success',
           data: {
-            id:result.insertId
+            id: result.insertId
           }
         }
         res.send(responseJson)
@@ -180,7 +214,7 @@ router.post('/type/update/add', function (req, res, next) {
 router.post('/type/update/delete', function (req, res, next) {
   var id = req.body.id
   // TODO:判断同名的管理员名称是否已存在，若存在则不添加
-  console.log("已删除id: "+id)
+  console.log('已删除id: ' + id)
   DB.queryDB(
     'UPDATE `t_admin_type` SET admin_type_is_deleted = 1  WHERE admin_type_id = ?',
     id,
