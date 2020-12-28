@@ -63,22 +63,23 @@ router.get('/query/third', function (req, res, next) {
 //  新增管理员
 router.post('/update/add', function (req, res, next) {
   let admin_token = stringRandom(16) //生成包含数字和字母的16为字符串
-  let { admin_login_name, admin_name, admin_pwd, admin_type } = req.body
-  // console.log(req.body)
-  console.log(
-    '新增管理员信息：' +
-      '昵称:' +
-      admin_login_name +
-      '管理员姓名:' +
-      admin_name +
-      '密码' +
-      admin_pwd +
-      '管理员类型' +
-      admin_type
-  )
+  let {
+    admin_login_name,
+    admin_name,
+    admin_pwd,
+    admin_type,
+    admin_third_id
+  } = req.body
   DB.queryDB(
-    'INSERT INTO `t_admin_list` (`admin_login_name`,`admin_name`,`admin_pwd`,`admin_token`,`admin_type`,`admin_created_time`) VALUES (?,?,?,?,?,NOW())',
-    [admin_login_name, admin_name, admin_pwd, admin_token, admin_type],
+    'INSERT INTO `t_admin_list` (`admin_login_name`,`admin_name`,`admin_pwd`,`admin_token`,`admin_type`,`admin_created_time`,`admin_third_id`) VALUES (?,?,?,?,?,NOW(),?)',
+    [
+      admin_login_name,
+      admin_name,
+      admin_pwd,
+      admin_token,
+      admin_type,
+      admin_third_id
+    ],
     function (error, result, fields) {
       if (error) {
         let responseJson = {
