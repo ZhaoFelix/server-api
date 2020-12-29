@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-11-13 10:37:15
- * @LastEditTime: 2020-12-26 15:01:41
+ * @LastEditTime: 2020-12-29 08:24:53
  * @FilePath: /server-api/routes/v1.0/pc/driver.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -65,6 +65,29 @@ router.get('/query/queryByKeyword', function (req, res, next) {
     "select  * from t_driver_list  where driver_phone like '%" +
       keyword +
       "%' and driver_is_deleted = 0",
+    function (error, result, fields) {
+      if (error) {
+        let responseJson = {
+          code: 20002,
+          message: 'error',
+          data: error
+        }
+        res.send(responseJson)
+      } else {
+        let responseJson = {
+          code: 20000,
+          message: 'success',
+          data: result
+        }
+        res.send(responseJson)
+      }
+    }
+  )
+})
+
+router.get('/query/third', function (req, res, next) {
+  DB.queryDB(
+    'select  * from t_third_car where third_is_deleted = 0',
     function (error, result, fields) {
       if (error) {
         let responseJson = {
