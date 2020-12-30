@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-11-13 10:37:15
- * @LastEditTime: 2020-12-29 08:24:53
+ * @LastEditTime: 2020-12-30 09:43:28
  * @FilePath: /server-api/routes/v1.0/pc/driver.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -107,4 +107,34 @@ router.get('/query/third', function (req, res, next) {
     }
   )
 })
+
+// 设置车队队长
+router.get('/update/third', function (req, res, next) {
+  // 前端传值
+  let parseObj = url.parse(req.url, true)
+  let order_id = parseObj.order_id
+  let third_id = query.third_id
+  DB.queryDB(
+    'update  t_order_list set  order_third_id = ? where  order_id = ? and order_status = 1 ',
+    [third_id, order_id],
+    function (error, result, fields) {
+      if (error) {
+        let responseJson = {
+          code: 20002,
+          message: '指派车队长失败',
+          data: error
+        }
+        res.send(responseJson)
+      } else {
+        let responseJson = {
+          code: 20000,
+          message: '指派车队长成功',
+          data: result
+        }
+        res.send(responseJson)
+      }
+    }
+  )
+})
+
 module.exports = router
