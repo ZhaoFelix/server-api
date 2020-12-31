@@ -46,28 +46,30 @@ router.get('/order/query/', function (req, res, next) {
   let query = parseObj.query
   let limit = parseInt(query.limit)
   let offset = parseInt(query.offset)
+  let third_id = query.third_id
+  let sql =
+    third_id == 0
+      ? 'select  * from v_no_assign_order'
+      : 'select  * from v_no_assign_order where third_id = ' + third_id
+
   // 查询所有未支付和未派发的订单
-  DB.queryDB(
-    'select  * from v_no_assign_order',
-    [limit, offset],
-    function (error, result, fields) {
-      if (error) {
-        let responseJson = {
-          code: 20002,
-          message: error,
-          data: '查询订单失败'
-        }
-        res.send(responseJson)
-      } else {
-        let responseJson = {
-          code: 20000,
-          message: 'sucess',
-          data: result
-        }
-        res.send(responseJson)
+  DB.queryDB(sql, function (error, result, fields) {
+    if (error) {
+      let responseJson = {
+        code: 20002,
+        message: error,
+        data: '查询订单失败'
       }
+      res.send(responseJson)
+    } else {
+      let responseJson = {
+        code: 20000,
+        message: 'sucess',
+        data: result
+      }
+      res.send(responseJson)
     }
-  )
+  })
 })
 
 // 根据路线类型查询车辆

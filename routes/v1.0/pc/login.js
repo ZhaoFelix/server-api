@@ -25,7 +25,7 @@ router.post('/login', function (req, res, next) {
         if (result.length == 0) {
           let responseJson = {
             code: 20002,
-            message: "该用户不存在",
+            message: '该用户不存在',
             data: admin_name
           }
           res.send(responseJson)
@@ -76,15 +76,15 @@ router.post('/login', function (req, res, next) {
       }
     }
   )
-}) 
+})
 
 // 根据token获取用户信息
-router.get("/info",function(req,res,next){
+router.get('/info', function (req, res, next) {
   let arg = url.parse(req.url).query
   let params = queryString.parse(arg)
   let token = params.token
   DB.queryDB(
-    'select admin_name,admin_id,admin_type from `t_admin_list` where admin_token = ? and admin_is_deleted = 0 limit 0,1',
+    'select admin_name,admin_id,admin_type,admin_third_id from `t_admin_list` where admin_token = ? and admin_is_deleted = 0 limit 0,1',
     [token],
     function (error, result, fields) {
       if (error) {
@@ -110,7 +110,7 @@ router.get("/info",function(req,res,next){
 router.post('/logout', function (req, res, next) {
   //根据ID重新生成token
   let new_token = Math.random().toString(36).substr(2)
-  let admin_id = req.body.id 
+  let admin_id = req.body.id
   DB.queryDB(
     'update `t_admin_list` set admin_token = ?  where admin_id = ?',
     [new_token, admin_id],

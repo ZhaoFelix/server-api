@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-11-13 10:37:15
- * @LastEditTime: 2020-12-30 09:43:28
+ * @LastEditTime: 2020-12-30 10:22:42
  * @FilePath: /server-api/routes/v1.0/pc/driver.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -112,8 +112,10 @@ router.get('/query/third', function (req, res, next) {
 router.get('/update/third', function (req, res, next) {
   // 前端传值
   let parseObj = url.parse(req.url, true)
-  let order_id = parseObj.order_id
+  let query = parseObj.query
+  let order_id = query.order_id
   let third_id = query.third_id
+  console.log(order_id, third_id)
   DB.queryDB(
     'update  t_order_list set  order_third_id = ? where  order_id = ? and order_status = 1 ',
     [third_id, order_id],
