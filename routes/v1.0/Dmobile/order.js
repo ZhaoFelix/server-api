@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-12-09 14:28:16
- * @LastEditTime: 2020-12-21 09:56:53
+ * @LastEditTime: 2021-01-04 10:47:22
  * @FilePath: /server-api/routes/v1.0/Dmobile/order.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -101,9 +101,10 @@ router.get('/update/status4', function (req, res, next) {
   let parseObj = url.parse(req.url, true) // 将URL解析为一个对象
   req.query = parseObj.query
   let order_id = req.query.orderId
+  let car_id = req.query.carId
   DB.queryDB(
-    'update t_order_list set order_status = 4 where order_id = ? and order_status = 3',
-    order_id,
+    'update t_order_list set order_status = 4,car_id = ? where order_id = ? and order_status = 3',
+    [car_id, order_id],
     function (error, result, fields) {
       if (error) {
         let responseJson = {

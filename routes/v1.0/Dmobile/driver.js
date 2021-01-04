@@ -160,7 +160,7 @@ router.get('/info', function (req, res, next) {
 // 查询车牌号
 router.get('/carnumber', function (req, res, next) {
   DB.queryDB(
-    'select  car_number,car_id from t_car_list where car_is_deleted = 0;',
+    'select  car_number as text,car_id as id from t_car_list where car_is_deleted = 0;',
     function (error, result, fields) {
       if (error) {
         let responseJson = {
