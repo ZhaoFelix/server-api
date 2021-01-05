@@ -9,7 +9,6 @@ var queryString = require('querystring')
 router.post('/login', function (req, res, next) {
   let admin_name = req.body.username
   let passwd = md5(req.body.password.toUpperCase())
-  // let passwd = req.body.password
   DB.queryDB(
     'select admin_token from `t_admin_list` where admin_login_name = ? and  admin_is_deleted = 0 limit 0,1',
     [admin_name],

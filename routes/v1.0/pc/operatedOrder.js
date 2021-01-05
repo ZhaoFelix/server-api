@@ -7,12 +7,19 @@ var router = express.Router()
 var DB = require('../../../config/db')
 var url = require('url')
 
-// TODO:根据线路类型查询今日值班的司机
 router.get('/driver/query', function (req, res, next) {
+  let parseObj = url.parse(req.url, true)
+  let query = parseObj.query
+  let third = query.third
+  let sqlStr = third == 0 ? '' : ' where third_id=' + third
+  console.log(
+    'SELECT driver_name,car_router_type,router_note,driver_id,driver_is_substitutes from t_driver_list' +
+      sqlStr
+  )
   return new Promise((resolve, reject) => {
-    // TODO:是否需要判断已在运输中的司机
     DB.queryDB(
-      'SELECT driver_name,car_router_type,router_note,driver_id,driver_is_substitutes from t_driver_list',
+      'SELECT driver_name,driver_id,driver_is_substitutes from t_driver_list' +
+        sqlStr,
       function (error, result, fields) {
         if (error) {
           reject('查询信息失败，error:' + error)
@@ -144,7 +151,6 @@ router.get('/order/assign', function (req, res, next) {
   let order_id = parseInt(query.order_id)
   let driver_id = parseInt(query.driver_id)
   // 将订单的状态更新为3
-  console.log('测试')
   DB.queryDB(
     'update  t_order_list set order_status = 3, driver_id = ? where order_id = ? and  order_is_deleted = 0 and order_status = 1',
     [driver_id, order_id],
