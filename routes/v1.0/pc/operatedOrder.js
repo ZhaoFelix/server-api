@@ -56,8 +56,10 @@ router.get('/order/query/', function (req, res, next) {
   let third_id = query.third_id
   let sql =
     third_id == 0
-      ? 'select  * from v_no_assign_order'
-      : 'select  * from v_no_assign_order where third_id = ' + third_id
+      ? 'select  * from v_no_assign_order order by  order_created_time desc'
+      : 'select  * from v_no_assign_order where third_id = ' +
+        third_id +
+        ' order by  order_created_time desc'
 
   // 查询所有未支付和未派发的订单
   DB.queryDB(sql, function (error, result, fields) {
