@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-12-09 14:28:16
- * @LastEditTime: 2021-01-04 17:29:54
+ * @LastEditTime: 2021-01-06 09:34:55
  * @FilePath: /server-api/routes/v1.0/mobile/order.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -16,7 +16,7 @@ router.get('/query', function (req, res, next) {
   req.query = parseObj.query
   let userId = req.query.userId
   DB.queryDB(
-    'select  * from v_wechat_order where user_id=?',
+    'select  * from v_wechat_order where user_id=? order by order_created_time desc',
     userId,
     function (error, result, next) {
       if (error) {
