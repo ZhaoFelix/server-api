@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-11-17 08:57:51
- * @LastEditTime: 2021-01-10 00:58:21
+ * @LastEditTime: 2021-01-10 01:14:31
  * @FilePath: /server-api/routes/v1.0/public/order.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -271,11 +271,12 @@ router.post('/business', function (req, res, next) {
     phoneNumber,
     selectTime,
     subAddress,
-    orderType
+    orderType,
+    estate_id
   } = req.body
   let tradeNo = util.getTradeId('mp')
   DB.queryDB(
-    'INSERT INTO t_order_list (user_id,user_reserve_time,order_size,order_user_type,order_number, user_phone,user_address,user_is_first,user_note,order_user_name,order_type,order_created_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,NOW())',
+    'INSERT INTO t_order_list (user_id,user_reserve_time,order_size,order_user_type,order_number, user_phone,user_address,user_is_first,user_note,order_user_name,order_type,estate_id,order_created_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,NOW())',
     [
       userId,
       selectTime,
@@ -287,7 +288,8 @@ router.post('/business', function (req, res, next) {
       isFirst,
       orderNote,
       name,
-      orderType
+      orderType,
+      estate_id
     ],
     function (error, re, fields) {
       if (error) {
