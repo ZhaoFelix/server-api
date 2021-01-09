@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-11-17 08:57:51
- * @LastEditTime: 2021-01-04 16:21:38
+ * @LastEditTime: 2021-01-10 00:58:21
  * @FilePath: /server-api/routes/v1.0/public/order.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -32,7 +32,8 @@ router.post('/wxpay', function (req, res, next) {
     phoneNumber,
     selectTime,
     subAddress,
-    orderType
+    orderType,
+    estate_id
   } = req.body
   let appId = mch.appId
   let notify_url = mch.notify_url
@@ -45,7 +46,7 @@ router.post('/wxpay', function (req, res, next) {
     .order(appId, attach, body, openId, money, notify_url, ip)
     .then((result) => {
       DB.queryDB(
-        'INSERT INTO t_order_list (user_id,order_price,user_reserve_time,order_size,order_user_type,order_number, user_phone,user_address,user_is_first,order_is_assign,user_note,order_user_name,order_type,order_created_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,NOW())',
+        'INSERT INTO t_order_list (user_id,order_price,user_reserve_time,order_size,order_user_type,order_number, user_phone,user_address,user_is_first,order_is_assign,user_note,order_user_name,order_type,estate_id,order_created_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,NOW())',
         [
           userId,
           orderPrice,
@@ -59,7 +60,8 @@ router.post('/wxpay', function (req, res, next) {
           isAssign,
           orderNote,
           name,
-          orderType
+          orderType,
+          estate_id
         ],
         function (error, re, fields) {
           if (error) {

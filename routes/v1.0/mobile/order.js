@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-12-09 14:28:16
- * @LastEditTime: 2021-01-06 09:34:55
+ * @LastEditTime: 2021-01-10 00:44:33
  * @FilePath: /server-api/routes/v1.0/mobile/order.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -47,6 +47,34 @@ router.get('/query/info', function (req, res, next) {
   DB.queryDB(
     'select  a.car_number,b.driver_name,b.driver_phone from  t_car_list as a, t_driver_list as b where a.car_id = ? and b.driver_id = ?',
     [car_id, driver_id],
+    function (error, result, fields) {
+      if (error) {
+        let responseJson = {
+          code: 20002,
+          message: '查询失败',
+          data: error
+        }
+        res.send(responseJson)
+      } else {
+        let responseJson = {
+          code: 20000,
+          message: '查询成功',
+          data: result
+        }
+        res.send(responseJson)
+      }
+    }
+  )
+})
+
+// 根据用户ID查询小区
+router.get('/query/plot', function (req, res, next) {
+  let parseObj = url.parse(req.url, true) // 将URL解析为一个对象
+  req.query = parseObj.query
+  let wechat_id = req.query.wechat_id
+  DB.queryDB(
+    'select  estate_plot as text,estate_id as id from t_estate_list where  wechat_id=?',
+    wechat_id,
     function (error, result, fields) {
       if (error) {
         let responseJson = {
