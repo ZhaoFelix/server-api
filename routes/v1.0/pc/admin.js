@@ -6,6 +6,7 @@ var router = express.Router()
 var DB = require('../../../config/db')
 var stringRandom = require('string-random')
 var url = require('url')
+const Result = require('../../../utils/result')
 
 /* GET users listing. */
 router.get('/', function (req, res, next) {
@@ -18,19 +19,9 @@ router.get('/query/all', function (req, res, next) {
     'select * from `t_admin_list` where admin_is_deleted = 0',
     function (error, result, fields) {
       if (error) {
-        let responseJson = {
-          code: 20002,
-          message: 'error',
-          data: error
-        }
-        res.send(responseJson)
+        new Result(error, 'error').fail(res)
       } else {
-        let responseJson = {
-          code: 20000,
-          message: 'success',
-          data: result
-        }
-        res.send(responseJson)
+        new Result(result, 'success').success(res)
       }
     }
   )
@@ -42,19 +33,9 @@ router.get('/query/third', function (req, res, next) {
     'select  * from t_third_car where  third_is_deleted = 0 order by  third_created_time desc',
     function (error, result, fields) {
       if (error) {
-        let responseJson = {
-          code: 20002,
-          message: 'error',
-          data: error
-        }
-        res.send(responseJson)
+        new Result(error, 'error').fail(res)
       } else {
-        let responseJson = {
-          code: 20000,
-          message: 'success',
-          data: result
-        }
-        res.send(responseJson)
+        new Result(result, 'success').success(res)
       }
     }
   )
@@ -82,22 +63,9 @@ router.post('/update/add', function (req, res, next) {
     ],
     function (error, result, fields) {
       if (error) {
-        let responseJson = {
-          code: 20002,
-          message: 'error',
-          data: error
-        }
-        res.send(responseJson)
+        new Result(error, 'error').fail(res)
       } else {
-        let responseJson = {
-          code: 20000,
-          message: 'success',
-          // 返回插入的ID
-          data: {
-            id: result.insertId
-          }
-        }
-        res.send(responseJson)
+        new Result(result, 'success').success(res)
       }
     }
   )
@@ -112,19 +80,9 @@ router.post('/update/delete', function (req, res, next) {
     [id],
     function (error, result, fields) {
       if (error) {
-        let responseJson = {
-          code: 20002,
-          message: 'error',
-          data: error
-        }
-        res.send(responseJson)
+        new Result(error, 'error').fail(res)
       } else {
-        let responseJson = {
-          code: 20000,
-          message: 'success',
-          data: result
-        }
-        res.send(responseJson)
+        new Result(result, 'success').success(res)
       }
     }
   )
@@ -140,19 +98,9 @@ router.post('/update/edit', function (req, res, next) {
     [admin_passwd, admin_token, id],
     function (error, result, fields) {
       if (error) {
-        let responseJson = {
-          code: 20002,
-          message: 'error',
-          data: error
-        }
-        res.send(responseJson)
+        new Result(error, 'error').fail(res)
       } else {
-        let responseJson = {
-          code: 20000,
-          message: 'success',
-          data: result
-        }
-        res.send(responseJson)
+        new Result(result, 'success').success(res)
       }
     }
   )
@@ -166,19 +114,9 @@ router.get('/type/query/all', function (req, res, next) {
     'select * from `t_admin_type` where admin_type_is_deleted = 0 order by admin_type_created_time',
     function (error, result, fields) {
       if (error) {
-        let responseJson = {
-          code: 20002,
-          message: 'error',
-          data: error
-        }
-        res.send(responseJson)
+        new Result(error, 'error').fail(res)
       } else {
-        let responseJson = {
-          code: 20000,
-          message: 'success',
-          data: result
-        }
-        res.send(responseJson)
+        new Result(result, 'success').success(res)
       }
     }
   )
@@ -191,21 +129,9 @@ router.post('/type/update/add', function (req, res, next) {
     [type_name, type],
     function (error, result, fields) {
       if (error) {
-        let responseJson = {
-          code: 20002,
-          message: 'error',
-          data: error
-        }
-        res.send(responseJson)
+        new Result(error, 'error').fail(res)
       } else {
-        let responseJson = {
-          code: 20000,
-          message: 'success',
-          data: {
-            id: result.insertId
-          }
-        }
-        res.send(responseJson)
+        new Result(result, 'success').success(res)
       }
     }
   )
@@ -221,19 +147,9 @@ router.post('/type/update/delete', function (req, res, next) {
     id,
     function (error, result, fields) {
       if (error) {
-        let responseJson = {
-          code: 20002,
-          message: 'error',
-          data: error
-        }
-        res.send(responseJson)
+        new Result(error, 'error').fail(res)
       } else {
-        let responseJson = {
-          code: 20000,
-          message: 'success',
-          data: result
-        }
-        res.send(responseJson)
+        new Result(result, 'success').success(res)
       }
     }
   )
