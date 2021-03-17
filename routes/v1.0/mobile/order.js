@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-12-09 14:28:16
- * @LastEditTime: 2021-01-10 00:44:33
+ * @LastEditTime: 2021-03-17 14:56:20
  * @FilePath: /server-api/routes/v1.0/mobile/order.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -10,6 +10,7 @@ var express = require('express')
 var DB = require('../../../config/db')
 var router = express.Router()
 var url = require('url')
+const Result = require('../../../utils/result')
 // 根据用户ID查询订单
 router.get('/query', function (req, res, next) {
   let parseObj = url.parse(req.url, true) // 将URL解析为一个对象
@@ -20,19 +21,9 @@ router.get('/query', function (req, res, next) {
     userId,
     function (error, result, next) {
       if (error) {
-        let responseJson = {
-          code: 20002,
-          message: '查询失败',
-          data: error
-        }
-        res.send(responseJson)
+        new Result(error, 'error').fail(res)
       } else {
-        let responseJson = {
-          code: 20000,
-          message: '查询成功',
-          data: result
-        }
-        res.send(responseJson)
+        new Result(result, 'success').success(res)
       }
     }
   )
@@ -49,19 +40,9 @@ router.get('/query/info', function (req, res, next) {
     [car_id, driver_id],
     function (error, result, fields) {
       if (error) {
-        let responseJson = {
-          code: 20002,
-          message: '查询失败',
-          data: error
-        }
-        res.send(responseJson)
+        new Result(error, 'error').fail(res)
       } else {
-        let responseJson = {
-          code: 20000,
-          message: '查询成功',
-          data: result
-        }
-        res.send(responseJson)
+        new Result(result, 'success').success(res)
       }
     }
   )
@@ -77,19 +58,9 @@ router.get('/query/plot', function (req, res, next) {
     wechat_id,
     function (error, result, fields) {
       if (error) {
-        let responseJson = {
-          code: 20002,
-          message: '查询失败',
-          data: error
-        }
-        res.send(responseJson)
+        new Result(error, 'error').fail(res)
       } else {
-        let responseJson = {
-          code: 20000,
-          message: '查询成功',
-          data: result
-        }
-        res.send(responseJson)
+        new Result(result, 'success').success(res)
       }
     }
   )
