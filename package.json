@@ -15,6 +15,7 @@
     "create-hash": "^1.2.0",
     "debug": "~2.6.9",
     "express": "~4.16.1",
+    "express-jwt": "^6.0.0",
     "express-xml-bodyparser": "^0.3.0",
     "file-stream-rotator": "^0.5.7",
     "http-errors": "~1.6.3",

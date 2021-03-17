@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-10-26 09:18:45
- * @LastEditTime: 2020-12-26 15:16:20
+ * @LastEditTime: 2021-03-17 13:12:48
  * @FilePath: /server-api/routes/index.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -12,6 +12,7 @@ var DB = require('../config/db')
 var helper = require('../utils/helper')
 const boom = require('boom')
 const { CODE_ERROR } = require('../utils/constant')
+const jwtAuth = require('../utils/jwt')
 //  扫描路由路径
 const scanResult = helper.scanDirModules(__dirname, __filename)
 for (const prefix in scanResult) {
@@ -45,6 +46,7 @@ router.use((req, res, next) => {
  *  第二，方法必须放在路由的最后面
  * **/
 
+router.use(jwtAuth)
 router.use((err, req, res, next) => {
   const msg = (err && err.message) || '系统错误'
   const statusCode = (err.output && err.output.statusCode) || 500
