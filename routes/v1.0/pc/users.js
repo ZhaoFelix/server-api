@@ -1,7 +1,16 @@
+/*
+ * @Author: Felix
+ * @Email: felix@qingmaoedu.com
+ * @Date: 2020-11-04 15:17:36
+ * @LastEditTime: 2021-03-18 09:27:39
+ * @FilePath: /server-api/routes/v1.0/pc/users.js
+ * Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
+ */
 var express = require('express')
 var router = express.Router()
 var DB = require('../../../config/db')
 var url = require('url')
+var Result = require('../../../utils/result')
 /* GET users listing. */
 router.get('/', function (req, res, next) {
   res.send('respond with a resource')
@@ -19,25 +28,16 @@ router.get('/query/all', function (req, res, next) {
     [limit, offset],
     function (error, result, fields) {
       if (error) {
-        let respondJson = {
-          code: 20002,
-          message: 'error',
-          data: error
-        }
-        res.send(respondJson)
+        new Result(error, 'error').fail(res)
       } else {
         // 查询记录总数
         DB.queryDB(
           'select count(user_id) as total FROM t_user_list WHERE wechat_is_deleted = 0',
           function (error, resu, fields) {
             if (error) {
-              let respondJson = {
-                code: 20002,
-                message: '查询记录条数失败',
-                data: error
-              }
-              res.send(respondJson)
+              new Result(error, '查询记录条数失败').fail(res)
             } else {
+              // TODO:待修改
               let respondJson = {
                 code: 20000,
                 message: 'success',
@@ -61,19 +61,9 @@ router.post('/update/delete', function (req, res, next) {
     [id],
     function (error, result, fields) {
       if (error) {
-        let respondJson = {
-          code: 20002,
-          message: 'error',
-          data: error
-        }
-        res.send(respondJson)
+        new Result(error, 'error').fail(res)
       } else {
-        let respondJson = {
-          code: 20000,
-          message: 'success',
-          data: result
-        }
-        res.send(respondJson)
+        new Result(result, 'success').success(res)
       }
     }
   )
@@ -87,19 +77,9 @@ router.post('/update/edit', function (req, res, next) {
     [info_adress, user_id],
     function (error, result, fields) {
       if (error) {
-        let respondJson = {
-          code: 20002,
-          message: 'error',
-          data: error
-        }
-        res.send(respondJson)
+        new Result(error, 'error').fail(res)
       } else {
-        let respondJson = {
-          code: 20000,
-          message: 'success',
-          data: result
-        }
-        res.send(respondJson)
+        new Result(result, 'success').success(res)
       }
     }
   )
