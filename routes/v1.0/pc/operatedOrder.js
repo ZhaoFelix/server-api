@@ -6,6 +6,7 @@ var express = require('express')
 var router = express.Router()
 var DB = require('../../../config/db')
 var url = require('url')
+var Result = require('../../../utils/result')
 
 router.get('/driver/query', function (req, res, next) {
   let parseObj = url.parse(req.url, true)
@@ -30,20 +31,10 @@ router.get('/driver/query', function (req, res, next) {
     )
   })
     .then((data) => {
-      let responseJson = {
-        code: 20000,
-        message: 'success',
-        data: data
-      }
-      res.send(responseJson)
+      new Result(data, 'success').success(res)
     })
     .catch((error) => {
-      let responseJson = {
-        code: 20002,
-        message: 'error',
-        data: error
-      }
-      res.send(responseJson)
+      new Result(error, 'error').fail(res)
     })
 })
 
@@ -64,19 +55,9 @@ router.get('/order/query/', function (req, res, next) {
   // 查询所有未支付和未派发的订单
   DB.queryDB(sql, function (error, result, fields) {
     if (error) {
-      let responseJson = {
-        code: 20002,
-        message: error,
-        data: '查询订单失败'
-      }
-      res.send(responseJson)
+      new Result(error, '查询订单失败').fail(res)
     } else {
-      let responseJson = {
-        code: 20000,
-        message: 'sucess',
-        data: result
-      }
-      res.send(responseJson)
+      new Result(result, 'success').success(res)
     }
   })
 })
@@ -100,20 +81,10 @@ router.get('/car/query', function (req, res, next) {
     )
   })
     .then((data) => {
-      let responseJson = {
-        code: 20000,
-        message: 'success',
-        data: data
-      }
-      res.send(responseJson)
+      new Result(data, 'success').success(res)
     })
     .catch((error) => {
-      let responseJson = {
-        code: 20002,
-        message: 'error',
-        data: error
-      }
-      res.send(responseJson)
+      new Result(error, 'error').fail(res)
     })
 })
 
@@ -128,19 +99,9 @@ router.get('/order/cancel', function (req, res, next) {
     [order_id],
     function (error, result, fields) {
       if (error) {
-        let responseJson = {
-          code: 20002,
-          message: '取消订单失败，请重试！',
-          data: error
-        }
-        res.send(responseJson)
+        new Result(error, '取消订单失败，请重试').fail(res)
       } else {
-        let responseJson = {
-          code: 20000,
-          message: 'success',
-          data: result
-        }
-        res.send(responseJson)
+        new Result(result, 'success').success(res)
       }
     }
   )
@@ -158,19 +119,9 @@ router.get('/order/assign', function (req, res, next) {
     [driver_id, order_id],
     function (error, result, fields) {
       if (error) {
-        let responseJson = {
-          code: 20002,
-          message: '指派订单失败，请重试！',
-          data: error
-        }
-        res.send(responseJson)
+        new Result(error, '指派订单失败，请重试！').fail(res)
       } else {
-        let responseJson = {
-          code: 20000,
-          message: 'success',
-          data: result
-        }
-        res.send(responseJson)
+        new Result(result, 'success').success(res)
       }
     }
   )
