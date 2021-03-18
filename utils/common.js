@@ -2,13 +2,13 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-12-07 09:40:25
- * @LastEditTime: 2021-03-18 08:45:16
+ * @LastEditTime: 2021-03-18 12:54:27
  * @FilePath: /server-api/utils/common.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
 let { estate, jwt_options } = require('../config/env')
 let crypto = require('crypto')
-const jwt = require('./jwt')
+const jwt = require('jsonwebtoken')
 
 function clocPrice(buildArea, isFirst, userType) {
   let finalPrice = 0
@@ -41,15 +41,16 @@ function md5(s) {
   return crypto.createHash('md5').update(String(s)).digest('hex')
 }
 
-function decoded(req) {
+function jwtDecoded(req) {
   let token = req.get('Authorization')
-  if (token.indexOf('Bearer') === 0) {
-    token = token.replace('Bearer', '')
+  console.log(token + '------')
+  if (token.indexOf('Bearer') >= 0) {
+    token = token.replace('Bearer ', '')
   }
   return jwt.verify(token, jwt_options.PRIVATE_KEY)
 }
 module.exports = {
   clocPrice,
   md5,
-  decoded
+  jwtDecoded
 }
