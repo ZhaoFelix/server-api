@@ -1,10 +1,19 @@
+/*
+ * @Author: Felix
+ * @Email: felix@qingmaoedu.com
+ * @Date: 2020-09-02 14:23:14
+ * @LastEditTime: 2021-03-18 09:12:13
+ * @FilePath: /server-api/routes/v1.0/pc/login.js
+ * Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
+ */
 var express = require('express')
 var router = express.Router()
 var DB = require('../../../config/db')
 var url = require('url')
 var md5 = require('md5')
-
 var queryString = require('querystring')
+var Result = require('../../../utils/result')
+
 // 登录
 router.post('/login', function (req, res, next) {
   let admin_name = req.body.username
@@ -14,47 +23,22 @@ router.post('/login', function (req, res, next) {
     [admin_name],
     function (error, result, fields) {
       if (error) {
-        let responseJson = {
-          code: 20002,
-          message: error,
-          data: '查询用户名失败'
-        }
-        res.send(responseJson)
+        new Result(error, '查询用户名失败').fail(res)
       } else {
         if (result.length == 0) {
-          let responseJson = {
-            code: 20002,
-            message: '该用户不存在',
-            data: admin_name
-          }
-          res.send(responseJson)
+          new Result(admin_name, '该用户不存在').fail(res)
         } else {
           DB.queryDB(
             'select admin_token from `t_admin_list` where admin_login_name = ? and admin_pwd = ?  and admin_is_deleted = 0 limit 0,1',
             [admin_name, passwd],
             function (error, result, fields) {
               if (error) {
-                let responseJson = {
-                  code: 20002,
-                  message: error,
-                  data: '查询密码失败'
-                }
-                res.send(responseJson)
+                new Result(error, '查询密码失败').fail(res)
               } else {
                 if (result.length == 0) {
-                  let responseJson = {
-                    code: 20002,
-                    message: '密码不正确',
-                    data: '密码不正确'
-                  }
-                  res.send(responseJson)
+                  new Result('密码不正确', '密码不正确').fail(res)
                 } else {
-                  let responseJson = {
-                    code: 20000,
-                    message: 'success',
-                    data: result
-                  }
-                  res.send(responseJson)
+                  new Result(result, 'success').success(res)
                   let admin_token = result[0].admin_token
                   DB.queryDB(
                     'UPDATE `t_admin_list` SET admin_last_time = Now() WHERE admin_token = ?',
@@ -87,19 +71,9 @@ router.get('/info', function (req, res, next) {
     [token],
     function (error, result, fields) {
       if (error) {
-        let responseJson = {
-          code: 20002,
-          message: 'error',
-          data: 'token不存在'
-        }
-        res.send(responseJson)
+        new Result(error, 'token不存在').fail(res)
       } else {
-        let responseJson = {
-          code: 20000,
-          message: 'success',
-          data: result
-        }
-        res.send(responseJson)
+        new Result(result, 'success').success(res)
       }
     }
   )
@@ -115,19 +89,9 @@ router.post('/logout', function (req, res, next) {
     [new_token, admin_id],
     function (error, result, fields) {
       if (error) {
-        let responseJson = {
-          code: 20002,
-          message: 'error',
-          data: '更新token失败'
-        }
-        res.send(responseJson)
+        new Result(error, '更新token失败').fail(res)
       } else {
-        let responseJson = {
-          code: 20000,
-          message: 'success',
-          data: result
-        }
-        res.send(responseJson)
+        new Result(result, 'success').success(res)
       }
     }
   )
