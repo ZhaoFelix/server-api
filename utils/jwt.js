@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2021-03-17 13:06:21
- * @LastEditTime: 2021-03-17 13:31:33
+ * @LastEditTime: 2021-03-18 08:36:59
  * @FilePath: /server-api/utils/jwt.js
  * Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -14,5 +14,6 @@ module.exports = jwt({
   credentialsRequired: true,
   algorithms: ['RS256']
 }).unless({
+  // 不进行安全认证的白名单
   path: ['/', '/user/login']
 })
