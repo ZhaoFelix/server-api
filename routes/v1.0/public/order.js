@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-11-17 08:57:51
- * @LastEditTime: 2021-01-10 01:14:31
+ * @LastEditTime: 2021-03-23 14:11:08
  * @FilePath: /server-api/routes/v1.0/public/order.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -41,7 +41,10 @@ router.post('/wxpay', function (req, res, next) {
   let attach = mch.attach
   let body = mch.body
   // TODO:价格待添加计算方式
-  let money = 1 //common.clocPrice(buildArea,isFirst,userType)
+  let money =
+    process.env.NODE_ENV == config.prd.env
+      ? common.clocPrice(buildArea, isFirst, userType)
+      : 1
   wxpay
     .order(appId, attach, body, openId, money, notify_url, ip)
     .then((result) => {
@@ -200,7 +203,6 @@ router.post(
       //支付成功，更新订单状态
       let tradeNo = jsonData.out_trade_no
       let order_final_price = jsonData.total_fee
-      console.log(jsonData)
       DB.queryDB(
         'UPDATE t_order_list SET order_status=1,order_pay_time=NOW(),order_final_price = ? WHERE order_number = ? AND order_status=0',
         [order_final_price / 100, tradeNo],
