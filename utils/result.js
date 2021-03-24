@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2021-03-17 13:53:40
- * @LastEditTime: 2021-03-17 14:09:23
+ * @LastEditTime: 2021-03-24 18:31:06
  * @FilePath: /server-api/utils/result.js
  * Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -53,7 +53,7 @@ class Result {
   }
 
   jwtError(res) {
-    this.code = response_options.CODE_TOKEN_EXPIRED
+    this.code = 401
     this.json(res)
   }
 }
