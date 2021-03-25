@@ -129,7 +129,6 @@ router.get('/info', function (req, res, next) {
       } else {
         var dataString = JSON.stringify(result)
         var data = JSON.parse(dataString)
-        console.log(data)
         let { car_id } = data[0]
         DB.queryDB(
           'select * from `t_car_list` where car_id = ? and car_is_deleted = 0',
