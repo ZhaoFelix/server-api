@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-11-04 15:17:36
- * @LastEditTime: 2021-03-18 09:27:39
+ * @LastEditTime: 2021-03-25 09:15:44
  * @FilePath: /server-api/routes/v1.0/pc/users.js
  * Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -18,7 +18,6 @@ router.get('/', function (req, res, next) {
 
 // 分页查询查询微信用户信息
 router.get('/query/all', function (req, res, next) {
-  console.log('测试')
   let parseObj = url.parse(req.url, true)
   let query = parseObj.query
   let limit = parseInt(query.limit)

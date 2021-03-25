@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-10-26 09:18:45
- * @LastEditTime: 2021-03-24 18:10:28
+ * @LastEditTime: 2021-03-25 08:17:53
  * @FilePath: /server-api/routes/index.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -50,7 +50,6 @@ router.use((req, res, next) => {
  * **/
 
 router.use((err, req, res, next) => {
-  console.log(err)
   if (err.name && err.name === 'UnauthorizedError') {
     const { status = 401, message } = err
     new Result(null, 'token失效', {
