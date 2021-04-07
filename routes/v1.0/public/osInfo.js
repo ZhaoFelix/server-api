@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2021-04-06 10:36:30
- * @LastEditTime: 2021-04-06 15:16:34
+ * @LastEditTime: 2021-04-07 14:13:36
  * @FilePath: /server-api/routes/v1.0/public/osInfo.js
  * Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -12,6 +12,15 @@ var DB = require('../../../config/db')
 var url = require('url')
 var os = require('os')
 var Result = require('../../../utils/result')
+router.get('/verify', function (req, res, next) {
+  DB.queryDB('', function (error, result, fields) {
+    if (error) {
+      new Result(error, 'error').fail(res)
+    } else {
+      new Result('接口运行正常', 'success').success(res)
+    }
+  })
+})
 router.get('/info', function (req, res, next) {
   // 处理器架构
   var arch = os.arch()
@@ -47,10 +56,10 @@ router.get('/info', function (req, res, next) {
     arch: arch,
     // cpus: cpus,
     freemem: (freemem / 1024 / 1024 / 1024).toFixed(2),
-    totalmem: totalmem / 1024 / 1024 / 1024,
+    totalmem: (totalmem / 1024 / 1024 / 1024).toFixed(2),
     homedir: homedir,
     hostname: hostname,
-    uptime: uptime / 3600,
+    uptime: (uptime / 3600).toFixed(0),
     loadavg: loadavg,
     type: type,
     release: release,
@@ -80,4 +89,5 @@ router.get('/dbinfo', function (req, res, next) {
     }
   )
 })
+
 module.exports = router
