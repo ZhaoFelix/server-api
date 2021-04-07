@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2021-04-06 10:36:30
- * @LastEditTime: 2021-04-07 14:13:36
+ * @LastEditTime: 2021-04-07 17:39:34
  * @FilePath: /server-api/routes/v1.0/public/osInfo.js
  * Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -44,6 +44,7 @@ router.get('/info', function (req, res, next) {
   var type = os.type()
   // 操作系统版本
   var release = os.release()
+
   //  操作系统类型
   var platform = os.platform()
   //   操作系统临时文件的默认目录
