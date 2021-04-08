@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-09-02 14:23:14
- * @LastEditTime: 2021-04-08 08:54:14
+ * @LastEditTime: 2021-04-08 08:56:14
  * @FilePath: /server-api/routes/v1.0/pc/login.js
  * Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -18,7 +18,7 @@ var { jwt_options } = require('../../../config/env')
 const { jwtDecoded } = require('../../../utils/common')
 // 登录
 router.post('/login', function (req, res, next) {
-  console.log(req.body + '测试')
+  console.log(req.body.username + '测试')
   let admin_name = req.body.username
   let passwd = md5(req.body.password.toUpperCase())
   DB.queryDB(
