@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-10-26 09:36:22
- * @LastEditTime: 2020-12-09 11:07:43
+ * @LastEditTime: 2021-04-09 15:40:16
  * @FilePath: /server-api/utils/logger.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -19,22 +19,18 @@ var accessLogStream = fileStreamRotator.getStream({
 function formatLog(tokens, req, res) {
   //   console.log(tokens)
   return [
-    moment(Date.now()).format('YYYY-MM-DD hh:mm:ss'),
-    tokens['remote-addr'](req, res),
-    tokens['remote-user'](req, res),
-    tokens.method(req, res),
-    tokens.url(req, res),
-    tokens.status(req, res),
-    decodeURI(tokens.url(req, res)),
-    JSON.stringify(req.body),
-    tokens.res(req, res, 'content-length'),
-    '-',
+    '$' + moment(Date.now()).format('YYYY-MM-DD hh:mm:ss'),
+    '%' + tokens.method(req, res),
+    '%' + tokens.url(req, res),
+    '%' + tokens.status(req, res),
+    '%' + decodeURI(tokens.url(req, res)),
+    '%' + JSON.stringify(req.body),
+    '%' + tokens.res(req, res, 'content-length'),
     // 响应时间
-    tokens['response-time'](req, res),
-    'ms',
+    '%' + tokens['response-time'](req, res) + 'ms',
     // 浏览器信息
-    tokens['user-agent'](req, res)
-  ].join(' ')
+    '%' + tokens['user-agent'](req, res)
+  ].join('')
 }
 const accessLog = logger(
   function (tokens, req, res) {
