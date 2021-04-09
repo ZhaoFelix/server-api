@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2021-04-09 15:05:09
- * @LastEditTime: 2021-04-09 18:15:18
+ * @LastEditTime: 2021-04-09 19:02:00
  * @FilePath: /server-api/routes/v1.0/public/analysis.js
  * Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -22,6 +22,7 @@ router.get('/request/count', function (req, res, next) {
   console.log('测试')
   if (!fs.existsSync(logPath)) {
     console.log('文件不存在')
+    new Result('文件不存在', 'error').fail(res)
     return
   }
 
