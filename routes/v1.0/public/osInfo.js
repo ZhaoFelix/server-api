@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2021-04-06 10:36:30
- * @LastEditTime: 2021-04-07 17:39:34
+ * @LastEditTime: 2021-04-09 08:34:32
  * @FilePath: /server-api/routes/v1.0/public/osInfo.js
  * Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -81,6 +81,19 @@ router.get('/dbinfo', function (req, res, next) {
                         or  Variable_name like  'Threads%' or Variable_name like  'Open_tables'
                         or Variable_name like  'Com_select' or Variable_name like  'Com_insert' or Variable_name like  'Com_update';
     `,
+    function (error, result, fields) {
+      if (error) {
+        new Result(error, 'error').fail(res)
+      } else {
+        new Result(result, 'success').success(res)
+      }
+    }
+  )
+})
+
+router.get('/topten', function (req, res, next) {
+  DB.queryDB(
+    'select  wechat_nickname,user_type,wechat_last_time,wechat_avatar from t_user_list   order  by  wechat_last_time  desc limit 0,10',
     function (error, result, fields) {
       if (error) {
         new Result(error, 'error').fail(res)
