@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-11-17 08:57:51
- * @LastEditTime: 2021-04-20 15:17:20
+ * @LastEditTime: 2021-04-20 15:49:40
  * @FilePath: /server-api/routes/v1.0/public/order.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -55,13 +55,13 @@ router.post('/usual/wxpay', function (req, res, next) {
           quantity: 1,
           price: money,
           goods_category: '普通装修',
-          body: '订单地址：' + address + subAddress
+          body: '订单地址:' + address + subAddress
         }
       ]
     }
   ]
   wxpay
-    .order(appId, attach, body, openId, money, notify_url, detail, ip)
+    .order(appId, attach, body, openId, money, notify_url, ip, detail)
     .then((result) => {
       DB.queryDB(
         'INSERT INTO t_order_list (user_id,order_price,user_reserve_time,order_size,order_user_type,order_number, user_phone,user_address,user_is_first,order_is_assign,user_note,order_user_name,order_type,estate_id,order_created_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,NOW())',
@@ -149,7 +149,7 @@ router.post('/box/wxpay', function (req, res, next) {
   let appId = mch.appId
   let notify_url = mch.notify_url
   let ip = mch.ip
-  let attach = mch.attach
+  let attach = '垃圾清运：' + address + subAddress
   let body = mch.body
   let detail = [
     {

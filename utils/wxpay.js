@@ -13,14 +13,15 @@ module.exports = {
     total_fee,
     notify_url,
     ip,
-    trade_no,
-    detail
+    detail,
+    trade_no
   ) {
     return new Promise((resolve, reject) => {
       console.log(trade_no)
       let nonce_str = util.createNonceStr()
       let out_trade_no =
         trade_no == undefined ? util.getTradeId('mp') : trade_no
+      console.log(out_trade_no)
       // 支付前需要先获取支付签名
       let sign = this.getPrePaySign(
         appid,
@@ -97,6 +98,7 @@ module.exports = {
     out_trade_no,
     detail
   ) {
+    console.log('生成签名')
     let params = {
       appid,
       attach,
