@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-12-07 09:40:25
- * @LastEditTime: 2021-03-18 12:54:27
+ * @LastEditTime: 2021-04-20 14:35:37
  * @FilePath: /server-api/utils/common.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -49,8 +49,14 @@ function jwtDecoded(req) {
   }
   return jwt.verify(token, jwt_options.PRIVATE_KEY)
 }
+
+function timeFormatter(timeStr) {
+  let timeArr = timeStr.split(' ')
+  return timeArr[0] + (timeArr[1] == '上午' ? ' 8:00' : ' 12:00')
+}
 module.exports = {
   clocPrice,
   md5,
-  jwtDecoded
+  jwtDecoded,
+  timeFormatter
 }

@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-11-17 08:57:51
- * @LastEditTime: 2021-03-23 14:11:08
+ * @LastEditTime: 2021-04-20 15:17:20
  * @FilePath: /server-api/routes/v1.0/public/order.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -15,8 +15,8 @@ var config = require('../../../config/env')
 let common = require('../../../utils/common')
 let util = require('../../../utils/pay.js')
 const mch = config.mch
-// 微信支付
-router.post('/wxpay', function (req, res, next) {
+// 普通微信支付
+router.post('/usual/wxpay', function (req, res, next) {
   let {
     userId,
     userType,
@@ -45,15 +45,30 @@ router.post('/wxpay', function (req, res, next) {
     process.env.NODE_ENV == config.prd.env
       ? common.clocPrice(buildArea, isFirst, userType)
       : 1
+
+  let detail = [
+    {
+      goods_detail: [
+        {
+          goods_id: 'mp100',
+          goods_name: '装修垃圾清运',
+          quantity: 1,
+          price: money,
+          goods_category: '普通装修',
+          body: '订单地址：' + address + subAddress
+        }
+      ]
+    }
+  ]
   wxpay
-    .order(appId, attach, body, openId, money, notify_url, ip)
+    .order(appId, attach, body, openId, money, notify_url, detail, ip)
     .then((result) => {
       DB.queryDB(
         'INSERT INTO t_order_list (user_id,order_price,user_reserve_time,order_size,order_user_type,order_number, user_phone,user_address,user_is_first,order_is_assign,user_note,order_user_name,order_type,estate_id,order_created_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,NOW())',
         [
           userId,
           orderPrice,
-          selectTime,
+          common.timeFormatter(selectTime),
           buildArea,
           userType,
           result.tradeNo,
@@ -88,6 +103,118 @@ router.post('/wxpay', function (req, res, next) {
               [JSON.stringify(imagesList), order_id],
               function (error, resu, fields) {
                 if (error) {
+                  console.log('新建订单信息记录失败，error:' + error)
+                } else {
+                  console.log(
+                    '新建订单信息记录成功，记录ID为：' + resu.insertId
+                  )
+                }
+              }
+            )
+          }
+        }
+      )
+    })
+    .catch((error) => {
+      let responseJson = {
+        code: 20002,
+        message: '支付配置失败',
+        data: error
+      }
+      res.send(responseJson)
+    })
+})
+
+// 按箱微信支付
+router.post('/box/wxpay', function (req, res, next) {
+  let {
+    userId,
+    userType,
+    address,
+    buildArea,
+    imagesList,
+    isFirst,
+    isAssign,
+    name,
+    openId,
+    orderNote,
+    orderPrice,
+    phoneNumber,
+    selectTime,
+    subAddress,
+    orderType,
+    estate_id,
+    boxNumber
+  } = req.body
+  let appId = mch.appId
+  let notify_url = mch.notify_url
+  let ip = mch.ip
+  let attach = mch.attach
+  let body = mch.body
+  let detail = [
+    {
+      goods_detail: [
+        {
+          goods_id: 'mp100',
+          goods_name: '装修垃圾清运',
+          quantity: 1,
+          price: money,
+          goods_category: '普通装修',
+          body: '订单地址：' + address + subAddress
+        }
+      ]
+    }
+  ]
+  // TODO:价格待添加计算方式
+  let money =
+    process.env.NODE_ENV == config.prd.env
+      ? boxNumber * config.boxPrice * 100
+      : 1
+  wxpay
+    .order(appId, attach, body, openId, money, notify_url, detail, ip)
+    .then((result) => {
+      DB.queryDB(
+        'INSERT INTO t_order_list (user_id,order_price,user_reserve_time,order_size,order_user_type,order_number, user_phone,user_address,user_is_first,order_is_assign,user_note,order_user_name,order_type,estate_id,box_number,order_created_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,NOW())',
+        [
+          userId,
+          orderPrice,
+          common.timeFormatter(selectTime),
+          buildArea,
+          userType,
+          result.tradeNo,
+          phoneNumber,
+          address + subAddress,
+          isFirst,
+          isAssign,
+          orderNote,
+          name,
+          orderType,
+          estate_id,
+          boxNumber
+        ],
+        function (error, re, fields) {
+          if (error) {
+            let responseJson = {
+              code: 20002,
+              message: '创建订单失败',
+              data: error
+            }
+            res.send(responseJson)
+          } else {
+            let responseJson = {
+              code: 20000,
+              message: '支付配置成功',
+              data: result
+            }
+            res.send(responseJson)
+            let order_id = re.insertId
+            //  订单创建成功后将用户提交的图片链接存储到t_order_info_list表
+            DB.queryDB(
+              'insert  into t_order_info_list (user_place_order_img,user_place_order_time,order_id,created_time) values (?,Now(),?,NOW())',
+              [JSON.stringify(imagesList), order_id],
+              function (error, resu, fields) {
+                if (error) {
+                  // TODO:将订单更新信息写入文件
                   console.log('新建订单信息记录失败，error:' + error)
                 } else {
                   console.log(

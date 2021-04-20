@@ -13,7 +13,8 @@ module.exports = {
     total_fee,
     notify_url,
     ip,
-    trade_no
+    trade_no,
+    detail
   ) {
     return new Promise((resolve, reject) => {
       console.log(trade_no)
@@ -30,7 +31,8 @@ module.exports = {
         notify_url,
         ip,
         nonce_str,
-        out_trade_no
+        out_trade_no,
+        detail
       )
       // 通过参数和签名组装xml数据，用以调用统一下单接口
       let sendData = this.wxSendData(
@@ -43,7 +45,8 @@ module.exports = {
         ip,
         nonce_str,
         out_trade_no,
-        sign
+        sign,
+        detail
       )
       let self = this
       let url = 'https://api.mch.weixin.qq.com/pay/unifiedorder'
@@ -91,12 +94,14 @@ module.exports = {
     notify_url,
     ip,
     nonce_str,
-    out_trade_no
+    out_trade_no,
+    detail
   ) {
     let params = {
       appid,
       attach,
       body,
+      detail,
       mch_id: config.mch_id,
       nonce_str,
       notify_url,
@@ -121,7 +126,8 @@ module.exports = {
     ip,
     nonce_str,
     out_trade_no,
-    sign
+    sign,
+    detail
   ) {
     let data =
       '<xml>' +
@@ -137,6 +143,9 @@ module.exports = {
       '<mch_id><![CDATA[' +
       config.mch_id +
       ']]></mch_id>' +
+      '<detail><![CDATA[' +
+      detail +
+      ']]></detail>' +
       '<nonce_str><![CDATA[' +
       nonce_str +
       ']]></nonce_str>' +
