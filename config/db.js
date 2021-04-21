@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-11-03 08:34:04
- * @LastEditTime: 2021-03-25 13:21:35
+ * @LastEditTime: 2021-04-20 16:23:14
  * @FilePath: /server-api/config/db.js
  * Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -21,8 +21,9 @@ function queryDB(sql, params = '1', callback) {
     } else {
       connection.query(sql, params, function (err, results, fields) {
         if (err) {
-          connection.release() //释放连接
           console.log('查询失败' + err)
+          connection.release() //释放连接
+
           // throw err
         }
 
