@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-11-17 08:57:51
- * @LastEditTime: 2021-04-20 16:32:42
+ * @LastEditTime: 2021-04-21 10:52:31
  * @FilePath: /server-api/routes/v1.0/public/order.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -160,7 +160,7 @@ router.post('/box/wxpay', function (req, res, next) {
     {
       goods_detail: [
         {
-          goods_id: 'mp100',
+          goods_id: 'mp101',
           goods_name: '装修垃圾清运',
           quantity: 1,
           price: money,
@@ -192,6 +192,115 @@ router.post('/box/wxpay', function (req, res, next) {
           orderType,
           estate_id,
           Number(boxNumber)
+        ],
+        function (error, re, fields) {
+          if (error) {
+            let responseJson = {
+              code: 20002,
+              message: '创建订单失败',
+              data: error
+            }
+            res.send(responseJson)
+          } else {
+            let responseJson = {
+              code: 20000,
+              message: '支付配置成功',
+              data: result
+            }
+            res.send(responseJson)
+            let order_id = re.insertId
+            //  订单创建成功后将用户提交的图片链接存储到t_order_info_list表
+            DB.queryDB(
+              'insert  into t_order_info_list (user_place_order_img,user_place_order_time,order_id,created_time) values (?,Now(),?,NOW())',
+              [JSON.stringify(imagesList), order_id],
+              function (error, resu, fields) {
+                if (error) {
+                  // TODO:将订单更新信息写入文件
+                  console.log('新建订单信息记录失败，error:' + error)
+                } else {
+                  console.log(
+                    '新建订单信息记录成功，记录ID为：' + resu.insertId
+                  )
+                }
+              }
+            )
+          }
+        }
+      )
+    })
+    .catch((error) => {
+      let responseJson = {
+        code: 20002,
+        message: '支付配置失败',
+        data: error
+      }
+      res.send(responseJson)
+    })
+})
+
+// 商业支付
+router.post('/business/wxpay', function (req, res, next) {
+  let {
+    userId,
+    userType,
+    address,
+    buildArea,
+    imagesList,
+    isFirst,
+    isAssign,
+    name,
+    openId,
+    orderNote,
+    orderPrice,
+    phoneNumber,
+    selectTime,
+    subAddress,
+    orderType,
+    estate_id,
+    boxNumber
+  } = req.body
+  let appId = mch.appId
+  let notify_url = mch.notify_url
+  let ip = mch.ip
+  let attach = '垃圾清运：' + address + subAddress
+  let body = mch.body
+
+  let money = Number(orderPrice) * 100
+  let detail = [
+    {
+      goods_detail: [
+        {
+          goods_id: 'mp101',
+          goods_name: '装修垃圾清运',
+          quantity: 1,
+          price: money,
+          goods_category: '普通装修',
+          body: '订单地址：' + address + subAddress
+        }
+      ]
+    }
+  ]
+
+  wxpay
+    .order(appId, attach, body, openId, money, notify_url, ip, detail)
+    .then((result) => {
+      DB.queryDB(
+        'INSERT INTO t_order_list (user_id,order_price,user_reserve_time,order_size,order_user_type,order_number, user_phone,user_address,user_is_first,order_is_assign,user_note,order_user_name,order_type,estate_id,order_created_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,NOW())',
+        [
+          userId,
+          money / 100,
+          common.timeFormatter(selectTime),
+          buildArea,
+          userType,
+          result.tradeNo,
+          phoneNumber,
+          address + subAddress,
+          isFirst,
+          isAssign == undefined ? 0 : isAssign,
+          orderNote,
+          name,
+          orderType,
+          estate_id
         ],
         function (error, re, fields) {
           if (error) {
@@ -297,6 +406,7 @@ router.post('/wxpay2', function (req, res, next) {
         attach,
         body,
         openId,
+        // TODO
         1, //order_price * 100,
         mch.notify_url,
         ip,

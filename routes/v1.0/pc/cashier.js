@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2021-04-21 09:06:42
- * @LastEditTime: 2021-04-21 09:59:15
+ * @LastEditTime: 2021-04-21 10:24:31
  * @FilePath: /server-api/routes/v1.0/pc/cashier.js
  * Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -37,6 +37,20 @@ router.get('/code/query/all', function (req, res, next) {
         new Result(error, '查询失败').error(res)
       } else {
         new Result(result, 'success').success(res)
+      }
+    }
+  )
+})
+
+router.get('/code/query/latest', function (req, res, next) {
+  DB.queryDB(
+    'select  cashier_code from t_cashier_code where  expired_time > now() limit 0,1 ',
+    function (error, result, fields) {
+      if (error) {
+        new Result(error, '查询失败').error(res)
+      } else {
+        // TODO: 如果验证码已过期
+        new Result(result[0], 'success').success(res)
       }
     }
   )
