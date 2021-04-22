@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-11-17 08:57:51
- * @LastEditTime: 2021-04-21 10:52:31
+ * @LastEditTime: 2021-04-22 15:08:42
  * @FilePath: /server-api/routes/v1.0/public/order.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -41,10 +41,11 @@ router.post('/usual/wxpay', function (req, res, next) {
   let attach = mch.attach
   let body = mch.body
   // TODO:价格待添加计算方式
-  let money =
-    process.env.NODE_ENV == config.prd.env
-      ? common.clocPrice(buildArea, isFirst, userType)
-      : 1
+  let money = common.isAssign
+    ? 1
+    : process.env.NODE_ENV == config.prd.env
+    ? common.clocPrice(buildArea, isFirst, userType)
+    : 1
 
   let detail = [
     {
@@ -152,10 +153,11 @@ router.post('/box/wxpay', function (req, res, next) {
   let attach = '垃圾清运：' + address + subAddress
   let body = mch.body
 
-  let money =
-    process.env.NODE_ENV == config.prd.env
-      ? Number(boxNumber) * config.boxPrice * 100
-      : 1
+  let money = common.isDebug
+    ? 1
+    : process.env.NODE_ENV == config.prd.env
+    ? Number(boxNumber) * config.boxPrice * 100
+    : 1
   let detail = [
     {
       goods_detail: [
@@ -265,7 +267,7 @@ router.post('/business/wxpay', function (req, res, next) {
   let attach = '垃圾清运：' + address + subAddress
   let body = mch.body
 
-  let money = Number(orderPrice) * 100
+  let money = config.isDebug ? 1 : Number(orderPrice) * 100
   let detail = [
     {
       goods_detail: [
