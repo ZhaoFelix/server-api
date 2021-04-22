@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-11-17 08:57:51
- * @LastEditTime: 2021-04-22 15:08:42
+ * @LastEditTime: 2021-04-22 16:00:49
  * @FilePath: /server-api/routes/v1.0/public/order.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -41,7 +41,7 @@ router.post('/usual/wxpay', function (req, res, next) {
   let attach = mch.attach
   let body = mch.body
   // TODO:价格待添加计算方式
-  let money = common.isAssign
+  let money = config.isDebug
     ? 1
     : process.env.NODE_ENV == config.prd.env
     ? common.clocPrice(buildArea, isFirst, userType)
@@ -153,7 +153,7 @@ router.post('/box/wxpay', function (req, res, next) {
   let attach = '垃圾清运：' + address + subAddress
   let body = mch.body
 
-  let money = common.isDebug
+  let money = config.isDebug
     ? 1
     : process.env.NODE_ENV == config.prd.env
     ? Number(boxNumber) * config.boxPrice * 100
