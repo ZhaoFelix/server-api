@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-11-03 08:34:04
- * @LastEditTime: 2021-04-20 16:23:14
+ * @LastEditTime: 2021-04-23 13:43:23
  * @FilePath: /server-api/config/db.js
  * Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -10,7 +10,11 @@ var mysql = require('mysql')
 let config = require('./env')
 // 创建一个连接池
 let pool = mysql.createPool(
-  process.env.NODE_ENV == config.prd.env ? config.prd.dbInfo : config.dev.dbInfo
+  config.isDebug
+    ? config.prd.dbInfo
+    : process.env.NODE_ENV == config.prd.env
+    ? config.prd.dbInfo
+    : config.dev.dbInfo
 )
 
 //数据库查询，查询时的默认参数为空
