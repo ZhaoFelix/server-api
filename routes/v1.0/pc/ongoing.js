@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-12-10 13:26:52
- * @LastEditTime: 2021-04-23 14:26:50
+ * @LastEditTime: 2021-04-23 15:25:27
  * @FilePath: /server-api/routes/v1.0/pc/ongoing.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -14,7 +14,7 @@ var Result = require('../../../utils/result')
 router.get('/driver', function (req, res, next) {
   // 仅显示当天订单
   DB.queryDB(
-    'select  * from v_assign_order  order by  order_created_time asc',
+    'select  * from v_assign_order  where order_status != 6 order by  order_created_time asc',
     function (error, result, fields) {
       if (error) {
         new Result(error, '查询订单失败').fail(res)
