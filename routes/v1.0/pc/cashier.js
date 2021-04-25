@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2021-04-21 09:06:42
- * @LastEditTime: 2021-04-21 10:24:31
+ * @LastEditTime: 2021-04-25 09:45:27
  * @FilePath: /server-api/routes/v1.0/pc/cashier.js
  * Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -17,7 +17,7 @@ router.get('/code/generate', function (req, res, next) {
   // 生成长度为4的随机验证码
   let verifyCode = common.getRandomStr(4)
   DB.queryDB(
-    'insert into t_cashier_code (`cashier_name`,`cashier_wechat_id`,`cashier_code`,`expired_time`) value (?,?,?,adddate(now(), interval  10 day ))',
+    'insert into t_cashier_code (`cashier_name`,`cashier_wechat_id`,`cashier_code`,`expired_time`) value (?,?,?,adddate(now(), interval  30 day ))',
     ['收费员', 0, verifyCode],
     function (error, result, fields) {
       if (error) {
