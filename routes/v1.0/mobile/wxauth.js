@@ -94,8 +94,8 @@ router.post('/wechat', function (req, res, next) {
         //未登录，添加记录
         return new Promise((resolve, reject) => {
           DB.queryDB(
-            'INSERT INTO `t_user_list` (wechat_open_id,wechat_avatar,wechat_nickname,wechat_gender,wechat_region,wechat_created_time, user_type) VALUES(?,?,?,?,?,NOW(),?)',
-            [openId, avatarUrl, nickName, gender, country, user_type],
+            'INSERT INTO `t_user_list` (wechat_open_id,wechat_avatar,wechat_nickname,wechat_gender,wechat_region,wechat_created_time) VALUES(?,?,?,?,?,NOW())',
+            [openId, avatarUrl, nickName, gender, country],
             function (error, result, fields) {
               if (error) {
                 reject(error)
