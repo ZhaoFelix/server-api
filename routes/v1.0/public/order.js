@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-11-17 08:57:51
- * @LastEditTime: 2021-04-22 17:00:11
+ * @LastEditTime: 2021-04-25 15:33:56
  * @FilePath: /server-api/routes/v1.0/public/order.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -152,7 +152,7 @@ router.post('/box/wxpay', function (req, res, next) {
   let ip = mch.ip
   let attach = '垃圾清运：' + address + subAddress
   let body = mch.body
-
+  // TODO:价格
   let money = config.isDebug
     ? 1
     : process.env.NODE_ENV == config.prd.env
@@ -266,7 +266,7 @@ router.post('/business/wxpay', function (req, res, next) {
   let ip = mch.ip
   let attach = '垃圾清运：' + address + subAddress
   let body = mch.body
-
+  // TODO:价格
   let money = config.isDebug ? 1 : Number(orderPrice) * 100
   let detail = [
     {
