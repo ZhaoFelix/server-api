@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-11-17 08:57:51
- * @LastEditTime: 2021-04-25 15:33:56
+ * @LastEditTime: 2021-04-26 15:52:58
  * @FilePath: /server-api/routes/v1.0/public/order.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -38,8 +38,8 @@ router.post('/usual/wxpay', function (req, res, next) {
   let appId = mch.appId
   let notify_url = mch.notify_url
   let ip = mch.ip
-  let attach = mch.attach
-  let body = mch.body
+  let attach = '商业装修清运' + '地址：' + address + subAddress
+  let body = attach
   // TODO:价格待添加计算方式
   let money = config.isDebug
     ? 1
@@ -150,13 +150,13 @@ router.post('/box/wxpay', function (req, res, next) {
   let appId = mch.appId
   let notify_url = mch.notify_url
   let ip = mch.ip
-  let attach = '垃圾清运：' + address + subAddress
-  let body = mch.body
+  let attach = '垃圾箱清运 地址：' + address + subAddress
+  let body = attach
   // TODO:价格
   let money = config.isDebug
     ? 1
     : process.env.NODE_ENV == config.prd.env
-    ? Number(boxNumber) * config.boxPrice * 100
+    ? Number(boxNumber) * config.boxPrice * 100 * 0.8
     : 1
   let detail = [
     {
@@ -264,8 +264,8 @@ router.post('/business/wxpay', function (req, res, next) {
   let appId = mch.appId
   let notify_url = mch.notify_url
   let ip = mch.ip
-  let attach = '垃圾清运：' + address + subAddress
-  let body = mch.body
+  let attach = '商业装修清运 地址：' + address + subAddress
+  let body = attach
   // TODO:价格
   let money = config.isDebug ? 1 : Number(orderPrice) * 100
   let detail = [
@@ -409,7 +409,7 @@ router.post('/wxpay2', function (req, res, next) {
         body,
         openId,
         // TODO
-        1, //order_price * 100,
+        config.isDebug ? 1 : order_price * 100 * 0.8,
         mch.notify_url,
         ip,
         order_number
