@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-11-17 08:57:51
- * @LastEditTime: 2021-04-27 16:20:22
+ * @LastEditTime: 2021-04-27 16:34:18
  * @FilePath: /server-api/routes/v1.0/public/order.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -413,7 +413,6 @@ router.post('/wxpay2', function (req, res, next) {
             goods_id: 'mp101',
             goods_name: '装修垃圾清运',
             quantity: 1,
-
             goods_category: '普通装修',
             body: '订单地址：' + user_address
           }
@@ -430,16 +429,30 @@ router.post('/wxpay2', function (req, res, next) {
         config.isDebug ? 1 : order_price * 100 * 0.8,
         mch.notify_url,
         ip,
-        detail,
-        order_number
+        detail
       )
       .then((result) => {
-        let responseJson = {
-          code: 20000,
-          message: '支付配置成功',
-          data: result
-        }
-        res.send(responseJson)
+        DB.queryDB(
+          'update  t_order_list set new_order_number = ? where  order_number = ?',
+          [result.tradeNo, order_number],
+          function (error, resu, fields) {
+            if (error) {
+              let responseJson = {
+                code: 20002,
+                message: '新订单号更新失败',
+                data: error
+              }
+              res.send(responseJson)
+            } else {
+              let responseJson = {
+                code: 20000,
+                message: '支付配置成功',
+                data: result
+              }
+              res.send(responseJson)
+            }
+          }
+        )
       })
       .catch((error) => {
         let responseJson = {
@@ -463,8 +476,8 @@ router.post(
       let tradeNo = jsonData.out_trade_no
       let order_final_price = jsonData.total_fee
       DB.queryDB(
-        'UPDATE t_order_list SET order_status=1,order_pay_time=NOW(),order_final_price = ? WHERE order_number = ? AND order_status=0',
-        [order_final_price / 100, tradeNo],
+        'UPDATE t_order_list SET order_status=1,order_pay_time=NOW(),order_final_price = ? WHERE (order_number = ? or new_order_number = ? ) AND order_status=0',
+        [order_final_price / 100, tradeNo, tradeNo],
         function (error, result, fields) {
           if (error) {
             console.log(tradeNo + '订单更新失败,错误原因：' + error)
