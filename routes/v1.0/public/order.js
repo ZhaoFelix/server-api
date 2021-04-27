@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-11-17 08:57:51
- * @LastEditTime: 2021-04-27 16:18:51
+ * @LastEditTime: 2021-04-27 16:20:22
  * @FilePath: /server-api/routes/v1.0/public/order.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -413,7 +413,7 @@ router.post('/wxpay2', function (req, res, next) {
             goods_id: 'mp101',
             goods_name: '装修垃圾清运',
             quantity: 1,
-            price: money,
+
             goods_category: '普通装修',
             body: '订单地址：' + user_address
           }
