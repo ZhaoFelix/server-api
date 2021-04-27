@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-11-17 08:57:51
- * @LastEditTime: 2021-04-26 15:52:58
+ * @LastEditTime: 2021-04-27 10:19:57
  * @FilePath: /server-api/routes/v1.0/public/order.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -40,13 +40,14 @@ router.post('/usual/wxpay', function (req, res, next) {
   let ip = mch.ip
   let attach = '商业装修清运' + '地址：' + address + subAddress
   let body = attach
+  console.log('测试1')
   // TODO:价格待添加计算方式
   let money = config.isDebug
     ? 1
     : process.env.NODE_ENV == config.prd.env
     ? common.clocPrice(buildArea, isFirst, userType)
     : 1
-
+  console.log('测试2')
   let detail = [
     {
       goods_detail: [
