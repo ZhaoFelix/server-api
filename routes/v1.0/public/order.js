@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-11-17 08:57:51
- * @LastEditTime: 2021-04-27 19:18:50
+ * @LastEditTime: 2021-04-27 19:40:42
  * @FilePath: /server-api/routes/v1.0/public/order.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -482,6 +482,9 @@ router.post(
           if (error) {
             console.log(tradeNo + '订单更新失败,错误原因：' + error)
           } else {
+            res.writeHead(200, { 'Content-Type': 'text/xml' })
+            const re = `<xml><return_code><![CDATA[SUCCESS]]></return_code><return_msg><![CDATA[OK]]></return_msg></xml>`
+            res.end(re)
             console.log(tradeNo + '订单更新成功')
           }
         }
