@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-11-17 08:57:51
- * @LastEditTime: 2021-04-27 16:06:45
+ * @LastEditTime: 2021-04-27 16:18:51
  * @FilePath: /server-api/routes/v1.0/public/order.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -406,6 +406,20 @@ router.post('/wxpay2', function (req, res, next) {
   }
   // 商业装修支付
   else {
+    let detail = [
+      {
+        goods_detail: [
+          {
+            goods_id: 'mp101',
+            goods_name: '装修垃圾清运',
+            quantity: 1,
+            price: money,
+            goods_category: '普通装修',
+            body: '订单地址：' + user_address
+          }
+        ]
+      }
+    ]
     wxpay
       .order(
         appId,
@@ -416,6 +430,7 @@ router.post('/wxpay2', function (req, res, next) {
         config.isDebug ? 1 : order_price * 100 * 0.8,
         mch.notify_url,
         ip,
+        detail,
         order_number
       )
       .then((result) => {
