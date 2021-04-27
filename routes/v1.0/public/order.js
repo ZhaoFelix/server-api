@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-11-17 08:57:51
- * @LastEditTime: 2021-04-27 10:22:02
+ * @LastEditTime: 2021-04-27 14:46:31
  * @FilePath: /server-api/routes/v1.0/public/order.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -38,7 +38,7 @@ router.post('/usual/wxpay', function (req, res, next) {
   let appId = mch.appId
   let notify_url = mch.notify_url
   let ip = mch.ip
-  let attach = '商业装修清运' + '地址：' + address + subAddress
+  let attach = '普通装修清运 ' + '地址：' + address + subAddress
   let body = attach
   console.log(config.isDebug, buildArea, isFirst, userType)
   // TODO:价格待添加计算方式
@@ -291,7 +291,7 @@ router.post('/business/wxpay', function (req, res, next) {
         'INSERT INTO t_order_list (user_id,order_price,user_reserve_time,order_size,order_user_type,order_number, user_phone,user_address,user_is_first,order_is_assign,user_note,order_user_name,order_type,estate_id,order_created_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,NOW())',
         [
           userId,
-          money / 100,
+          orderPrice,
           common.timeFormatter(selectTime),
           buildArea,
           userType,
