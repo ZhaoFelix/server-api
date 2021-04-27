@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-11-17 08:57:51
- * @LastEditTime: 2021-04-27 16:34:18
+ * @LastEditTime: 2021-04-27 19:18:50
  * @FilePath: /server-api/routes/v1.0/public/order.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -367,7 +367,7 @@ router.post('/wxpay2', function (req, res, next) {
   let attach =
     (orderType == 1 ? '普通装修清运 地址：' : '垃圾箱清运 地址：') +
     user_address
-  let body = mch.body
+  let body = attach
   // 补差价order_gap_price * 100
   if (payType == 1) {
     wxpay
