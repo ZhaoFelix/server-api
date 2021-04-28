@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-12-09 14:28:16
- * @LastEditTime: 2021-01-06 09:32:13
+ * @LastEditTime: 2021-04-28 09:50:55
  * @FilePath: /server-api/routes/v1.0/Dmobile/order.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -17,7 +17,7 @@ router.get('/query', function (req, res, next) {
   let userId = req.query.userId
   console.log(userId)
   DB.queryDB(
-    'select  * from v_assign_order where  driver_id = (select driver_id from t_driver_list where wechat_id = ? and driver_is_deleted = 0 limit 0,1) and order_status != 6 limit 0,1 ',
+    `select  *,if(substring_index(user_reserve_time, ' ',-1) = '08:00:00', concat(substring_index(user_reserve_time, ' ',1), ' 上午' ),concat(substring_index(user_reserve_time, ' ',1), ' 下午' ) ) as reserve_time from v_assign_order where  driver_id = (select driver_id from t_driver_list where wechat_id = ? and driver_is_deleted = 0 limit 0,1) and order_status != 6 limit 0,1 `,
     userId,
     function (error, result, next) {
       if (error) {
@@ -45,7 +45,7 @@ router.get('/queryall', function (req, res, next) {
   let userId = req.query.userId === undefined ? 107 : req.query.userId
   console.log(userId)
   DB.queryDB(
-    'select  order_number,user_address,order_size,order_status,user_reserve_time,driver_name,driver_phone,driver_reach_trash from v_assign_order where driver_id = (select driver_id from t_driver_list where wechat_id = ? and driver_is_deleted = 0 limit 0,1) order by order_created_time desc',
+    `select  order_number,user_address,order_size,order_status,order_type,user_reserve_time,driver_name,driver_phone,driver_reach_trash,box_number,if(substring_index(user_reserve_time, ' ',-1) = '08:00:00', concat(substring_index(user_reserve_time, ' ',1), ' 上午' ),concat(substring_index(user_reserve_time, ' ',1), ' 下午' ) ) as reserve_time from v_assign_order where driver_id = (select driver_id from t_driver_list where wechat_id = ? and driver_is_deleted = 0 limit 0,1) order by order_created_time desc`,
     userId,
     function (error, result, next) {
       if (error) {
