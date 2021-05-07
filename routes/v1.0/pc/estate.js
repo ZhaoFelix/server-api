@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-11-12 10:04:39
- * @LastEditTime: 2021-05-07 10:32:02
+ * @LastEditTime: 2021-05-07 11:19:34
  * @FilePath: /server-api/routes/v1.0/pc/estate.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -81,6 +81,30 @@ router.get('/update/delete', function (req, res, next) {
         new Result(error, 'error').fail(res)
       } else {
         new Result(result, '删除成功').success(res)
+      }
+    }
+  )
+})
+
+// 更新物业信息
+router.get('/update/edit', function (req, res, next) {
+  let parseObj = url.parse(req.url, true)
+  let query = parseObj.query
+  DB.queryDB(
+    'update t_estate_list set  estate_name = ? ,estate_phone = ?, estate_company = ?, estate_region = ? ,estate_plot = ? where  estate_id = ? and estate_is_deleted = 0',
+    [
+      query.estate_name,
+      query.estate_phone,
+      query.estate_company,
+      query.estate_region,
+      query.estate_plot,
+      query.estate_id
+    ],
+    function (error, result, fields) {
+      if (error) {
+        new Result(error, 'error').fail(res)
+      } else {
+        new Result(result, '更新成功').success(res)
       }
     }
   )
