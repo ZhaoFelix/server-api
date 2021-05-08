@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-11-12 10:04:39
- * @LastEditTime: 2021-05-07 15:44:10
+ * @LastEditTime: 2021-05-08 16:36:31
  * @FilePath: /server-api/routes/v1.0/pc/estate.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -54,8 +54,10 @@ router.get('/query/queryByKeyword', function (req, res, next) {
   let parseObj = url.parse(req.url, true)
   let query = parseObj.query
   let keyword = query.keyword
+  console.log(keyword)
+
   DB.queryDB(
-    "select  * from t_estate_list  where estate_is_deleted = 0 and estate_phone like '%" +
+    "select  * from t_estate_list  where estate_is_deleted = 0 and concat(estate_phone,estate_name) like '%" +
       keyword +
       "%'",
     function (error, result, fields) {
