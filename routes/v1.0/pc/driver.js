@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-11-13 10:37:15
- * @LastEditTime: 2021-03-18 09:03:30
+ * @LastEditTime: 2021-05-08 09:31:45
  * @FilePath: /server-api/routes/v1.0/pc/driver.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -19,7 +19,7 @@ router.get('/query/all', function (req, res, next) {
   let limit = parseInt(query.limit)
   let offset = parseInt(query.offset)
   DB.queryDB(
-    'select  * from t_driver_list  limit ? offset ?',
+    'select  * from t_driver_list where driver_is_deleted = 0  order by  driver_created_time desc limit ? offset ?',
     [limit, offset],
     function (error, result, fields) {
       if (error) {
@@ -94,6 +94,58 @@ router.get('/update/third', function (req, res, next) {
         new Result(error, '指派车队长失败').fail(res)
       } else {
         new Result(result, '指派车队长成功').success(res)
+      }
+    }
+  )
+})
+
+// 删除司机
+router.get('/update/delete', function (req, res, next) {
+  let parseObj = url.parse(req.url, true)
+  let query = parseObj.query
+  let driver_id = query.driver_id
+  DB.queryDB(
+    'update  t_driver_list set driver_is_deleted = 1 where driver_is_auth = 0  and driver_id = ?',
+    driver_id,
+    function (error, result, fields) {
+      if (error) {
+        new Result(error, 'error').fail(res)
+      } else {
+        new Result(result, '删除成功').success(res)
+      }
+    }
+  )
+})
+
+// 更新司机信息
+router.get('/update/edit', function (req, res, next) {
+  let parseObj = url.parse(req.url, true)
+  let query = parseObj.query
+  DB.queryDB(
+    'update t_driver_list set  driver_name = ? ,driver_phone = ? where  driver_id = ? and driver_is_deleted = 0',
+    [query.driver_name, query.driver_phone, query.driver_id],
+    function (error, result, fields) {
+      if (error) {
+        new Result(error, 'error').fail(res)
+      } else {
+        new Result(result, '更新成功').success(res)
+      }
+    }
+  )
+})
+
+// 添加司机人员信息
+router.get('/insert/add', function (req, res, next) {
+  let parseObj = url.parse(req.url, true)
+  let query = parseObj.query
+  DB.queryDB(
+    'insert into t_driver_list(driver_name, driver_phone, driver_card_id, driver_created_time) values (?,?,?,now())',
+    [query.driver_name, query.driver_phone, query.driver_card_id],
+    function (error, result, fields) {
+      if (error) {
+        new Result(error, 'error').fail(res)
+      } else {
+        new Result(result, '添加成功').success(res)
       }
     }
   )
