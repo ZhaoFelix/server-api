@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-11-13 14:34:59
- * @LastEditTime: 2021-03-18 08:54:04
+ * @LastEditTime: 2021-05-08 10:54:23
  * @FilePath: /server-api/routes/v1.0/pc/car.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -16,11 +16,11 @@ router.get('/query/all', function (req, res, next) {
   // 前端传值
   let parseObj = url.parse(req.url, true)
   let query = parseObj.query
-  console.log(parseObj)
+
   let limit = parseInt(query.limit)
   let offset = parseInt(query.offset)
   DB.queryDB(
-    'select  * from  t_car_list  limit ? offset ?',
+    'select  * from  t_car_list where car_is_deleted = 0 order by car_created_time desc  limit ? offset ?',
     [limit, offset],
     function (error, result, fields) {
       if (error) {
@@ -33,8 +33,6 @@ router.get('/query/all', function (req, res, next) {
             if (error) {
               new Result(error, 'e查询记录总条数失败').fail(res)
             } else {
-              // new Result(error, 'sucess').sucess(res)
-              console.log(result)
               let responseJson = {
                 code: 20000,
                 message: 'success',
@@ -72,6 +70,40 @@ router.get('/query/queryByKeyword', function (req, res, next) {
           data: result
         }
         res.send(responseJson)
+      }
+    }
+  )
+})
+// 删除司机
+router.get('/update/delete', function (req, res, next) {
+  let parseObj = url.parse(req.url, true)
+  let query = parseObj.query
+  let driver_id = query.car_id
+  DB.queryDB(
+    'update  t_car_list set car_is_deleted = 1 where car_id = ? and car_id not in (select car_id from t_order_list where car_id is not null)',
+    driver_id,
+    function (error, result, fields) {
+      if (error) {
+        new Result(error, 'error').fail(res)
+      } else {
+        new Result(result, '删除成功').success(res)
+      }
+    }
+  )
+})
+
+// 添加车辆信息
+router.get('/insert/add', function (req, res, next) {
+  let parseObj = url.parse(req.url, true)
+  let query = parseObj.query
+  DB.queryDB(
+    'insert into t_car_list(car_number, third_id, car_created_time) values (?,?,now())',
+    [query.car_number, query.third_id],
+    function (error, result, fields) {
+      if (error) {
+        new Result(error, 'error').fail(res)
+      } else {
+        new Result(result, '添加成功').success(res)
       }
     }
   )
