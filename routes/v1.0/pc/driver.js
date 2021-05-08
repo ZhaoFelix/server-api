@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-11-13 10:37:15
- * @LastEditTime: 2021-05-08 09:31:45
+ * @LastEditTime: 2021-05-08 10:10:58
  * @FilePath: /server-api/routes/v1.0/pc/driver.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -139,8 +139,13 @@ router.get('/insert/add', function (req, res, next) {
   let parseObj = url.parse(req.url, true)
   let query = parseObj.query
   DB.queryDB(
-    'insert into t_driver_list(driver_name, driver_phone, driver_card_id, driver_created_time) values (?,?,?,now())',
-    [query.driver_name, query.driver_phone, query.driver_card_id],
+    'insert into t_driver_list(driver_name, driver_phone, driver_card_id,third_id, driver_created_time) values (?,?,?,?,now())',
+    [
+      query.driver_name,
+      query.driver_phone,
+      query.driver_card_id,
+      query.third_id
+    ],
     function (error, result, fields) {
       if (error) {
         new Result(error, 'error').fail(res)
