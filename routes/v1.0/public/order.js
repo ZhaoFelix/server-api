@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-11-17 08:57:51
- * @LastEditTime: 2021-05-09 14:25:03
+ * @LastEditTime: 2021-05-09 14:26:50
  * @FilePath: /server-api/routes/v1.0/public/order.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -48,7 +48,7 @@ router.post('/usual/wxpay', function (req, res, next) {
     ? common.clocPrice(buildArea, isFirst, userType)
     : 1
   console.log('测试2')
-  console.log('支付价格' + money)
+  console.log('支付价格' + parseInt(money))
   let detail = [
     {
       goods_detail: [
