@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-12-07 09:40:25
- * @LastEditTime: 2021-04-27 10:26:10
+ * @LastEditTime: 2021-05-09 14:16:55
  * @FilePath: /server-api/utils/common.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -12,24 +12,24 @@ const jwt = require('jsonwebtoken')
 
 function clocPrice(buildArea, isFirst, userType) {
   let finalPrice = 0
-  // 是否是首次装修
-  if (isFirst == '1') {
-    if (Number(buildArea) >= 55 && Number(buildArea) <= 140) {
-      finalPrice = 300 + (Number(buildArea) - 55) * 5
-    } else if (Number(buildArea) > 140) {
-      finalPrice = 300 + (140 - 55) * 5 + (Number(buildArea) - 140) * 7
-    } else {
-      finalPrice = 300
-    }
+  // // 是否是首次装修
+  // if (isFirst == '1') {
+  //   if (Number(buildArea) >= 55 && Number(buildArea) <= 140) {
+  //     finalPrice = 300 + (Number(buildArea) - 55) * 5
+  //   } else if (Number(buildArea) > 140) {
+  //     finalPrice = 300 + (140 - 55) * 5 + (Number(buildArea) - 140) * 7
+  //   } else {
+  //     finalPrice = 300
+  //   }
+  // } else {
+  if (Number(buildArea) >= 55 && Number(buildArea) <= 140) {
+    finalPrice = 360 + (Number(buildArea) - 55) * 6
+  } else if (Number(buildArea) > 140) {
+    finalPrice = 360 + (140 - 55) * 6 + (Number(buildArea) - 140) * 8
   } else {
-    if (Number(buildArea) >= 55 && Number(buildArea) <= 140) {
-      finalPrice = 360 + (Number(buildArea) - 55) * 6
-    } else if (Number(buildArea) > 140) {
-      finalPrice = 360 + (140 - 55) * 6 + (Number(buildArea) - 140) * 8
-    } else {
-      finalPrice = 360
-    }
+    finalPrice = 360
   }
+  // }
   console.log(finalPrice)
   return userType == 1 ? finalPrice * estate.discount * 100 : finalPrice * 100
 }
