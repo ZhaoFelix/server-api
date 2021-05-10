@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-12-18 14:43:30
- * @LastEditTime: 2021-05-10 17:29:47
+ * @LastEditTime: 2021-05-10 21:39:33
  * @FilePath: /server-api/routes/v1.0/pc/dashboard.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -33,7 +33,7 @@ router.get('/week', function (req, res, next) {
 
   let sql =
     type == 'order'
-      ? "select DATE_FORMAT(user_reserve_time,'%Y-%m-%d') days,count(order_id) count from t_order_list where DATE_SUB(curdate(),INTERVAL 7 DAY) <= date(user_reserve_time) group by days"
+      ? "select DATE_FORMAT(user_reserve_time,'%Y-%m-%d') days,count(order_id) count from t_order_list where order_status != 2  and DATE_SUB(curdate(),INTERVAL 7 DAY) <= date(user_reserve_time) group by days"
       : "select DATE_FORMAT(wechat_created_time,'%Y-%m-%d') days,count(user_id) count from t_user_list  where DATE_SUB(curdate(),INTERVAL 7 DAY) <= date(wechat_created_time) group by days"
   DB.queryDB(sql, function (error, result, fields) {
     if (error) {
