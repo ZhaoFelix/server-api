@@ -375,7 +375,7 @@ router.post('/wxpay2', function (req, res, next) {
       .order(appId, attach, body, openId, order_gap_price, notify_url, ip)
       .then((result) => {
         DB.queryDB(
-          'update  t_order_list set new_order_number = ? where  order_number = ? and order_status = 7',
+          'update  t_order_list set new_order_number = ? where  order_number = ? and order_status = 1',
           [result.tradeNo, order_number],
           function (error, resu, fields) {
             if (error) {
