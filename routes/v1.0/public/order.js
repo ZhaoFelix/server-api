@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-11-17 08:57:51
- * @LastEditTime: 2021-05-09 14:35:39
+ * @LastEditTime: 2021-05-10 17:41:42
  * @FilePath: /server-api/routes/v1.0/public/order.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -375,7 +375,7 @@ router.post('/wxpay2', function (req, res, next) {
       .order(appId, attach, body, openId, order_gap_price, notify_url, ip)
       .then((result) => {
         DB.queryDB(
-          'update  t_order_list set new_order_number = ? where  order_number = ? and order_status = 1',
+          'update  t_order_list set new_order_number = ?,order_status = 1 where  order_number = ? and order_status = 0',
           [result.tradeNo, order_number],
           function (error, resu, fields) {
             if (error) {
