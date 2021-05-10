@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-11-17 08:57:51
- * @LastEditTime: 2021-05-10 17:41:42
+ * @LastEditTime: 2021-05-10 21:32:33
  * @FilePath: /server-api/routes/v1.0/public/order.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -289,7 +289,7 @@ router.post('/business/wxpay', function (req, res, next) {
     .order(appId, attach, body, openId, parseInt(money), notify_url, ip, detail)
     .then((result) => {
       DB.queryDB(
-        'INSERT INTO t_order_list (user_id,order_price,user_reserve_time,order_size,order_user_type,order_number, user_phone,user_address,user_is_first,order_is_assign,user_note,order_user_name,order_type,estate_id,order_created_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,NOW())',
+        'INSERT INTO t_order_list (user_id,order_price,user_reserve_time,order_size,order_user_type,order_number, user_phone,user_address,user_is_first,order_is_assign,user_note,order_user_name,order_type,estate_id,order_created_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,462,NOW())',
         [
           userId,
           orderPrice,
@@ -303,8 +303,7 @@ router.post('/business/wxpay', function (req, res, next) {
           isAssign == undefined ? 0 : isAssign,
           orderNote,
           name,
-          orderType,
-          estate_id
+          orderType
         ],
         function (error, re, fields) {
           if (error) {
