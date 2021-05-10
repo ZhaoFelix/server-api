@@ -12,13 +12,14 @@ router.get('/driver/query', function (req, res, next) {
   let parseObj = url.parse(req.url, true)
   let query = parseObj.query
   let third = query.third
-  let sqlStr =
-    third == 0
-      ? ' where driver_id not in (select driver_id from t_order_list  where  driver_id is not  null  and order_status != 6)'
-      : ' where third_id=' +
-        third +
-        ' and driver_id not in (select driver_id from t_order_list  where  driver_id is not  null  and order_status != 6)'
-  console.log(sqlStr)
+  // let sqlStr =
+  //   third == 0
+  //     ? ' where driver_id not in (select driver_id from t_order_list  where  driver_id is not  null  and order_status != 6)'
+  //     : ' where third_id=' +
+  //       third +
+  //       ' and driver_id not in (select driver_id from t_order_list  where  driver_id is not  null  and order_status != 6)'
+  // console.log(sqlStr)
+  let sqlStr = third == 0 ? '' : ' where third_id=' + third
   return new Promise((resolve, reject) => {
     DB.queryDB(
       'SELECT driver_name,driver_id,driver_is_substitutes from t_driver_list' +
