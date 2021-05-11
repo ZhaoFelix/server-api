@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-11-12 10:04:39
- * @LastEditTime: 2021-05-08 16:38:46
+ * @LastEditTime: 2021-05-11 14:53:55
  * @FilePath: /server-api/routes/v1.0/pc/estate.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -21,7 +21,7 @@ router.get('/query/all', function (req, res, next) {
   let limit = parseInt(query.limit)
   let offset = parseInt(query.offset)
   DB.queryDB(
-    'select  * from t_estate_list  where estate_is_deleted = 0  order by  estate_created_time desc limit ? offset ? ',
+    'select  *,if((estate_id in (select  estate_id from t_order_list)),1,0) as is_exist_order from t_estate_list  where estate_is_deleted = 0  order by  estate_created_time desc limit ? offset ? ',
     [limit, offset],
     function (error, result, fields) {
       if (error) {
@@ -56,7 +56,7 @@ router.get('/query/queryByKeyword', function (req, res, next) {
   let keyword = query.keyword
   console.log(keyword)
   DB.queryDB(
-    "select  * from t_estate_list  where estate_is_deleted = 0 and concat(estate_phone,estate_name,estate_plot) like '%" +
+    "select  *,if((estate_id in (select  estate_id from t_order_list)),1,0) as is_exist_order from t_estate_list  where estate_is_deleted = 0 and concat(estate_phone,estate_name,estate_plot) like '%" +
       keyword +
       "%'",
     function (error, result, fields) {
@@ -81,7 +81,17 @@ router.get('/update/delete', function (req, res, next) {
       if (error) {
         new Result(error, 'error').fail(res)
       } else {
-        new Result(result, '删除成功').success(res)
+        // 微信角色类型更新为0
+        DB.queryDB(
+          'update t_user_list set user_type = 0 where  user_id = (select wechat_id from t_estate_list where estate_id = ?)',
+          estate_id,
+          function (error, result, fields) {
+            if (error) {
+            } else {
+              new Result(result, '删除成功').success(res)
+            }
+          }
+        )
       }
     }
   )
