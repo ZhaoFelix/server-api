@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-12-09 14:28:16
- * @LastEditTime: 2021-05-12 08:29:16
+ * @LastEditTime: 2021-05-12 09:00:04
  * @FilePath: /server-api/routes/v1.0/Dmobile/order.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -15,10 +15,11 @@ router.get('/query', function (req, res, next) {
   let parseObj = url.parse(req.url, true) // 将URL解析为一个对象
   req.query = parseObj.query
   let userId = req.query.userId
+  let orderId = req.query.orderId
   console.log(userId)
   DB.queryDB(
-    `select  *,if(substring_index(user_reserve_time, ' ',-1) = '08:00:00', concat(substring_index(user_reserve_time, ' ',1), ' 上午' ),concat(substring_index(user_reserve_time, ' ',1), ' 下午' ) ) as reserve_time from v_assign_order where  driver_id = (select driver_id from t_driver_list where wechat_id = ? and driver_is_deleted = 0 limit 0,1) and order_status != 6 limit 0,1 `,
-    userId,
+    `select  *,if(substring_index(user_reserve_time, ' ',-1) = '08:00:00', concat(substring_index(user_reserve_time, ' ',1), ' 上午' ),concat(substring_index(user_reserve_time, ' ',1), ' 下午' ) ) as reserve_time from v_assign_order where  driver_id = (select driver_id from t_driver_list where wechat_id = ? and driver_is_deleted = 0 limit 0,1) and order_status != 6 and order_id = ? limit 0,1 `,
+    [userId, orderId],
     function (error, result, next) {
       if (error) {
         let responseJson = {
