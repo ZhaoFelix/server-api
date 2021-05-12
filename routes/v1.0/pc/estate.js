@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-11-12 10:04:39
- * @LastEditTime: 2021-05-11 14:53:55
+ * @LastEditTime: 2021-05-12 08:00:16
  * @FilePath: /server-api/routes/v1.0/pc/estate.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -75,7 +75,7 @@ router.get('/update/delete', function (req, res, next) {
   let query = parseObj.query
   let estate_id = query.estate_id
   DB.queryDB(
-    'update  t_estate_list set estate_is_deleted = 1 where estate_is_auth = 0  and estate_id = ?',
+    'update  t_estate_list set estate_is_deleted = 1 where estate_id = ?',
     estate_id,
     function (error, result, fields) {
       if (error) {
