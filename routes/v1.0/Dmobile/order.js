@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-12-09 14:28:16
- * @LastEditTime: 2021-05-12 16:20:08
+ * @LastEditTime: 2021-05-12 20:45:17
  * @FilePath: /server-api/routes/v1.0/Dmobile/order.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -20,7 +20,7 @@ router.get('/query', function (req, res, next) {
 select  *,if(substring_index(user_reserve_time, ' ',-1) = '08:00:00', concat(substring_index(user_reserve_time, ' ',1), ' 上午' ),concat(substring_index(user_reserve_time, ' ',1), ' 下午' ) ) as reserve_time from v_assign_order where  driver_id = (select driver_id from t_driver_list where wechat_id = ? and driver_is_deleted = 0 limit 0,1) and order_status != 6 and order_id = ? limit 0,1 
 */
   DB.queryDB(
-    `select  *,if(substring_index(user_reserve_time, ' ',-1) = '08:00:00', concat(substring_index(user_reserve_time, ' ',1), ' 上午' ),concat(substring_index(user_reserve_time, ' ',1), ' 下午' ) ) as reserve_time from v_assign_order where  driver_id = (select driver_id from t_driver_list where wechat_id = ? and driver_is_deleted = 0 limit 0,1) and order_status != 6 and order_id = ? limit 0,1`,
+    `select  *,if(substring_index(user_reserve_time, ' ',-1) = '08:00:00', concat(substring_index(user_reserve_time, ' ',1), ' 上午' ),concat(substring_index(user_reserve_time, ' ',1), ' 下午' ) ) as reserve_time from v_assign_order where  driver_id = (select driver_id from t_driver_list where wechat_id = ? and driver_is_deleted = 0 limit 0,1) and  order_id = ? limit 0,1`,
     [userId, orderId],
     function (error, result, next) {
       if (error) {
