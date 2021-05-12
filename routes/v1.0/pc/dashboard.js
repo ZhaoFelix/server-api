@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-12-18 14:43:30
- * @LastEditTime: 2021-05-10 21:39:33
+ * @LastEditTime: 2021-05-12 20:25:45
  * @FilePath: /server-api/routes/v1.0/pc/dashboard.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -33,7 +33,7 @@ router.get('/week', function (req, res, next) {
 
   let sql =
     type == 'order'
-      ? "select DATE_FORMAT(user_reserve_time,'%Y-%m-%d') days,count(order_id) count from t_order_list where order_status != 2  and DATE_SUB(curdate(),INTERVAL 7 DAY) <= date(user_reserve_time) group by days"
+      ? "select DATE_FORMAT(order_created_time,'%Y-%m-%d') days,count(order_id) count from t_order_list where order_status != 2 and DATE_SUB(curdate(),INTERVAL 7 DAY) <= date(order_created_time) group by days"
       : "select DATE_FORMAT(wechat_created_time,'%Y-%m-%d') days,count(user_id) count from t_user_list  where DATE_SUB(curdate(),INTERVAL 7 DAY) <= date(wechat_created_time) group by days"
   DB.queryDB(sql, function (error, result, fields) {
     if (error) {
@@ -45,7 +45,6 @@ router.get('/week', function (req, res, next) {
 })
 
 // 查询已认证和未认证的司机(物业)比例
-
 router.get('/driver/auth', function (req, res, next) {
   let parseObj = url.parse(req.url, true)
   let query = parseObj.query
@@ -63,4 +62,16 @@ router.get('/driver/auth', function (req, res, next) {
   })
 })
 
+router.get('/order/ratio', function (req, res, next) {
+  let sql = `select (select count(order_id) from t_order_list where order_status != 2 and order_type = 1) as '居民装修',
+  (select count(order_id) from t_order_list where order_status != 2 and order_type = 2) as '商业装修',
+  (select count(order_id) from t_order_list where order_status != 2 and order_type = 3) as '垃圾箱清运';`
+  DB.queryDB(sql, function (error, result, fields) {
+    if (error) {
+      new Result(error, '查询失败').fail(res)
+    } else {
+      new Result(result, 'success').success(res)
+    }
+  })
+})
 module.exports = router

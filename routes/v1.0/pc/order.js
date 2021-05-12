@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-11-17 13:15:32
- * @LastEditTime: 2021-03-18 09:24:32
+ * @LastEditTime: 2021-05-12 16:28:46
  * @FilePath: /server-api/routes/v1.0/pc/order.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -19,13 +19,30 @@ router.get('/query/all', function (req, res, next) {
   let limit = parseInt(query.limit)
   let offset = parseInt(query.offset)
   DB.queryDB(
-    'SELECT order_id,order_number,order_price,order_type,order_user_name,order_final_price,second_pay_price,user_reserve_time,order_size,order_user_type,user_phone,user_address,wechat_nickname,driver_name,driver_phone,driver_complete_time,order_created_time,order_status from v_order_list order by order_created_time LIMIT ? OFFSET ?',
+    'SELECT order_id,order_number,order_price,order_type,order_user_name,order_final_price,second_pay_price,user_reserve_time,order_size,order_user_type,user_phone,user_address,wechat_nickname,driver_name,driver_phone,driver_complete_time,order_created_time,order_status from v_order_list order by order_created_time desc LIMIT ? OFFSET ?',
     [limit, offset],
     function (error, result, fields) {
       if (error) {
         new Result(error, '查询订单失败').fail(res)
       } else {
-        new Result(result, 'success').success(res)
+        DB.queryDB(
+          'select count(order_id) as total from t_order_list where order_status != 2',
+          function (error, resu, fields) {
+            if (error) {
+              new Result(error, '查询记录条数失败').fail(res)
+            } else {
+              //  TODO:待修改
+              let responseJson = {
+                code: 20000,
+                message: 'success',
+                total: resu[0].total,
+                data: result
+              }
+              res.send(responseJson)
+            }
+          }
+        )
+        // new Result(result, 'success').success(res)
       }
     }
   )
