@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-12-18 14:43:30
- * @LastEditTime: 2021-05-13 10:19:53
+ * @LastEditTime: 2021-05-13 17:31:01
  * @FilePath: /server-api/routes/v1.0/pc/dashboard.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -68,7 +68,7 @@ router.get('/driver/auth', function (req, res, next) {
   let sql =
     type == 'driver'
       ? 'select  A.total , B.auth_count from (select  count(driver_id) as total from t_driver_list where  driver_is_deleted =0 ) as A, (select  count(driver_id) as auth_count from t_driver_list where driver_is_deleted = 0 and driver_is_auth=1) as B;'
-      : 'select  A.total , B.auth_count from (select  count(estate_id) as total from t_estate_list ) as A, (select  count(estate_id) as auth_count from t_estate_list where estate_is_deleted = 0 and estate_is_auth=1) as B;'
+      : 'select  A.total , B.auth_count from (select  count(estate_id) as total from t_estate_list where estate_is_deleted = 0) as A, (select  count(estate_id) as auth_count from t_estate_list where estate_is_deleted = 0 and estate_is_auth=1) as B;'
   DB.queryDB(sql, function (error, result, fields) {
     if (error) {
       new Result(error, '查询失败').fail(res)
