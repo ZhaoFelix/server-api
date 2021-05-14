@@ -48,7 +48,7 @@ router.get('/query/all', function (req, res, next) {
     }
   )
 })
-// 根据手机号查询经理人信息
+// 根据关键字查询经理人信息
 router.get('/query/queryByKeyword', function (req, res, next) {
   // 前端传值
   let parseObj = url.parse(req.url, true)

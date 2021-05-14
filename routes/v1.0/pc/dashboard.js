@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-12-18 14:43:30
- * @LastEditTime: 2021-05-13 17:31:01
+ * @LastEditTime: 2021-05-14 09:12:59
  * @FilePath: /server-api/routes/v1.0/pc/dashboard.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -79,9 +79,9 @@ router.get('/driver/auth', function (req, res, next) {
 })
 
 router.get('/order/ratio', function (req, res, next) {
-  let sql = `select (select count(order_id) from t_order_list where order_status != 2 and order_type = 1) as '居民装修',
-  (select count(order_id) from t_order_list where order_status != 2 and order_type = 2) as '商业装修',
-  (select count(order_id) from t_order_list where order_status != 2 and order_type = 3) as '垃圾箱清运';`
+  let sql = `select count(distinct case when order_type = 1 then order_id else null end) as '居民装修',
+  count(distinct case when order_type = 2 then order_id else null end) as '商业装修',
+  count(distinct case when order_type = 3 then order_id else null end) as '垃圾箱清运' from t_order_list where order_status != 2;`
   DB.queryDB(sql, function (error, result, fields) {
     if (error) {
       new Result(error, '查询失败').fail(res)
