@@ -17,7 +17,7 @@ router.get('/query/all', function (req, res, next) {
   // 前端传值
   let parseObj = url.parse(req.url, true)
   let query = parseObj.query
-  console.log(parseObj)
+  // console.log(parseObj)
   let limit = parseInt(query.limit)
   let offset = parseInt(query.offset)
   DB.queryDB(

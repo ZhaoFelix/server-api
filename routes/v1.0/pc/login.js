@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-09-02 14:23:14
- * @LastEditTime: 2021-04-08 08:56:14
+ * @LastEditTime: 2021-05-17 10:23:08
  * @FilePath: /server-api/routes/v1.0/pc/login.js
  * Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -77,7 +77,7 @@ router.post('/login', function (req, res, next) {
 router.get('/info', function (req, res, next) {
   console.log('info')
   let decoded = jwtDecoded(req)
-  console.log(req)
+  // console.log(req)
   if (decoded && decoded.username) {
     console.log(decoded.username)
     DB.queryDB(
