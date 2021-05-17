@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-11-17 08:57:51
- * @LastEditTime: 2021-05-17 12:36:10
+ * @LastEditTime: 2021-05-17 13:21:34
  * @FilePath: /server-api/routes/v1.0/public/order.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -42,7 +42,7 @@ router.post('/usual/wxpay', function (req, res, next) {
   let attach =
     '普通装修清运 ' + '地址：' + address + subAddress + '(' + estate_plot + ')'
   let body = attach
-  console.log(config.isDebug, buildArea, isFirst, userType)
+  console.log(attach)
   // TODO:价格待添加计算方式
   let money = config.isDebug
     ? 1
@@ -158,6 +158,7 @@ router.post('/box/wxpay', function (req, res, next) {
   let attach =
     '垃圾箱清运 地址：' + address + subAddress + '(' + estate_plot + ')'
   let body = attach
+  console.log(attach)
   // TODO:价格
   let money = config.isDebug
     ? 1
@@ -272,6 +273,7 @@ router.post('/business/wxpay', function (req, res, next) {
   let ip = mch.ip
   let attach = '商业装修清运 地址：' + address + subAddress
   let body = attach
+
   // TODO:价格
   let money = config.isDebug ? 1 : Number(orderPrice) * 100
   let detail = [
@@ -375,6 +377,7 @@ router.post('/wxpay2', function (req, res, next) {
     '(' +
     estate_plot +
     ')'
+  console.log(attach)
   let body = attach
   // 补差价order_gap_price * 100
   if (payType == 1) {
