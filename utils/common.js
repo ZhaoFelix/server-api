@@ -2,14 +2,14 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-12-07 09:40:25
- * @LastEditTime: 2021-05-09 14:16:55
+ * @LastEditTime: 2021-05-17 12:04:55
  * @FilePath: /server-api/utils/common.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
 let { estate, jwt_options } = require('../config/env')
 let crypto = require('crypto')
 const jwt = require('jsonwebtoken')
-
+let DB = require('../config/db')
 function clocPrice(buildArea, isFirst, userType) {
   let finalPrice = 0
   // // 是否是首次装修
@@ -58,6 +58,7 @@ function getRandomStr(n) {
   }
   return res
 }
+
 module.exports = {
   clocPrice,
   md5,

@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-11-17 08:57:51
- * @LastEditTime: 2021-05-10 21:32:33
+ * @LastEditTime: 2021-05-17 12:36:10
  * @FilePath: /server-api/routes/v1.0/public/order.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -33,12 +33,14 @@ router.post('/usual/wxpay', function (req, res, next) {
     selectTime,
     subAddress,
     orderType,
-    estate_id
+    estate_id,
+    estate_plot
   } = req.body
   let appId = mch.appId
   let notify_url = mch.notify_url
   let ip = mch.ip
-  let attach = '普通装修清运 ' + '地址：' + address + subAddress
+  let attach =
+    '普通装修清运 ' + '地址：' + address + subAddress + '(' + estate_plot + ')'
   let body = attach
   console.log(config.isDebug, buildArea, isFirst, userType)
   // TODO:价格待添加计算方式
@@ -147,12 +149,14 @@ router.post('/box/wxpay', function (req, res, next) {
     subAddress,
     orderType,
     estate_id,
-    boxNumber
+    boxNumber,
+    estate_plot
   } = req.body
   let appId = mch.appId
   let notify_url = mch.notify_url
   let ip = mch.ip
-  let attach = '垃圾箱清运 地址：' + address + subAddress
+  let attach =
+    '垃圾箱清运 地址：' + address + subAddress + '(' + estate_plot + ')'
   let body = attach
   // TODO:价格
   let money = config.isDebug
@@ -359,14 +363,18 @@ router.post('/wxpay2', function (req, res, next) {
     order_number,
     payType,
     order_gap_price,
-    user_address
+    user_address,
+    estate_plot
   } = req.body
   let appId = mch.appId
   let notify_url = mch.notify_url2
   let ip = mch.ip
   let attach =
     (order_type == 1 ? '普通装修清运 地址：' : '垃圾箱清运 地址：') +
-    user_address
+    user_address +
+    '(' +
+    estate_plot +
+    ')'
   let body = attach
   // 补差价order_gap_price * 100
   if (payType == 1) {
