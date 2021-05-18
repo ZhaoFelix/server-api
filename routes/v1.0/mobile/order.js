@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-12-09 14:28:16
- * @LastEditTime: 2021-05-17 11:38:54
+ * @LastEditTime: 2021-05-18 13:15:29
  * @FilePath: /server-api/routes/v1.0/mobile/order.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -74,10 +74,16 @@ router.post('/second', function (req, res, next) {
   let order_number = util.getTradeId('mp')
   let { imagesList, orderNote, selectTime, orderId } = req.body
   DB.queryDB(
-    `insert into t_order_list (user_id,order_user_type,user_phone,user_address,estate_id,order_user_name,order_is_assign, user_reserve_time,order_number,user_note,order_price,order_final_price,order_status,order_size,order_type,order_pay_time,order_created_time)
-    select user_id,order_user_type,user_phone,user_address,estate_id,order_user_name,order_is_assign,?,?,?,0,0,1,0,11,now(),now() from t_order_list where order_id=? and order_is_deleted = 0;
+    `insert into t_order_list (user_id,order_user_type,user_phone,user_address,estate_id,order_user_name,order_is_assign, user_reserve_time,order_number,user_note,father_order_id,order_price,order_final_price,order_status,order_size,order_type,order_pay_time,order_created_time)
+    select user_id,order_user_type,user_phone,user_address,estate_id,order_user_name,order_is_assign,?,?,?,?,0,0,1,0,11,now(),now() from t_order_list where order_id=? and order_is_deleted = 0;
     `,
-    [common.timeFormatter(selectTime), order_number, orderNote, orderId],
+    [
+      common.timeFormatter(selectTime),
+      order_number,
+      orderNote,
+      orderId,
+      orderId
+    ],
     function (error, result, fields) {
       if (error) {
         new Result(error, 'error').fail(res)
