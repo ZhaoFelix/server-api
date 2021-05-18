@@ -48,12 +48,48 @@ router.get('/order/query/', function (req, res, next) {
   let limit = parseInt(query.limit)
   let offset = parseInt(query.offset)
   let third_id = query.third_id
-  let sql =
-    third_id == 0
-      ? 'select  * from v_no_assign_order where order_status != 6 order by  order_created_time desc'
-      : 'select  * from v_no_assign_order where order_status != 6 and third_id = ' +
-        third_id +
-        ' order by  order_created_time desc'
+  let selectRadio = query.selectRadio
+  var sql = ''
+  if (selectRadio == 0) {
+    sql =
+      third_id == 0
+        ? 'select  * from v_no_assign_order where order_status != 6 order by  order_created_time desc'
+        : 'select  * from v_no_assign_order where order_status != 6 and third_id = ' +
+          third_id +
+          ' order by  order_created_time desc'
+  } else if (selectRadio == 1) {
+    // 今日订单
+    sql =
+      third_id == 0
+        ? `select  * from v_no_assign_order where order_status != 6  and date_format(order_created_time, '%Y-%m-%d') = date_format(now(), '%Y-%m-%d')  order by  order_created_time desc`
+        : `select  * from v_no_assign_order where order_status != 6 and date_format(order_created_time, '%Y-%m-%d') = date_format(now(), '%Y-%m-%d') and third_id = ` +
+          third_id +
+          ' order by  order_created_time desc'
+  } else if (selectRadio == 2) {
+    // 待指派
+    sql =
+      third_id == 0
+        ? 'select  * from v_no_assign_order where order_status = 1 order by  order_created_time desc'
+        : 'select  * from v_no_assign_order where order_status = 1 and third_id = ' +
+          third_id +
+          ' order by  order_created_time desc'
+  } else if (selectRadio == 3) {
+    // 进行中
+    sql =
+      third_id == 0
+        ? 'select  * from v_no_assign_order where order_status > 2 and order_status < 6  order by  order_created_time desc'
+        : 'select  * from v_no_assign_order where order_status > 2 and order_status < 6 third_id = ' +
+          third_id +
+          ' order by  order_created_time desc'
+  } else if (selectRadio == 4) {
+    // 未支付
+    sql =
+      third_id == 0
+        ? 'select  * from v_no_assign_order where order_status = 0 order by  order_created_time desc'
+        : 'select  * from v_no_assign_order where order_status = 0 and third_id = ' +
+          third_id +
+          ' order by  order_created_time desc'
+  }
 
   // 查询所有未支付和未派发的订单
   DB.queryDB(sql, function (error, result, fields) {
