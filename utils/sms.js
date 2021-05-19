@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2021-05-19 08:18:36
- * @LastEditTime: 2021-05-19 20:09:47
+ * @LastEditTime: 2021-05-19 20:21:36
  * @FilePath: /server-api/utils/sms.js
  * Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -93,8 +93,7 @@ function sendMessage(access_token, orders) {
       }
     }
     request(option, function (error, response, body) {
-      console.log(error)
-      console.log('发送笑死')
+      console.log(body)
       resolve(body)
     })
   })
@@ -102,18 +101,17 @@ function sendMessage(access_token, orders) {
 
 // 查询订单和司机信息
 function queryDriverAndOrder(order_id, dirver_id) {
-  console.log('信息发送')
   console.log(order_id, dirver_id)
   DB.queryDB(
     `select  A.user_address,A.user_phone,if(substring_index(user_reserve_time, ' ',-1) = '08:00:00', concat(substring_index(user_reserve_time, ' ',1), ' 上午' ),concat(substring_index(user_reserve_time, ' ',1), ' 下午' ) ) as reserve_time ,A.order_type,B.estate_name,B.estate_phone,B.estate_plot,C.wechat_open_id from t_order_list A, t_estate_list B, t_user_list C where A.order_id = ? and C.user_id = (select  wechat_id from t_driver_list where driver_id = ? ) and A.driver_id = ? and B.estate_id = A.estate_id
   `,
     [order_id, dirver_id, dirver_id],
-    function (error, result, next) {
+    async function (error, result, next) {
       if (error) {
         //
         console.log('查询信息失败，error：' + error)
       } else {
-        let access_token = getToken()
+        let access_token = await getToken()
         console.log(access_token)
         sendMessage(access_token, result)
       }
