@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2021-05-19 08:18:36
- * @LastEditTime: 2021-05-19 14:14:22
+ * @LastEditTime: 2021-05-19 19:54:25
  * @FilePath: /server-api/utils/sms.js
  * Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -13,6 +13,7 @@ const request = require('request')
 var path = require('path')
 const options = require('../config/env')
 var DB = require('../config/db')
+const { Console } = require('console')
 // 获取公众号token
 function getToken() {
   return new Promise((resolve, reject) => {
@@ -32,7 +33,6 @@ function getToken() {
       }
     }
     request(option, function (error, response, body) {
-      console.log(response)
       resolve(body)
     })
   })
@@ -92,6 +92,8 @@ function sendMessage(access_token, orders) {
       }
     }
     request(option, function (error, response, body) {
+      console.log(error)
+      console.log('发送笑死')
       resolve(body)
     })
   })
