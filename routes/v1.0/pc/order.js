@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-11-17 13:15:32
- * @LastEditTime: 2021-05-14 13:50:35
+ * @LastEditTime: 2021-05-19 18:24:42
  * @FilePath: /server-api/routes/v1.0/pc/order.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -87,7 +87,24 @@ router.get('/query/queryByKeyword', function (req, res, next) {
     }
   )
 })
+// 根据时间段查询数据
+router.get('/query/queryTime', function (req, res, next) {
+  // 前端传值
+  let parseObj = url.parse(req.url, true)
+  let query = parseObj.query
 
+  DB.queryDB(
+    "SELECT order_id,order_number,order_price,order_type,order_user_name,order_final_price,second_pay_price,user_reserve_time,order_size,order_user_type,user_phone,user_address,wechat_nickname,driver_name,driver_phone,driver_complete_time,order_created_time,order_status,estate_name,estate_plot from v_order_list where date_format(order_created_time,'%Y-%m-%d') >= date_format(?,'%Y-%m-%d') and date_format(order_created_time,'%Y-%m-%d') <= date_format(?,'%Y-%m-%d')",
+    [query.startDate, query.endDate],
+    function (error, result, fields) {
+      if (error) {
+        new Result(error, 'error').fail(res)
+      } else {
+        new Result(result, 'success').success(res)
+      }
+    }
+  )
+})
 router.get('/query/queryByOrderNumber', function (req, res, next) {
   let parseObj = url.parse(req.url, true)
   let query = parseObj.query
