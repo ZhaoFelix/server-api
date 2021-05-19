@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2021-05-19 08:18:36
- * @LastEditTime: 2021-05-19 08:43:39
+ * @LastEditTime: 2021-05-19 14:04:40
  * @FilePath: /server-api/utils/sms.js
  * Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -10,9 +10,9 @@
 const express = require('express')
 const router = express.Router()
 const request = require('request')
-var path = request('path')
+var path = require('path')
 const options = require('../config/env')
-
+var DB = require('../config/db')
 // 获取公众号token
 function getToken() {
   return new Promise((resolve, reject) => {
@@ -32,13 +32,14 @@ function getToken() {
       }
     }
     request(option, function (error, response, body) {
+      console.log(response)
       resolve(body)
     })
   })
 }
 
 // 对公众号发送模板消息
-function sendMessage(access_token, openid, orders) {
+function sendMessage(access_token, orders) {
   return new Promise((resolve, reject) => {
     //需要发送POST请求
     const url =
@@ -46,35 +47,36 @@ function sendMessage(access_token, openid, orders) {
       access_token
     const order = orders[0]
     const data = {
-      touser: openid,
+      touser: order.wechat_open_id,
       template_id: options.wechat.templateId,
       data: {
         first: {
-          value: '派单通知',
+          value: '您有新的订单，请及时上门清运',
           color: '#173177'
         },
         keyword1: {
-          value: order.order_number,
+          value: order.estate_name,
           color: '#173177'
         },
         keyword2: {
-          value: order.order_name,
+          value: order.user_phone,
           color: '#173177'
         },
         keyword3: {
-          value: order.order_phone,
+          value: order.user_address + '(' + order.estate_plot + ')',
           color: '#173177'
         },
         keyword4: {
-          value: order.consignee_addr,
-          color: '#173177'
-        },
-        keyword5: {
-          value: order.order_price + '元',
+          value: order.reserve_time,
           color: '#173177'
         },
         remark: {
-          value: al,
+          value:
+            order.order_type == 1
+              ? '普通装修'
+              : order.order_type == 2
+              ? '垃圾箱清运'
+              : ' 商业装修',
           color: '#173177'
         }
       }
@@ -92,4 +94,28 @@ function sendMessage(access_token, openid, orders) {
       resolve(body)
     })
   })
+}
+
+// 查询订单和司机信息
+function queryDriverAndOrder(order_id, dirver_id) {
+  console.log('信息发送')
+  DB.queryDB(
+    `select  A.user_address,A.user_phone,if(substring_index(user_reserve_time, ' ',-1) = '08:00:00', concat(substring_index(user_reserve_time, ' ',1), ' 上午' ),concat(substring_index(user_reserve_time, ' ',1), ' 下午' ) ) as reserve_time ,A.order_type,B.estate_name,B.estate_phone,B.estate_plot,C.wechat_open_id from t_order_list A, t_estate_list B, t_user_list C where A.order_id = 168 and C.user_id = (select  wechat_id from t_driver_list where driver_id = 144 ) and A.driver_id = 144 and B.estate_id = A.estate_id
+  `,
+    [order_id, dirver_id, dirver_id],
+    function (error, result, next) {
+      if (error) {
+        //
+        console.log('查询信息失败，error：' + error)
+      } else {
+        let access_token = getToken()
+        console.log(access_token)
+        sendMessage(access_token, result)
+      }
+    }
+  )
+}
+
+module.exports = {
+  queryDriverAndOrder
 }

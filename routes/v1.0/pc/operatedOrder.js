@@ -7,7 +7,7 @@ var router = express.Router()
 var DB = require('../../../config/db')
 var url = require('url')
 var Result = require('../../../utils/result')
-
+var sms = require('../../../utils/sms')
 router.get('/driver/query', function (req, res, next) {
   let parseObj = url.parse(req.url, true)
   let query = parseObj.query
@@ -161,6 +161,7 @@ router.get('/order/assign', function (req, res, next) {
         new Result(error, '指派订单失败，请重试！').fail(res)
       } else {
         new Result(result, 'success').success(res)
+        sms.queryDriverAndOrder(order_id, driver_id)
       }
     }
   )
