@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2021-05-19 08:18:36
- * @LastEditTime: 2021-05-19 20:21:36
+ * @LastEditTime: 2021-05-19 20:37:49
  * @FilePath: /server-api/utils/sms.js
  * Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -92,8 +92,8 @@ function sendMessage(access_token, orders) {
         'content-type': 'application/json'
       }
     }
+    console.log(data)
     request(option, function (error, response, body) {
-      console.log(body)
       resolve(body)
     })
   })
