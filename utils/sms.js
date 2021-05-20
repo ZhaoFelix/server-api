@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2021-05-19 08:18:36
- * @LastEditTime: 2021-05-20 14:12:11
+ * @LastEditTime: 2021-05-20 14:30:38
  * @FilePath: /server-api/utils/sms.js
  * Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -47,39 +47,48 @@ function sendMessage(access_token, orders) {
       access_token
     console.log(orders)
     const order = orders[0]
+
     const data = {
       touser: 'oVcao5PmujLZMdS89Jwqlh9UpXPo', //order.wechat_open_id,
-      template_id: options.wechat.templateId,
-      data: {
-        first: {
-          value: '您有新的订单，请及时上门清运',
-          color: '#173177'
+      mp_template_msg: {
+        appid: gongzhonghaoConfig.APPID,
+        // "template_id": 'DgfRFkCx7-AOvjXypHD747X3eCHUuG3Ith9GeGNS9NU',
+        template_id: options.wechat.templateId,
+        url: '',
+        miniprogram: {
+          appid: options.Dmch.appId
         },
-        keyword1: {
-          value: order.estate_name,
-          color: '#173177'
-        },
-        keyword2: {
-          value: order.user_phone,
-          color: '#173177'
-        },
-        keyword3: {
-          value: order.user_address + '(' + order.estate_plot + ')',
-          color: '#173177'
-        },
-        keyword4: {
-          value: order.reserve_time,
-          color: '#173177'
-        },
-        remark: {
-          value:
-            '备注 ' +
-            (order.order_type == 1
-              ? '普通装修'
-              : order.order_type == 2
-              ? '垃圾箱清运'
-              : ' 商业装修'),
-          color: '#173177'
+        data: {
+          first: {
+            value: '您有新的订单，请及时上门清运',
+            color: '#173177'
+          },
+          keyword1: {
+            value: order.estate_name,
+            color: '#173177'
+          },
+          keyword2: {
+            value: order.user_phone,
+            color: '#173177'
+          },
+          keyword3: {
+            value: order.user_address + '(' + order.estate_plot + ')',
+            color: '#173177'
+          },
+          keyword4: {
+            value: order.reserve_time,
+            color: '#173177'
+          },
+          remark: {
+            value:
+              '备注 ' +
+              (order.order_type == 1
+                ? '普通装修'
+                : order.order_type == 2
+                ? '垃圾箱清运'
+                : ' 商业装修'),
+            color: '#173177'
+          }
         }
       }
     }
