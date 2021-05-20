@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2021-05-19 08:18:36
- * @LastEditTime: 2021-05-20 15:43:36
+ * @LastEditTime: 2021-05-20 15:50:48
  * @FilePath: /server-api/utils/sms.js
  * Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -47,6 +47,33 @@ function sendMessage(access_token, orders) {
       access_token
     console.log(orders)
     const order = orders[0]
+    let params = {
+      keyword1: {
+        value: order.estate_name
+      },
+      keyword2: {
+        value: order.user_phone
+      },
+      keyword3: {
+        value: order.user_address + '(' + order.estate_plot + ')'
+      },
+      keyword4: {
+        value: order.reserve_time
+      },
+      keyword5: {
+        value: order.reserve_time
+      },
+      remark: {
+        value:
+          '备注 ' +
+          (order.order_type == 1
+            ? '普通装修'
+            : order.order_type == 2
+            ? '垃圾箱清运'
+            : ' 商业装修'),
+        color: '#173177'
+      }
+    }
     const data = {
       touser: 'oVcao5PmujLZMdS89Jwqlh9UpXPo', //order.wechat_open_id,
       mp_template_msg: {
@@ -57,36 +84,7 @@ function sendMessage(access_token, orders) {
         miniprogram: {
           appid: options.Dmch.appId
         },
-        data: {
-          //   first: {
-          //     value: '您有新的订单，请及时上门清运'
-          //   },
-          keyword1: {
-            value: order.estate_name
-          },
-          keyword2: {
-            value: order.user_phone
-          },
-          keyword3: {
-            value: order.user_address + '(' + order.estate_plot + ')'
-          },
-          keyword4: {
-            value: order.reserve_time
-          },
-          keyword5: {
-            value: order.reserve_time
-          },
-          remark: {
-            value:
-              '备注 ' +
-              (order.order_type == 1
-                ? '普通装修'
-                : order.order_type == 2
-                ? '垃圾箱清运'
-                : ' 商业装修'),
-            color: '#173177'
-          }
-        }
+        data: params
       }
     }
     let option = {
@@ -99,6 +97,7 @@ function sendMessage(access_token, orders) {
       }
     }
     console.log(data)
+    console.log(option)
     request(option, function (error, response, body) {
       console.log('响应')
       console.log(response.body)
