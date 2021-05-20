@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2021-05-19 08:18:36
- * @LastEditTime: 2021-05-20 14:30:38
+ * @LastEditTime: 2021-05-20 14:40:59
  * @FilePath: /server-api/utils/sms.js
  * Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -51,7 +51,7 @@ function sendMessage(access_token, orders) {
     const data = {
       touser: 'oVcao5PmujLZMdS89Jwqlh9UpXPo', //order.wechat_open_id,
       mp_template_msg: {
-        appid: gongzhonghaoConfig.APPID,
+        appid: options.wechat.AppID,
         // "template_id": 'DgfRFkCx7-AOvjXypHD747X3eCHUuG3Ith9GeGNS9NU',
         template_id: options.wechat.templateId,
         url: '',
