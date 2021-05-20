@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2021-05-19 08:18:36
- * @LastEditTime: 2021-05-20 15:50:48
+ * @LastEditTime: 2021-05-20 16:20:41
  * @FilePath: /server-api/utils/sms.js
  * Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -74,6 +74,7 @@ function sendMessage(access_token, orders) {
         color: '#173177'
       }
     }
+    params = JSON.stringify(params)
     const data = {
       touser: 'oVcao5PmujLZMdS89Jwqlh9UpXPo', //order.wechat_open_id,
       mp_template_msg: {
