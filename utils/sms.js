@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2021-05-19 08:18:36
- * @LastEditTime: 2021-05-20 07:48:15
+ * @LastEditTime: 2021-05-20 08:23:05
  * @FilePath: /server-api/utils/sms.js
  * Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -48,7 +48,7 @@ function sendMessage(access_token, orders) {
     console.log(orders)
     const order = orders[0]
     const data = {
-      touser: 'oVcao5BF9KadyH23YiEhUHhmcric', //order.wechat_open_id,
+      touser: 'oVcao5PmujLZMdS89Jwqlh9UpXPo', //order.wechat_open_id,
       template_id: options.wechat.templateId,
       data: {
         first: {
@@ -73,7 +73,7 @@ function sendMessage(access_token, orders) {
         },
         remark: {
           value:
-            '备注' +
+            '备注 ' +
             (order.order_type == 1
               ? '普通装修'
               : order.order_type == 2
