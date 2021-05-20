@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2021-05-19 08:18:36
- * @LastEditTime: 2021-05-20 14:08:10
+ * @LastEditTime: 2021-05-20 14:12:11
  * @FilePath: /server-api/utils/sms.js
  * Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -20,9 +20,9 @@ function getToken() {
     //需要发送get请求
     const url =
       'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=' +
-      options.Dmch.appId +
+      options.wechat.AppID +
       '&secret=' +
-      options.Dmch.secret +
+      options.wechat.AppSecret +
       ''
     let option = {
       url: url,

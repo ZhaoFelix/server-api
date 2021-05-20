@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2021-05-06 13:04:01
- * @LastEditTime: 2021-05-20 13:33:53
+ * @LastEditTime: 2021-05-20 14:10:32
  * @FilePath: /server-api/app.js
  * Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -15,7 +15,7 @@ var logger = require('./utils/logger')
 var cors = require('cors')
 var indexRouter = require('./routes/index')
 var app = express()
-console.log(513 * 0.8)
+
 // 前端模板引擎设置
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'jade')
