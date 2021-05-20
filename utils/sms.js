@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2021-05-19 08:18:36
- * @LastEditTime: 2021-05-20 14:51:30
+ * @LastEditTime: 2021-05-20 15:27:29
  * @FilePath: /server-api/utils/sms.js
  * Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -47,7 +47,6 @@ function sendMessage(access_token, orders) {
       access_token
     console.log(orders)
     const order = orders[0]
-
     const data = {
       touser: 'oVcao5PmujLZMdS89Jwqlh9UpXPo', //order.wechat_open_id,
       mp_template_msg: {
@@ -104,7 +103,7 @@ function sendMessage(access_token, orders) {
     console.log(data)
     request(option, function (error, response, body) {
       console.log('响应')
-      console.log(response)
+      console.log(response.body)
       resolve(body)
     })
   })
