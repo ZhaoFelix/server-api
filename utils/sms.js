@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2021-05-19 08:18:36
- * @LastEditTime: 2021-05-20 16:25:23
+ * @LastEditTime: 2021-05-20 16:44:55
  * @FilePath: /server-api/utils/sms.js
  * Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -20,9 +20,9 @@ function getToken() {
     //需要发送get请求
     const url =
       'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=' +
-      options.Dmch.appId +
+      options.wechat.AppID +
       '&secret=' +
-      options.Dmch.secret +
+      options.wechat.AppSecret +
       ''
     let option = {
       url: url,
@@ -60,9 +60,7 @@ function sendMessage(access_token, orders) {
       keyword4: {
         value: order.reserve_time
       },
-      keyword5: {
-        value: order.reserve_time
-      },
+
       remark: {
         value:
           '备注 ' +
@@ -80,7 +78,7 @@ function sendMessage(access_token, orders) {
       mp_template_msg: {
         appid: options.wechat.AppID,
         // "template_id": 'DgfRFkCx7-AOvjXypHD747X3eCHUuG3Ith9GeGNS9NU',
-        template_id: 'yZihlTeIUDUDOOaoIYB8IG1DUk8BcRKHl-Rp-XSf0Fw',
+        template_id: options.wechat.templateId,
         url: '',
         miniprogram: {
           appid: options.Dmch.appId
