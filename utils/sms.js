@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2021-05-19 08:18:36
- * @LastEditTime: 2021-05-20 15:27:29
+ * @LastEditTime: 2021-05-20 15:43:36
  * @FilePath: /server-api/utils/sms.js
  * Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -58,25 +58,23 @@ function sendMessage(access_token, orders) {
           appid: options.Dmch.appId
         },
         data: {
-          first: {
-            value: '您有新的订单，请及时上门清运',
-            color: '#173177'
-          },
+          //   first: {
+          //     value: '您有新的订单，请及时上门清运'
+          //   },
           keyword1: {
-            value: order.estate_name,
-            color: '#173177'
+            value: order.estate_name
           },
           keyword2: {
-            value: order.user_phone,
-            color: '#173177'
+            value: order.user_phone
           },
           keyword3: {
-            value: order.user_address + '(' + order.estate_plot + ')',
-            color: '#173177'
+            value: order.user_address + '(' + order.estate_plot + ')'
           },
           keyword4: {
-            value: order.reserve_time,
-            color: '#173177'
+            value: order.reserve_time
+          },
+          keyword5: {
+            value: order.reserve_time
           },
           remark: {
             value:
