@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-12-07 09:40:25
- * @LastEditTime: 2021-05-17 12:04:55
+ * @LastEditTime: 2021-05-20 13:22:42
  * @FilePath: /server-api/utils/common.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -10,6 +10,7 @@ let { estate, jwt_options } = require('../config/env')
 let crypto = require('crypto')
 const jwt = require('jsonwebtoken')
 let DB = require('../config/db')
+let math = require('math.js')
 function clocPrice(buildArea, isFirst, userType) {
   let finalPrice = 0
   // // 是否是首次装修
@@ -31,7 +32,9 @@ function clocPrice(buildArea, isFirst, userType) {
   }
   // }
   console.log(finalPrice)
-  return userType == 1 ? finalPrice * estate.discount * 100 : finalPrice * 100
+  return userType == 1
+    ? (finalPrice * estate.discount).toFixed(2) * 100
+    : finalPrice * 100
 }
 function md5(s) {
   return crypto.createHash('md5').update(String(s)).digest('hex')

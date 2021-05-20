@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-11-17 08:57:51
- * @LastEditTime: 2021-05-17 13:21:34
+ * @LastEditTime: 2021-05-20 12:58:36
  * @FilePath: /server-api/routes/v1.0/public/order.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -14,6 +14,7 @@ var xmlparser = require('express-xml-bodyparser')
 var config = require('../../../config/env')
 let common = require('../../../utils/common')
 let util = require('../../../utils/pay.js')
+
 const mch = config.mch
 // 普通微信支付
 router.post('/usual/wxpay', function (req, res, next) {

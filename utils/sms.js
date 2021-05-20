@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2021-05-19 08:18:36
- * @LastEditTime: 2021-05-20 08:23:05
+ * @LastEditTime: 2021-05-20 13:59:58
  * @FilePath: /server-api/utils/sms.js
  * Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -111,7 +111,7 @@ function queryDriverAndOrder(order_id, dirver_id) {
         //
         console.log('查询信息失败，error：' + error)
       } else {
-        let access_token = await getToken()
+        let { access_token } = await getToken()
         console.log(access_token)
         sendMessage(access_token, result)
       }
