@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-12-18 14:43:30
- * @LastEditTime: 2021-05-19 15:22:40
+ * @LastEditTime: 2021-05-21 10:14:51
  * @FilePath: /server-api/routes/v1.0/pc/dashboard.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -84,6 +84,20 @@ router.get('/order/ratio', function (req, res, next) {
   count(distinct case when order_type = 3 then order_id else null end) as '垃圾箱清运',
   count(distinct case when order_type = 11 then order_id else null end) as '二次清运'
   from t_order_list where order_status != 2;`
+  DB.queryDB(sql, function (error, result, fields) {
+    if (error) {
+      new Result(error, '查询失败').fail(res)
+    } else {
+      new Result(result, 'success').success(res)
+    }
+  })
+})
+
+router.get('/status/ratio', function (req, res, next) {
+  let sql = `select count(distinct case when order_status = 2 then order_id else null end) as '被取消订单',
+  count(distinct case when order_status = 6 then order_id else null end) as '已完成订单',
+  count(distinct case when order_status != 2 and order_status != 6 and order_status != 0 then order_id else null end) as '进行中订单',count(distinct case when order_status = 0 then order_id else null end) as '待支付订单'
+  from t_order_list;`
   DB.queryDB(sql, function (error, result, fields) {
     if (error) {
       new Result(error, '查询失败').fail(res)
