@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-11-12 10:04:39
- * @LastEditTime: 2021-05-12 08:00:16
+ * @LastEditTime: 2021-05-21 10:46:50
  * @FilePath: /server-api/routes/v1.0/pc/estate.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -11,6 +11,7 @@ var router = express.Router()
 var DB = require('../../../config/db')
 var url = require('url')
 var Result = require('../../../utils/result')
+const { resolve } = require('path')
 
 // 查询所有物业经理人的信息
 router.get('/query/all', function (req, res, next) {
@@ -141,8 +142,49 @@ router.get('/insert/add', function (req, res, next) {
         new Result(error, 'error').fail(res)
       } else {
         new Result(result, '添加成功').success(res)
+        // 添加成功后更新认证状态
       }
     }
   )
 })
+
+function updateEstateStatus(estate_phone) {
+  return new Promise((resolve, reject) => {
+    DB.queryDB(
+      'select  * from t_estate_list where estate_phone = ? and estate_is_auth = 1 and estate_is_deleted = 0',
+      estate_phone,
+      function (error, result, fields) {
+        if (error) {
+          reject(error)
+        } else {
+          resolve(result)
+        }
+      }
+    )
+  })
+    .then((data) => {
+      if (data.length > 0) {
+        let temp = data[0]
+        return new Promise((resolve, reject) => {
+          DB.queryDB(
+            'update  t_estate_list set estate_is_auth = 1 ,wechat_id = ?, estate_wechat_time = now()  where  estate_is_auth = 0 and estate_phone = ?;',
+            [temp.wechat_id, estate_phone],
+            function (error, result, fields) {
+              if (error) {
+                reject(error)
+              } else {
+                resolve(result)
+              }
+            }
+          )
+        })
+      }
+    })
+    .then((data) => {
+      console.log('更新物业状态成功，info:' + data)
+    })
+    .catch((error) => {
+      console.log('更新物业状态失败，error' + error)
+    })
+}
 module.exports = router
