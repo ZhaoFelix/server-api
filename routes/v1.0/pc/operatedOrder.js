@@ -100,7 +100,26 @@ router.get('/order/query/', function (req, res, next) {
     }
   })
 })
-
+// 根据关键字查询订单信息
+router.get('/order/queryByKeyword', function (req, res, next) {
+  // 前端传值
+  let parseObj = url.parse(req.url, true)
+  let query = parseObj.query
+  let keyword = query.keyword
+  console.log(keyword)
+  DB.queryDB(
+    "SELECT * from v_no_assign_order where concat(estate_name,estate_plot,user_address,driver_name) like '%" +
+      keyword +
+      "%'",
+    function (error, result, fields) {
+      if (error) {
+        new Result(error, 'error').fail(res)
+      } else {
+        new Result(result, 'success').success(res)
+      }
+    }
+  )
+})
 // 根据路线类型查询车辆
 router.get('/car/query', function (req, res, next) {
   let parseObj = url.parse(req.url, true)
