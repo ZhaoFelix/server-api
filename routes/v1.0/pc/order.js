@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-11-17 13:15:32
- * @LastEditTime: 2021-05-20 10:46:32
+ * @LastEditTime: 2021-05-21 08:39:28
  * @FilePath: /server-api/routes/v1.0/pc/order.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -75,7 +75,7 @@ router.get('/query/queryByKeyword', function (req, res, next) {
   let keyword = query.keyword
   console.log(keyword)
   DB.queryDB(
-    "SELECT order_id,order_number,order_price,order_type,order_user_name,order_final_price,second_pay_price,user_reserve_time,order_size,order_user_type,user_phone,user_address,wechat_nickname,driver_name,driver_phone,driver_complete_time,order_created_time,order_status,estate_name,estate_plot from v_order_list where concat(estate_name,estate_plot,order_number,driver_name) like '%" +
+    "SELECT order_id,order_number,order_price,order_type,order_user_name,order_final_price,second_pay_price,user_reserve_time,order_size,order_user_type,user_phone,user_address,wechat_nickname,driver_name,driver_phone,driver_complete_time,order_created_time,order_status,estate_name,estate_plot from v_order_list where concat(estate_name,estate_plot,user_address,driver_name) like '%" +
       keyword +
       "%'",
     function (error, result, fields) {
