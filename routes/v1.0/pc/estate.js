@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-11-12 10:04:39
- * @LastEditTime: 2021-05-21 10:46:50
+ * @LastEditTime: 2021-05-21 10:47:52
  * @FilePath: /server-api/routes/v1.0/pc/estate.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -143,6 +143,7 @@ router.get('/insert/add', function (req, res, next) {
       } else {
         new Result(result, '添加成功').success(res)
         // 添加成功后更新认证状态
+        updateEstateStatus(query.estate_phone)
       }
     }
   )

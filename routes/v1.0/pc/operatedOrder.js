@@ -89,6 +89,13 @@ router.get('/order/query/', function (req, res, next) {
         : 'select  * from v_no_assign_order where order_status = 0 and third_id = ' +
           third_id +
           ' order by  order_created_time desc'
+  } else if (selectRadio == 5) {
+    sql =
+      third_id == 0
+        ? `select  * from v_no_assign_order where  date_format(user_reserve_time,'%Y-%m-%d') < date_format(now(),'%Y-%m-%d') and order_status != 6 order by  order_created_time desc`
+        : `select  * from v_no_assign_order where  date_format(user_reserve_time,'%Y-%m-%d') < date_format(now(),'%Y-%m-%d') and order_status != 6 and third_id =` +
+          third_id +
+          ` order by  order_created_time desc `
   }
 
   // 查询所有未支付和未派发的订单
