@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-11-12 10:04:39
- * @LastEditTime: 2021-05-21 10:47:52
+ * @LastEditTime: 2021-05-25 16:40:13
  * @FilePath: /server-api/routes/v1.0/pc/estate.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -45,6 +45,19 @@ router.get('/query/all', function (req, res, next) {
             }
           }
         )
+      }
+    }
+  )
+})
+// 查询未认证数据
+router.get('/query/unauth', function (req, res, next) {
+  DB.queryDB(
+    'select  *,if((estate_id in (select  estate_id from t_order_list)),1,0) as is_exist_order from t_estate_list  where estate_is_auth = 0 and estate_is_deleted = 0',
+    function (error, result, fields) {
+      if (error) {
+        new Result(error, 'error').fail(res)
+      } else {
+        new Result(result, 'success').success(res)
       }
     }
   )
