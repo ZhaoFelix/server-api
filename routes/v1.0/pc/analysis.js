@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2021-05-24 14:15:51
- * @LastEditTime: 2021-05-25 13:38:24
+ * @LastEditTime: 2021-05-25 14:48:06
  * @FilePath: /server-api/routes/v1.0/pc/analysis.js
  * Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -50,5 +50,29 @@ router.get('/time/sale', function (req, res, next) {
       }
     }
   )
+})
+
+router.get('/order', function (req, res, next) {
+  let parseObj = url.parse(req.url, true)
+  let query = parseObj.query
+  let startDate = query.startDate
+  let endDate = query.endDate
+  let sql =
+    startDate == undefined
+      ? "select DATE_FORMAT(order_created_time,'%Y-%m-%d') days,count(order_id) count from t_order_list where order_status != 2 and order_status != 0 and DATE_SUB(curdate(),INTERVAL 30 DAY) <= date(order_created_time) group by days"
+      : `select DATE_FORMAT(order_created_time,'%Y-%m-%d') days,count(order_id) count from t_order_list where order_status != 2 and order_status != 0 and DATE_FORMAT(order_created_time,'%Y-%m-%d') >= DATE_FORMAT('` +
+        startDate +
+        `','%Y-%m-%d') and  DATE_FORMAT(order_created_time,'%Y-%m-%d') <= DATE_FORMAT('` +
+        endDate +
+        `','%Y-%m-%d')group by days`
+
+  console.log(sql)
+  DB.queryDB(sql, function (error, result, fields) {
+    if (error) {
+      new Result(error, '查询订单失败').fail(res)
+    } else {
+      new Result(result, 'success').success(res)
+    }
+  })
 })
 module.exports = router
