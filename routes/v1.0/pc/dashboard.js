@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-12-18 14:43:30
- * @LastEditTime: 2021-05-21 10:14:51
+ * @LastEditTime: 2021-05-25 08:26:47
  * @FilePath: /server-api/routes/v1.0/pc/dashboard.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -47,7 +47,7 @@ router.get('/sale', function (req, res, next) {
   let parseObj = url.parse(req.url, true)
   let query = parseObj.query
   let timeGap = query.timeGap
-  let sql = `select DATE_FORMAT(order_created_time,'%Y-%m-%d') days,round(sum(order_final_price),2) count, round(sum(order_price),2) as total from t_order_list where order_status != 2 and DATE_SUB(curdate(),INTERVAL ? DAY) <= date(order_created_time) group by days;`
+  let sql = `select DATE_FORMAT(order_created_time,'%Y-%m-%d') days,round(sum(order_final_price),2) count, round(sum(order_price),2) as total from t_order_list where order_status != 2 and order_status !=0 and DATE_SUB(curdate(),INTERVAL ? DAY) <= date(order_created_time) group by days;`
   DB.queryDB(
     sql,
     timeGap == undefined ? 7 : timeGap,
