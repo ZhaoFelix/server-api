@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-09-02 14:23:14
- * @LastEditTime: 2021-05-17 10:23:08
+ * @LastEditTime: 2021-05-25 15:35:02
  * @FilePath: /server-api/routes/v1.0/pc/login.js
  * Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -88,6 +88,18 @@ router.get('/info', function (req, res, next) {
           new Result(error, 'token不存在').fail(res)
         } else {
           new Result(result, 'success').success(res)
+          // 查询成功后，更新登录时间
+          DB.queryDB(
+            'update t_admin_list set admin_last_time = now() where admin_login_name = ? ',
+            decoded.username,
+            function (error, result, fiedls) {
+              if (error) {
+                console.log('更新用户登录时间失败，error:' + error)
+              } else {
+                console.log('更新用户登录时间成功')
+              }
+            }
+          )
         }
       }
     )
