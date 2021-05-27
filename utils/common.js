@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-12-07 09:40:25
- * @LastEditTime: 2021-05-20 14:56:19
+ * @LastEditTime: 2021-05-27 13:31:41
  * @FilePath: /server-api/utils/common.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -32,9 +32,7 @@ function clocPrice(buildArea, isFirst, userType) {
   }
   // }
   console.log(finalPrice)
-  return userType == 1
-    ? ((finalPrice * estate.discount) / 10) * 100
-    : finalPrice * 100
+  return userType == 1 ? finalPrice * estate.discount * 10 : finalPrice * 100
 }
 function md5(s) {
   return crypto.createHash('md5').update(String(s)).digest('hex')
