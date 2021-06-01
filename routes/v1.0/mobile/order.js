@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-12-09 14:28:16
- * @LastEditTime: 2021-05-18 13:15:29
+ * @LastEditTime: 2021-06-01 22:06:27
  * @FilePath: /server-api/routes/v1.0/mobile/order.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -19,8 +19,17 @@ router.get('/query', function (req, res, next) {
   let parseObj = url.parse(req.url, true) // 将URL解析为一个对象
   req.query = parseObj.query
   let userId = req.query.userId
+  let type = req.query.type
+  let sqlStr =
+    type == '1'
+      ? ' and order_status >=3 and order_status < 6'
+      : type == '2'
+      ? ' and order_status = 6'
+      : ''
   DB.queryDB(
-    "select  *, if(substring_index(user_reserve_time, ' ',-1) = '08:00:00', concat(substring_index(user_reserve_time, ' ',1), ' 上午' ),concat(substring_index(user_reserve_time, ' ',1), ' 下午' ) ) as reserve_time,if(order_type = 2, round(order_price, 2), round(order_price * 0.8, 2)) as discount_price from v_wechat_order where user_id=? order by order_created_time desc",
+    `select  *, if(substring_index(user_reserve_time, ' ',-1) = '08:00:00', concat(substring_index(user_reserve_time, ' ',1), ' 上午' ),concat(substring_index(user_reserve_time, ' ',1), ' 下午' ) ) as reserve_time,if(order_type = 2, round(order_price, 2), round(order_price * 0.8, 2)) as discount_price from v_wechat_order where user_id=? ` +
+      sqlStr +
+      ` order by order_created_time desc`,
     userId,
     function (error, result, next) {
       if (error) {
