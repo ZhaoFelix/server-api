@@ -16,7 +16,7 @@ router.get('/', function (req, res, next) {
 // 查看所有的管理员
 router.get('/query/all', function (req, res, next) {
   DB.queryDB(
-    'select * from `t_admin_list` where admin_is_deleted = 0',
+    'select * from `t_admin_list` where admin_is_deleted = 0  order by admin_last_time desc',
     function (error, result, fields) {
       if (error) {
         new Result(error, 'error').fail(res)

@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-12-09 14:28:16
- * @LastEditTime: 2021-05-17 13:52:30
+ * @LastEditTime: 2021-06-03 19:18:26
  * @FilePath: /server-api/routes/v1.0/Dmobile/order.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -46,28 +46,35 @@ router.get('/queryall', function (req, res, next) {
   let parseObj = url.parse(req.url, true) // 将URL解析为一个对象
   req.query = parseObj.query
   let userId = req.query.userId === undefined ? 107 : req.query.userId
-  console.log(userId)
-  DB.queryDB(
-    `select  order_id,order_number,user_address,order_size,order_status,order_type,user_reserve_time,driver_name,driver_phone,driver_reach_trash,box_number,if(substring_index(user_reserve_time, ' ',-1) = '08:00:00', concat(substring_index(user_reserve_time, ' ',1), ' 上午' ),concat(substring_index(user_reserve_time, ' ',1), ' 下午' ) ) as reserve_time from v_assign_order where driver_id = (select driver_id from t_driver_list where wechat_id = ? and driver_is_deleted = 0 limit 0,1) order by order_created_time desc`,
-    userId,
-    function (error, result, next) {
-      if (error) {
-        let responseJson = {
-          code: 20002,
-          message: '查询失败',
-          data: error
-        }
-        res.send(responseJson)
-      } else {
-        let responseJson = {
-          code: 20000,
-          message: '查询成功',
-          data: result
-        }
-        res.send(responseJson)
+  let type = req.query.type
+  let sqlStr =
+    type == '1'
+      ? ' and order_status >=3 and order_status < 6'
+      : type == '2'
+      ? ' and order_status = 6'
+      : ''
+
+  let sql =
+    `select  order_id,order_number,user_address,order_size,order_status,order_type,user_reserve_time,driver_name,driver_phone,driver_reach_trash,box_number,if(substring_index(user_reserve_time, ' ',-1) = '08:00:00', concat(substring_index(user_reserve_time, ' ',1), ' 上午' ),concat(substring_index(user_reserve_time, ' ',1), ' 下午' ) ) as reserve_time from v_assign_order where driver_id = (select driver_id from t_driver_list where wechat_id = ? and driver_is_deleted = 0 limit 0,1) ` +
+    sqlStr +
+    ` order by order_created_time desc`
+  DB.queryDB(sql, userId, function (error, result, next) {
+    if (error) {
+      let responseJson = {
+        code: 20002,
+        message: '查询失败',
+        data: error
       }
+      res.send(responseJson)
+    } else {
+      let responseJson = {
+        code: 20000,
+        message: '查询成功',
+        data: result
+      }
+      res.send(responseJson)
     }
-  )
+  })
 })
 
 router.get('/query/ongoing', function (req, res, next) {
