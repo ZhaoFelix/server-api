@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-12-09 14:28:16
- * @LastEditTime: 2021-06-03 19:18:26
+ * @LastEditTime: 2021-06-03 19:38:45
  * @FilePath: /server-api/routes/v1.0/Dmobile/order.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -53,7 +53,6 @@ router.get('/queryall', function (req, res, next) {
       : type == '2'
       ? ' and order_status = 6'
       : ''
-
   let sql =
     `select  order_id,order_number,user_address,order_size,order_status,order_type,user_reserve_time,driver_name,driver_phone,driver_reach_trash,box_number,if(substring_index(user_reserve_time, ' ',-1) = '08:00:00', concat(substring_index(user_reserve_time, ' ',1), ' 上午' ),concat(substring_index(user_reserve_time, ' ',1), ' 下午' ) ) as reserve_time from v_assign_order where driver_id = (select driver_id from t_driver_list where wechat_id = ? and driver_is_deleted = 0 limit 0,1) ` +
     sqlStr +

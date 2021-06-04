@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-12-18 14:43:30
- * @LastEditTime: 2021-06-03 13:43:17
+ * @LastEditTime: 2021-06-04 11:00:23
  * @FilePath: /server-api/routes/v1.0/pc/dashboard.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -36,6 +36,21 @@ router.get('/week', function (req, res, next) {
       ? "select DATE_FORMAT(order_created_time,'%Y-%m-%d') days,count(order_id) count from t_order_list where order_status != 2 and order_status != 0 and DATE_SUB(curdate(),INTERVAL ? DAY) <= date(order_created_time) group by days"
       : "select DATE_FORMAT(wechat_created_time,'%Y-%m-%d') days,count(user_id) count from t_user_list  where DATE_SUB(curdate(),INTERVAL ? DAY) <= date(wechat_created_time) group by days"
   DB.queryDB(sql, gapDay, function (error, result, fields) {
+    if (error) {
+      new Result(error, '查询订单失败').fail(res)
+    } else {
+      new Result(result, 'success').success(res)
+    }
+  })
+})
+// 查询最近七天的订单量
+router.get('/today', function (req, res, next) {
+  let sql = `select  round(sum(case when  order_type = 1 then order_final_price else null end),2) as usual,
+    round(sum(case when  order_type = 2 then order_final_price else null end),2) as business,
+     round(sum(case when  order_type = 3 then order_final_price else null end),2) as box,
+     date_format(now(),'%Y-%m-%d') days
+from t_order_list where  order_status != 0 and order_status != 2 and date_format(order_created_time,'%Y-%m-%d') = date_format(now(),'%Y-%m-%d');`
+  DB.queryDB(sql, function (error, result, fields) {
     if (error) {
       new Result(error, '查询订单失败').fail(res)
     } else {
