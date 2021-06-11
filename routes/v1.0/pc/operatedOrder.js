@@ -172,6 +172,25 @@ router.get('/order/cancel', function (req, res, next) {
   )
 })
 
+// 调度员取消二次清运订单
+router.get('/order/second/cancel', function (req, res, next) {
+  let parseObj = url.parse(req.url, true)
+  let query = parseObj.query
+  let order_id = parseInt(query.order_id)
+  // 将订单的状态更新为2
+  DB.queryDB(
+    'update  t_order_list set order_status = 2 where order_id = ? and  order_is_deleted = 0 and order_status = 1 and order_type = 11',
+    [order_id],
+    function (error, result, fields) {
+      if (error) {
+        new Result(error, '取消订单失败，请重试').fail(res)
+      } else {
+        new Result(result, 'success').success(res)
+      }
+    }
+  )
+})
+
 // 针对订单指派司机和车辆
 router.get('/order/assign', function (req, res, next) {
   let parseObj = url.parse(req.url, true)
