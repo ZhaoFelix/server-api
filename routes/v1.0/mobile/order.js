@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-12-09 14:28:16
- * @LastEditTime: 2021-06-01 22:06:27
+ * @LastEditTime: 2021-06-17 10:14:44
  * @FilePath: /server-api/routes/v1.0/mobile/order.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -66,7 +66,7 @@ router.get('/query/plot', function (req, res, next) {
   req.query = parseObj.query
   let wechat_id = req.query.wechat_id
   DB.queryDB(
-    'select  estate_plot as text,estate_id as id from t_estate_list where  wechat_id=?',
+    'select  estate_plot as text,estate_id as id from t_estate_list where  wechat_id=? and estate_is_deleted = 0',
     wechat_id,
     function (error, result, fields) {
       if (error) {
