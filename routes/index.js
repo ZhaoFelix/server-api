@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-10-26 09:18:45
- * @LastEditTime: 2021-03-25 08:17:53
+ * @LastEditTime: 2021-07-05 09:38:35
  * @FilePath: /server-api/routes/index.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -16,7 +16,7 @@ const jwtAuth = require('../utils/jwt')
 const Result = require('../utils/result')
 // 接口安全验证必须在接口路由之前
 router.use(jwtAuth)
-//  扫描路由路径
+//  扫描路由路径，自动导入路由
 const scanResult = helper.scanDirModules(__dirname, __filename)
 for (const prefix in scanResult) {
   if (scanResult.hasOwnProperty(prefix)) {
@@ -42,6 +42,7 @@ router.get('/', function (req, res, next) {
 router.use((req, res, next) => {
   next(boom.notFound('接口不存在'))
 })
+
 /**
  *  自定义路由异常处理中间件
  *  注意点：

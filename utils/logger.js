@@ -2,10 +2,12 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-10-26 09:36:22
- * @LastEditTime: 2021-04-09 15:40:16
+ * @LastEditTime: 2021-07-05 09:34:07
  * @FilePath: /server-api/utils/logger.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
+
+// 日志文件相关
 var logger = require('morgan')
 var fileStreamRotator = require('file-stream-rotator')
 var moment = require('moment')

@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-12-07 09:40:25
- * @LastEditTime: 2021-05-27 13:31:41
+ * @LastEditTime: 2021-07-05 09:37:44
  * @FilePath: /server-api/utils/common.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -11,6 +11,8 @@ let crypto = require('crypto')
 const jwt = require('jsonwebtoken')
 let DB = require('../config/db')
 let math = require('math.js')
+
+// 价格计算
 function clocPrice(buildArea, isFirst, userType) {
   let finalPrice = 0
   // // 是否是首次装修
@@ -34,10 +36,13 @@ function clocPrice(buildArea, isFirst, userType) {
   console.log(finalPrice)
   return userType == 1 ? finalPrice * estate.discount * 10 : finalPrice * 100
 }
+
+// md5加密
 function md5(s) {
   return crypto.createHash('md5').update(String(s)).digest('hex')
 }
 
+// jwt解密
 function jwtDecoded(req) {
   let token = req.get('Authorization')
   console.log(token + '------')
@@ -47,10 +52,13 @@ function jwtDecoded(req) {
   return jwt.verify(token, jwt_options.PRIVATE_KEY)
 }
 
+// 时间转字符串
 function timeFormatter(timeStr) {
   let timeArr = timeStr.split(' ')
   return timeArr[0] + (timeArr[1] == '上午' ? ' 8:00' : ' 12:00')
 }
+
+// 生成随机字符串
 function getRandomStr(n) {
   var str = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
   var res = ''
