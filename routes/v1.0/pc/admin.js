@@ -71,7 +71,7 @@ router.post('/update/delete', function (req, res, next) {
   let id = req.body.id
   console.log('删除管理员id为:' + id)
   DB.queryDB(
-    'UPDATE `t_admin_list` SET admin_is_deleted = 1  WHERE admin_id = ?',
+    'UPDATE `t_admin_list` SET admin_is_deleted = 1  WHERE admin_id = ? and admin_type != 1',
     [id],
     function (error, result, fields) {
       if (error) {
