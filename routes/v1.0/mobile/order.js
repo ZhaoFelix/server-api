@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-12-09 14:28:16
- * @LastEditTime: 2021-08-12 15:39:37
+ * @LastEditTime: 2021-08-24 14:40:53
  * @FilePath: /server-api/routes/v1.0/mobile/order.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -29,7 +29,7 @@ router.get('/query', function (req, res, next) {
   DB.queryDB(
     `select  *, if(substring_index(user_reserve_time, ' ',-1) = '08:00:00', concat(substring_index(user_reserve_time, ' ',1), ' 上午' ),concat(substring_index(user_reserve_time, ' ',1), ' 下午' ) ) as reserve_time,if(order_type = 2, round(order_price, 2), round(order_price * 0.8, 2)) as discount_price from v_wechat_order where user_id=? ` +
       sqlStr +
-      ` order by order_created_time desc limit 0,30`,
+      ` order by order_created_time desc limit 0,60`,
     userId,
     function (error, result, next) {
       if (error) {
