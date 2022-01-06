@@ -2,7 +2,7 @@
  * @Author: Felix
  * @Email: felix@qingmaoedu.com
  * @Date: 2020-12-01 07:54:40
- * @LastEditTime: 2021-04-25 10:45:39
+ * @LastEditTime: 2022-01-06 14:51:39
  * @FilePath: /server-api/routes/v1.0/public/verify.js
  * @Copyright © 2019 Shanghai Qingmao Network Technology Co.,Ltd All rights reserved.
  */
@@ -195,7 +195,7 @@ router.get('/estate', function (req, res, next) {
   // 根据手机号查询信息
   return new Promise((resolve, reject) => {
     DB.queryDB(
-      'select estate_id,estate_name,estate_phone,estate_card_id,estate_gender,estate_company,estate_region,estate_plot from t_estate_list where  estate_phone = ?',
+      'select estate_id,estate_name,estate_phone,estate_card_id,estate_gender,estate_company,estate_region,estate_plot from t_estate_list where  estate_phone = ? and estate_is_deleted = 0',
       [phone],
       function (error, result, fields) {
         if (error) {
